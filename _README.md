@@ -1,12 +1,16 @@
 # Project Name
+HikeXpert
 
 > Pithy project description
 
+A gamified hiking trail experience.
+
+
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Eric Broberg
+  - __Scrum Master__: Colton Savage
+  - __Development Team Members__: Andrew Vedady, Mike Frazier
 
 ## Table of Contents
 
@@ -24,7 +28,7 @@
 
 ## Requirements
 
-- Node 0.10.x
+- Node 0.12.7
 - Redis 2.6.x
 - Postgresql 9.1.x
 - etc
