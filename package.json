@@ -1,0 +1,26 @@
+{
+  "name": "hikexpert",
+  "version": "0.0.0",
+  "description": "greenfield-silver-squirrels",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silverSquirrels/silverSquirrels.git"
+  },
+  "keywords": [
+    "awesome"
+  ],
+  "author": "andrew, colton, eric, mike f.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/silverSquirrels/silverSquirrels/issues"
+  },
+  "homepage": "https://github.com/silverSquirrels/silverSquirrels#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "morgan": "^1.6.1"
+  }
+}
