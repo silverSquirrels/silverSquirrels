@@ -1,13 +1,12 @@
-angular.module('hikeXpert', [
-  'ngRoute',
-  'hikeXpert.HomePageController'
+angular.module('hikexpert', [
+  'hikexpert.home',
+  'ngRoute'
 ])
 .config(function($routeProvider, $httpProvider){
   $routeProvider
     .when('/', {
       templateUrl: 'homePage/homepage.html',
-      controller: 'HomePage'
+      controller: 'HomePageController'
     });
 })
 
-.controller('', []);
