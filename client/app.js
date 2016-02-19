@@ -1,5 +1,6 @@
 angular.module('hikexpert', [
   'hikexpert.home',
+  'hikexpert.auth',
   'ngRoute'
 ])
 .config(function($routeProvider, $httpProvider){
@@ -9,11 +10,11 @@ angular.module('hikexpert', [
       controller: 'HomePageController'
     })
     .when('/signin', {
-      templateUrl: 'app/auth/signin.html',
+      templateUrl: '/auth/signin.html',
       controller: 'AuthController'
     })
     .when('/signup', {
-      templateUrl: 'app/auth/signup.html',
+      templateUrl: '/auth/signup.html',
       controller: 'AuthController'
     });
 })
