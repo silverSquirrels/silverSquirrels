@@ -1,0 +1,85 @@
+html, body {
+ margin: 0;
+ padding: 0;
+ font-family: 'Roboto', sans-serif;
+ width:100%;
+}
+
+.header {
+ padding: 15px;
+}
+
+.header img {
+   display: inline-block;
+}
+
+.header h1 {
+   display: inline-block;
+}
+
+.main {
+ background-color: #f2f2f2 ;
+ padding: 40px 0;
+}
+
+.main h1 {
+ color: #F65A5B ;
+ font-size: 54px;
+ margin: 0 0 80px 0;
+ padding: 20px 0;
+   line-height: 60px;
+   width: 50%;
+}
+
+.thumbnail {
+   border: 0px;
+   position: relative;
+   padding: 30px;
+   border-radius: 0;
+   margin-bottom:10px;
+}
+
+.thumbnail img {
+   margin-top: 10px;
+   margin-bottom: 10px;
+   max-width: 20%;
+}
+
+.name {
+   color: #444;
+   margin: 30;
+   font-size: 18px;
+   font-weight: 800;
+}
+
+.quote {
+   color: #a3a3a3 ;
+   margin: 30;
+   font-size: 18px;
+   font-weight: 200;
+}
+
+.likes,
+.dislikes {
+   background: #F65A5B ;
+   color: #fff;
+   cursor: pointer;
+   display: inline-block;
+   font-size: 15px;
+   line-height: 40px;
+   min-width: 40px;
+   height: 40px;
+   border-radius: 50%;
+   margin: 0 -30px 0 40px;
+   text-align: center;
+   font-weight: 200;
+   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+   transition: background 500ms;
+}
+
+.likes:hover,
+.dislikes:hover {
+   color: #F65A5B ;
+   background: rgba(246, 90, 91, 0.25);
+   transition: background 500ms;
+}
