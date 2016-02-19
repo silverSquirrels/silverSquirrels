@@ -32,3 +32,5 @@ client/lib
 .floobit
 .floo
 .flooignore
+
+.env

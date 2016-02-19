@@ -10,4 +10,6 @@ client/lib
 .floo
 .flooignore
 
+.env
+
 sandbox.js
