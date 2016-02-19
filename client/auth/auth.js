@@ -1,4 +1,4 @@
-angular.module('.auth', [])
+angular.module('hikexpert.auth', [])
 
 .controller('AuthController', function ($scope, $window, $location, Auth) {
   $scope.user = {};
@@ -6,8 +6,8 @@ angular.module('.auth', [])
   $scope.signin = function () {
     Auth.signin($scope.user)
       .then(function (token) {
-        $window.localStorage.setItem('com.shortly', token);
-        $location.path('/links');
+        $window.localStorage.setItem('com.hikexpert', token);
+        $location.path('/homepage');
       })
       .catch(function (error) {
         console.error(error);
@@ -17,8 +17,8 @@ angular.module('.auth', [])
   $scope.signup = function () {
     Auth.signup($scope.user)
       .then(function (token) {
-        $window.localStorage.setItem('com.shortly', token);
-        $location.path('/links');
+        $window.localStorage.setItem('com.hikexpert', token);
+        $location.path('/homepage');
       })
       .catch(function (error) {
         console.error(error);
