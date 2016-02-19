@@ -4,16 +4,19 @@
     <title>HikeXpert</title>
     <link href="./css/main.css" rel="stylesheet"/>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
   </head>
+
+  
   <body>
-  <!-- Grab user's coordinates and console.log them: -->
-  <script type="text/javascript">
-  navigator.geolocation.getCurrentPosition(function(position) {
-    console.log(position.coords.latitude, position.coords.longitude);
-  });
-  </script>
+
+
   <h1>Hey there</h1>
+
+
   <div ng-view></div>
+
+
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular-route/angular-route.js"></script>
   <script src="./homePage/map.js"></script>
