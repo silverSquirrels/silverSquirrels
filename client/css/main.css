@@ -83,3 +83,12 @@ html, body {
    background: rgba(246, 90, 91, 0.25);
    transition: background 500ms;
 }
+
+
+#map {
+width: 960px;
+height: 500px;
+}
+
+
+
