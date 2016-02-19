@@ -1,9 +1,9 @@
 // Cody recommended doing this
 // Makes it so the .env file is read locally to get API key
 // but on heroku if the NODE_ENV config var is set to production, app will look there
-/*if(process.env.NODE_ENV !== 'production'){
+if(process.env.NODE_ENV !== 'production'){
   require('dotenv').config();
-}*/
+}
 
 // this is how to access the api key
 console.log(process.env.TRAIL_API_KEY);
