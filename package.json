@@ -4,6 +4,7 @@
   "description": "greenfield-silver-squirrels",
   "main": "server/server.js",
   "scripts": {
+    "postinstall": "bower install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
