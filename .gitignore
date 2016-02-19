@@ -4,3 +4,8 @@ bower_components/
 
 build/
 dist/
+client/lib
+.floo
+.floobit
+.floo
+.flooignore
