@@ -10,11 +10,11 @@ angular.module('hikexpert', [
       controller: 'HomePageController'
     })
     .when('/signin', {
-      templateUrl: '/auth/signin.html',
+      templateUrl: 'auth/signin.html',
       controller: 'AuthController'
     })
     .when('/signup', {
-      templateUrl: '/auth/signup.html',
+      templateUrl: 'auth/signup.html',
       controller: 'AuthController'
     });
 })
