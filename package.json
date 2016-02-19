@@ -1,6 +1,9 @@
 {
   "name": "hikexpert",
   "version": "0.0.0",
+   "engines": {
+    "node" : "0.12.7"
+  },
   "description": "greenfield-silver-squirrels",
   "main": "server/server.js",
   "scripts": {
@@ -21,8 +24,8 @@
   },
   "homepage": "https://github.com/silverSquirrels/silverSquirrels#readme",
   "dependencies": {
+    "bower": "^1.7.7",
     "express": "^4.13.4",
     "morgan": "^1.6.1"
   }
 }
-
