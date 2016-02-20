@@ -24,8 +24,8 @@ angular.module('hikexpert.auth', [])
         console.error(error);
       });
   };
-
-
+  
+  // clean up comments
   // $scope.signout = function () {
   //   Auth.signout();
   // };
