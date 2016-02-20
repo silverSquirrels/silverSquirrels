@@ -13,7 +13,7 @@ angular.module('hikexpert.home', [])
         console.log('userinfo before factory', userInfo)
         Home.getCoords(userInfo)
         .then(function(data){
-          $scope.coordinates =
+          //$scope.coordinates =
           console.log('data in HomePageController', data);
           data.forEach(function(tuple, i){
             marker = new L.marker(tuple)
