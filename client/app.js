@@ -1,7 +1,8 @@
 angular.module('hikexpert', [
   'hikexpert.home',
   'hikexpert.auth',
-  'ngRoute'
+  'ngRoute',
+  'hikexpert.services'
 ])
 .config(function($routeProvider, $httpProvider){
   $routeProvider

@@ -1,6 +1,25 @@
 angular.module('hikexpert.home', [])
 
-.controller('HomePageController', function($scope){
+.controller('HomePageController', function($scope, Home){
+
+    $scope.userInfo = {};
+
+    $scope.getCoords = function(userInfo){
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+
+        $scope.userInfo.lat = position.coords.latitude;
+        $scope.userInfo.long = position.coords.longitude;
+        console.log('userinfo before factory', userInfo)
+        Home.getCoords(userInfo)
+        .then(function(data){
+          console.log('data in HomePageController', data);
+        });
+
+      });
+
+    };
+
 
    navigator.geolocation.getCurrentPosition(function(position) {
       console.log(position.coords.latitude, position.coords.longitude);
@@ -32,10 +51,7 @@ angular.module('hikexpert.home', [])
 
       map.on('click', onMapClick);
   });
+});
 
-
-
-
-})
 
 
