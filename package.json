@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/silverSquirrels/silverSquirrels#readme",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "bower": "^1.7.7",
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
