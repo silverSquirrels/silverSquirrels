@@ -64,6 +64,13 @@ app.post('/api/coords', function(req, res){
 //     });
 //   console.log(coordinates)
 // });
+// Routes for user signin, signup, and signedin 
+app.post('/signin', userController.signin);
+app.post('/signup', userController.signup);
+app.get('/signedin', userController.checkAuth);
+
+// Serve up static assets 
+app.use(express.static(path.join(__dirname, '../client')));
 
 
 app.listen(port);
