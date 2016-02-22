@@ -38,7 +38,11 @@ app.post('/api/coords', function(req, res){
     .header("Accept", "text/plain")
   .end(function(result){
     var coordinates = result.body.places.map(function(el){
-      return [el.lat, el.lon];
+      // Organize data into an object with name and coordinates properties:
+      return {
+        name: el.name,
+        coordinates: [el.lat, el.lon]
+      };
     });
     console.log('coordinates', coordinates);
     res.send(coordinates);

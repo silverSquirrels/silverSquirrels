@@ -19,9 +19,9 @@ angular.module('hikexpert.home', [])
         .then(function(data){
           //$scope.coordinates =
           console.log('data in HomePageController', data);
-          data.forEach(function(tuple, i){
-            marker = new L.marker(tuple)
-              .bindPopup('hey')
+          data.forEach(function(trail, i){
+            marker = new L.marker(trail.coordinates)
+              .bindPopup('<b>'+trail.name+'</b><br /><a>I have hiked this</a><br /><a>I want to hike this</a>')
               .addTo($scope.map);
           });
         });
@@ -40,8 +40,6 @@ angular.module('hikexpert.home', [])
       var map = L.map('map').setView([lat, long], 9);
       // Set it on the angular scope:
       $scope.map = map;
-      console.log(map);
-      console.log($scope.map);
       // Add a tile layer to our map (from mapbox):
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -50,11 +48,16 @@ angular.module('hikexpert.home', [])
         accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
 
-      console.log(map)
 
       // Add a marker to the map
-      L.marker([lat, long]).addTo(map)
-        .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+    var circle = L.circle([lat, long], 500, {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 1
+    }).addTo(map).bindPopup("Current Location").openPopup();
+
+      // L.marker([lat, long], {color: 'red'}).addTo(map)
+      //   .bindPopup("<b>Here I am</b><br />").openPopup();
   });
 });
 
