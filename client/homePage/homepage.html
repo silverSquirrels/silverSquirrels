@@ -1,7 +1,7 @@
 
 
 <div>
-<h1>Home Page</h1>
+<h1 test>Home Page</h1>
 
 <!-- Materialize got in the way of angular's data binding here:
 Because of the material.select() we had to call to initialize the select form -->
@@ -27,7 +27,14 @@ Because of the material.select() we had to call to initialize the select form --
   <button type='submit'>Submit</button>
 </form>
 
+<span ng-if='loading'><img src="assets/spiffygif_46x46.gif"></span>
 
+<!-- <div ng-hide='loading'>
+  <div class="progress">
+        <div class="indeterminate"></div>
+  </div>
+</div>
+ -->
 
  <div id="map">
 

@@ -7,7 +7,9 @@ angular.module('hikexpert.home', [])
   //   });
   // //
     $scope.userInfo = {};
-
+    $scope.loading = true;
+    
+    console.log('loading first time', $scope.loading)
     $scope.getCoords = function(userInfo){
 
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -21,17 +23,22 @@ angular.module('hikexpert.home', [])
           console.log('data in HomePageController', data);
           data.forEach(function(trail, i){
             marker = new L.marker(trail.coordinates)
-              .bindPopup('<b>'+trail.name+'</b><br /><a>I have hiked this</a><br /><a>I want to hike this</a>')
+              .bindPopup('<div ng-app="hikexpert" ng-controller="HomePageController"><b>'+trail.name+'</b><br /><a test ng-if="bool">I have hiked this</a><br /><a>I want to hike this</a></div>')
               .addTo($scope.map);
           });
         });
       });
     };
 
+  ///// Get user's location, render a leaflet map showing that location when they land on this page
    navigator.geolocation.getCurrentPosition(function(position) {
       console.log(position.coords.latitude, position.coords.longitude);
       var lat = position.coords.latitude;
       var long = position.coords.longitude;
+      console.log($scope.loading)
+      $scope.loading = false;
+      console.log($scope.loading)
+
 
       console.log(lat);
       console.log(long);
@@ -48,16 +55,26 @@ angular.module('hikexpert.home', [])
         accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
 
-
-      // Add a marker to the map
+      // Add a circle showing user's location to the map
     var circle = L.circle([lat, long], 500, {
       color: 'red',
       fillColor: '#f03',
       fillOpacity: 1
     }).addTo(map).bindPopup("Current Location").openPopup();
 
-      // L.marker([lat, long], {color: 'red'}).addTo(map)
-      //   .bindPopup("<b>Here I am</b><br />").openPopup();
+      $scope.loading = false;
+
+  });
+
+})
+
+.directive('test', function(){
+  return(function(scope, ele, attr){
+    ele.on('click', function(){
+      console.log('clicked');
+      console.log('ele', ele);
+      console.log('this', this);
+    });
   });
 });
 
