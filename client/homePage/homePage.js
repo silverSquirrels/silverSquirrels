@@ -6,10 +6,7 @@ angular.module('hikexpert.home', [])
   //     $('select').material_select();
   //   });
   // //
-    $scope.userInfo = {};
-    $scope.loading = true;
-    
-    console.log('loading first time', $scope.loading)
+    $scope.userInfo = {};    
     $scope.getCoords = function(userInfo){
 
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -35,10 +32,9 @@ angular.module('hikexpert.home', [])
       console.log(position.coords.latitude, position.coords.longitude);
       var lat = position.coords.latitude;
       var long = position.coords.longitude;
-      console.log($scope.loading)
-      $scope.loading = false;
-      console.log($scope.loading)
 
+      // Couldn't get the ng-if to work...materalize's fault?
+      $('span').hide();
 
       console.log(lat);
       console.log(long);
@@ -62,7 +58,6 @@ angular.module('hikexpert.home', [])
       fillOpacity: 1
     }).addTo(map).bindPopup("Current Location").openPopup();
 
-      $scope.loading = false;
 
   });
 

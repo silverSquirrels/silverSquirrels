@@ -20,21 +20,13 @@ Because of the material.select() we had to call to initialize the select form --
   <button type='submit'>Submit</button>
 </form> -->
 
+
 <form name='mapform' ng-submit='getCoords(userInfo)'>
-
   <input placeholder='Enter a radius' ng-model='userInfo.radius'></input>
-
   <button type='submit'>Submit</button>
 </form>
 
-<span ng-if='loading'><img src="assets/spiffygif_46x46.gif"></span>
-
-<!-- <div ng-hide='loading'>
-  <div class="progress">
-        <div class="indeterminate"></div>
-  </div>
-</div>
- -->
+<span><img src="assets/spiffygif_46x46.gif"></span>
 
  <div id="map">
 
