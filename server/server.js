@@ -12,6 +12,7 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var path = require('path');
 var unirest = require('unirest');
+var userControllers = require('./controllers/userControllers.js');
 
 var app = express();
 app.use(morgan('dev'));
@@ -21,6 +22,11 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 4000;
 
 app.use(express.static(path.join(__dirname, '../client')));
+
+// Routes for user signin, signup, and signedin 
+app.post('/signin', userControllers.signin);
+app.post('/signup', userControllers.signup);
+app.get('/signedin', userControllers.checkAuth);
 
 app.get('/', function(req, res){
   res.send('Hello world');
