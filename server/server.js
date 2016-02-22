@@ -12,6 +12,7 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var path = require('path');
 var unirest = require('unirest');
+var userController = require('./controllers/userControllers.js');
 
 var app = express();
 app.use(morgan('dev'));

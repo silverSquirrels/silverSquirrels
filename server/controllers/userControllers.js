@@ -1,4 +1,4 @@
-var User = require('./user.js');
+var User = require('../db/models/user.js');
 var Q = require('q');
 var jwt = require('jwt-simple');
 
