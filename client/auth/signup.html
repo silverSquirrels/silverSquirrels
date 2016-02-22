@@ -1,8 +1,8 @@
-<div id='signup'>
+<div id='signup' class='container'>
   <h1>signup</h1>
-  <form name="signupForm" ng-submit='signup()' novalidate>
-    <input type='text' ng-model='user.username' name="signUpUser" placeholder="Enter a username" required />
-    <input type="password" ng-model='user.password' name="signUpPassword" placeholder="Enter a password" required />
+  <form name="signupForm" ng-submit='signup()' class='row' novalidate>
+    <input type='text' class="col s4" ng-model='user.username' name="signUpUser" placeholder="Enter a username" required />
+    <input type="password" class="col s4 offset-s1" ng-model='user.password' name="signUpPassword" placeholder="Enter a password" required />
     <button>signup</button>
   </form>
   <a href="#/signin">Already have an account? <strong>Signin</strong> ...</a>
