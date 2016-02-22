@@ -3,26 +3,30 @@
   <head>
     <title>HikeXpert</title>
     <link href="./css/main.css" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
     <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
     <script async src="lib/leaflet/dist/leaflet-src.js"></script>
   </head>
 
-  
+
   <body>
 
 
-  <h1>Hey there</h1>
-  
+
+  <h1 class="card-panel blue lighten-2 center-align">HikeXpert</h1>
+
+
   <div ng-view></div>
 
-
+  <script src='lib/jquery/dist/jquery.min.js'></script>
+  <script src='lib/materialize/dist/js/materialize.min.js'></script>
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular-route/angular-route.js"></script>
   <script src="./homePage/map.js"></script>
   <script src="./homePage/homePage.js"></script>
   <script src="./auth/auth.js"></script>
   <script src="services/services.js"></script>
-  
+
   <script src="app.js"></script>
 
   </body>
