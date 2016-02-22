@@ -18,5 +18,4 @@ angular.module('hikexpert', [
       templateUrl: 'auth/signup.html',
       controller: 'AuthController'
     });
-})
-
+});

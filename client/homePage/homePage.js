@@ -1,16 +1,20 @@
 angular.module('hikexpert.home', [])
 
 .controller('HomePageController', function($scope, Home){
-
+  // // Initalize the <select> element for Materalize:
+  //   $(document).ready(function() {
+  //     $('select').material_select();
+  //   });
+  // //
     $scope.userInfo = {};
 
     $scope.getCoords = function(userInfo){
 
-      navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition(function(position) {
 
         $scope.userInfo.lat = position.coords.latitude;
         $scope.userInfo.long = position.coords.longitude;
-        console.log('userinfo before factory', userInfo)
+        console.log('userinfo before factory', userInfo);
         Home.getCoords(userInfo)
         .then(function(data){
           //$scope.coordinates =
@@ -21,11 +25,8 @@ angular.module('hikexpert.home', [])
               .addTo($scope.map);
           });
         });
-
       });
-
     };
-
 
    navigator.geolocation.getCurrentPosition(function(position) {
       console.log(position.coords.latitude, position.coords.longitude);
@@ -35,9 +36,13 @@ angular.module('hikexpert.home', [])
       console.log(lat);
       console.log(long);
 
-      var map = L.map('map').setView([lat, long], 13);
+      // Initialize the leaflet map:
+      var map = L.map('map').setView([lat, long], 9);
+      // Set it on the angular scope:
       $scope.map = map;
-      
+      console.log(map);
+      console.log($scope.map);
+      // Add a tile layer to our map (from mapbox):
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 18,
@@ -45,18 +50,11 @@ angular.module('hikexpert.home', [])
         accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
 
+      console.log(map)
+
+      // Add a marker to the map
       L.marker([lat, long]).addTo(map)
         .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-
-        var popup = L.popup();
-        function onMapClick(e) {
-        popup
-          .setLatLng(e.latlng)
-          .setContent("You clicked the map at " + e.latlng.toString())
-          .openOn(map);
-      }
-
-      map.on('click', onMapClick);
   });
 });
 
