@@ -13,6 +13,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var userController = require('./controllers/userControllers.js')
 var unirest = require('unirest');
+var userController = require('./controllers/userControllers.js');
 
 var app = express();
 app.use(morgan('dev'));
@@ -71,6 +72,13 @@ app.post('/api/coords', function(req, res){
 //     });
 //   console.log(coordinates)
 // });
+// Routes for user signin, signup, and signedin 
+app.post('/signin', userController.signin);
+app.post('/signup', userController.signup);
+app.get('/signedin', userController.checkAuth);
+
+// Serve up static assets 
+app.use(express.static(path.join(__dirname, '../client')));
 
 
 app.listen(port);
