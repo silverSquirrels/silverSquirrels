@@ -1,12 +1,16 @@
 angular.module('hikexpert.home', [])
 
 .controller('HomePageController', function($scope, Home){
-
+  // Initalize the <select> element for Materalize:
+    $(document).ready(function() {
+      $('select').material_select();
+    });
+  //
     $scope.userInfo = {};
 
     $scope.getCoords = function(userInfo){
 
-      navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition(function(position) {
 
         $scope.userInfo.lat = position.coords.latitude;
         $scope.userInfo.long = position.coords.longitude;
