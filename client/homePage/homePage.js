@@ -1,11 +1,11 @@
 angular.module('hikexpert.home', [])
 
 .controller('HomePageController', function($scope, Home){
-  // Initalize the <select> element for Materalize:
-    $(document).ready(function() {
-      $('select').material_select();
-    });
-  //
+  // // Initalize the <select> element for Materalize:
+  //   $(document).ready(function() {
+  //     $('select').material_select();
+  //   });
+  // //
     $scope.userInfo = {};
 
     $scope.getCoords = function(userInfo){
@@ -40,6 +40,8 @@ angular.module('hikexpert.home', [])
       var map = L.map('map').setView([lat, long], 9);
       // Set it on the angular scope:
       $scope.map = map;
+      console.log(map);
+      console.log($scope.map);
       // Add a tile layer to our map (from mapbox):
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -47,6 +49,8 @@ angular.module('hikexpert.home', [])
         id: 'mapbox.satellite',
         accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
+
+      console.log(map)
 
       // Add a marker to the map
       L.marker([lat, long]).addTo(map)
