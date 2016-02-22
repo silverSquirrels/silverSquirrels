@@ -11,14 +11,19 @@ console.log(process.env.TRAIL_API_KEY);
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
+var userController = require('./controllers/userControllers.js')
 
 var app = express();
 app.use(morgan('dev'));
 
 var port = process.env.PORT || 4000;
 
+// Routes for user signin, signup, and signedin 
+app.post('/signin', userController.signin);
+app.post('/signup', userController.signup);
+app.get('/signedin', userController.checkAuth);
 
-
+// Serve up static assets 
 app.use(express.static(path.join(__dirname, '../client')));
 
 
