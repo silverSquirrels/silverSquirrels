@@ -4,7 +4,6 @@
  margin: 30px auto;
 }
 
-
  body {
      display: flex;
      min-height: 100vh;
@@ -18,9 +17,11 @@ a {
   cursor: pointer;
 }
 
-
-
 .page-footer{
   margin-top: 15em !important;
+ }
+
+ .hidden {
+  display: none;
  }
 
