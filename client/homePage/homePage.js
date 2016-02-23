@@ -6,7 +6,6 @@ angular.module('hikexpert.home', [])
   //     $('select').material_select();
   //   });
   // //
-<<<<<<< c99d9a3b2faee6dd1013561b1df55e8e760a7bc9
   $scope.userInfo = {}; 
   $scope.loading = true;
   $scope.getCoords = function(userInfo){
@@ -24,6 +23,7 @@ angular.module('hikexpert.home', [])
         data.forEach(function(trail, i){
           marker = new L.marker(trail.coordinates)
             .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
+
         });
       $scope.loading = false;  
       });
@@ -78,6 +78,7 @@ angular.module('hikexpert.home', [])
   $('body').on('click', '.want-to', function(){
     console.log('name of trail', $(this).children().html());
   });
+
 })
 
 
