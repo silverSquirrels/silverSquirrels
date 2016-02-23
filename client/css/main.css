@@ -13,7 +13,15 @@
      flex: 1 0 auto;
  }
 
+a {
+  cursor: pointer;
+}
+
 .page-footer{
   margin-top: 15em !important;
+ }
+
+ .hidden {
+  display: none;
  }
 
