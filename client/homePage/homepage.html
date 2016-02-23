@@ -20,12 +20,6 @@ Because of the material.select() we had to call to initialize the select form --
   <button type='submit'>Submit</button>
 </form> -->
 
-<leaflet lf-center="london" event-broadcast="events" markers="markers" height="480px" width="100%"></leaflet>
-    <h1>Markers simple example</h1>
-    <p>Initial marker position (lat/lng): <strong ng-bind="markers.mainMarker.lat"></strong> / <strong ng-bind="markers.mainMarker.lng"></strong></p>
-    <p>Actual marker position (lat/lng): <strong  ng-bind="position.lat"></strong> / <strong ng-bind="position.lng"></strong></p>
-    </p>
-
 
 <form name='mapform' ng-submit='getCoords(userInfo)'>
   <input placeholder='Enter a radius' ng-model='userInfo.radius'></input>
