@@ -20,8 +20,7 @@ angular.module('hikexpert.home', [])
           console.log('data in HomePageController', data);
           data.forEach(function(trail, i){
             marker = new L.marker(trail.coordinates)
-              .bindPopup('<div ng-app="hikexpert" ng-controller="HomePageController"><b>'+trail.name+'</b><br /><a test ng-if="bool">I have hiked this</a><br /><a>I want to hike this</a></div>')
-              .addTo($scope.map);
+              .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this</a><br /><a class="want-to">I want to hike this</a>').addTo($scope.map);
           });
         });
       });
