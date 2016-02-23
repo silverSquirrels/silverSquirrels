@@ -6,8 +6,7 @@ module.exports = {
   signin: function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    
-    var findUser = Q.bind(User.findOne, User);
+    var findUser = Q.nbind(User.findOne, User);
     
     findUser({username: username})
       .then(function(user) {
@@ -36,7 +35,7 @@ module.exports = {
     var create;
     var newUser;
     
-    var findOne = Q.bind(User.findOne, User);
+    var findOne = Q.nbind(User.findOne, User);
     
     // check to see if user already exists
     findOne({username: username})
@@ -45,7 +44,7 @@ module.exports = {
           next(new Error('User already exists!'));
         } else {
           // create a new user
-          create = Q.bind(User.create, User);
+          create = Q.nbind(User.create, User);
           newUser = {
             username: username,
             password: password
@@ -73,7 +72,7 @@ module.exports = {
       // decode token
       var user = jwt.decode(token, 'superskrull');
     // check if user is in database
-    var findUser = Q.bind(User.findOne, User);
+    var findUser = Q.nbind(User.findOne, User);
     findUser({username: user.username})
       .then(function(foundUser) {
         if(foundUser) {

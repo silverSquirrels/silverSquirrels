@@ -1,14 +1,18 @@
-var mongoose = require('mongoose');
+// This file is not needed. 
+// To Do: Confirm app works locally and on Heroku. Then we can delete this from the repo. 
 
-mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/hikexpertdb';
 
-mongoose.connect(mongoURI);
+// var mongoose = require('mongoose');
 
-var db = mongoose.connection;
+// var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/hikexpertdb';
+// console.log(mongoURI);
+// mongoose.connect(mongoURI);
 
-db.on('error', console.error.bind(console, 'connection.error'));
-db.once('open', function() {
-  console.log("Mongoose connection open");
-});
+// var db = mongoose.connection;
 
-module.exports = db;
+// db.on('error', console.error.bind(console, 'connection.error'));
+// db.once('open', function() {
+//   console.log("Mongoose connection open");
+// });
+
+// module.exports = db;
