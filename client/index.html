@@ -2,10 +2,15 @@
 <html ng-app='hikexpert'>
   <head>
     <title>HikeXpert</title>
-    <link href="./css/main.css" rel="stylesheet"/>
-    <link type="text/css" rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/leaflet/dist/leaflet-src.js"></script>
+    <script src='lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js'></script>
+    
+    <link rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
     <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
-    <script async src="lib/leaflet/dist/leaflet-src.js"></script>
+    <link href="./css/main.css" rel="stylesheet"/>
   </head>
 
   <body>
@@ -20,8 +25,8 @@
   <div ng-view></div>
   <script src='lib/jquery/dist/jquery.min.js'></script>
   <script src='lib/materialize/dist/js/materialize.min.js'></script>
-  <script src="lib/angular/angular.js"></script>
-  <script src="lib/angular-route/angular-route.js"></script>
+
+
   <script src="./homePage/map.js"></script>
   <script src="./homePage/homePage.js"></script>
   <script src="./auth/auth.js"></script>

@@ -32,10 +32,11 @@
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
     "jwt-simple": "^0.4.1",
-    "mongoose": "^4.4.4",
     "mocha": "*",
+    "mongoose": "^4.4.4",
     "morgan": "^1.6.1",
     "q": "^1.4.1",
+    "request": "^2.69.0",
     "unirest": "^0.4.2"
   }
 }

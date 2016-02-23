@@ -7,7 +7,7 @@ angular.module('hikexpert.auth', [])
     Auth.signin($scope.user)
       .then(function (token) {
         $window.localStorage.setItem('com.hikexpert', token);
-        $location.path('/homepage');
+        $location.path('/');
       })
       .catch(function (error) {
         console.error(error);
@@ -18,7 +18,7 @@ angular.module('hikexpert.auth', [])
     Auth.signup($scope.user)
       .then(function (token) {
         $window.localStorage.setItem('com.hikexpert', token);
-        $location.path('/homepage');
+        $location.path('/');
       })
       .catch(function (error) {
         console.error(error);

@@ -23,11 +23,13 @@ angular.module('hikexpert.home', [])
         data.forEach(function(trail, i){
           marker = new L.marker(trail.coordinates)
             .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
+
         });
       $scope.loading = false;  
       });
     });
   };
+
 
   ///// Get user's location, render a leaflet map showing that location when they land on this page
   navigator.geolocation.getCurrentPosition(function(position) {
@@ -76,6 +78,7 @@ angular.module('hikexpert.home', [])
   $('body').on('click', '.want-to', function(){
     console.log('name of trail', $(this).children().html());
   });
+
 })
 
 
