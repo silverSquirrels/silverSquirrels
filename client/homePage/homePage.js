@@ -6,6 +6,7 @@ angular.module('hikexpert.home', [])
   //     $('select').material_select();
   //   });
   // //
+<<<<<<< c99d9a3b2faee6dd1013561b1df55e8e760a7bc9
   $scope.userInfo = {}; 
   $scope.loading = true;
   $scope.getCoords = function(userInfo){
@@ -28,6 +29,7 @@ angular.module('hikexpert.home', [])
       });
     });
   };
+
 
   ///// Get user's location, render a leaflet map showing that location when they land on this page
   navigator.geolocation.getCurrentPosition(function(position) {
