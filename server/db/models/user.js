@@ -1,8 +1,9 @@
 var bcrypt = require('bcrypt-nodejs');
-var bluebird = require('bluebird');
+var Q = require('q');
 var mongoose = require('mongoose');
+var SALT_WORK_FACTOR = 10;
 
-var userSchema = mongoose.Schema ({
+var userSchema = new mongoose.Schema ({
   username: {
     type: String,
     required: true,
@@ -15,27 +16,48 @@ var userSchema = mongoose.Schema ({
   createdAt: {
     type: Date,
     default: Date.Now
-  }
+  },
+  salt: String
 });
 
-var User = mongoose.model('User', userSchema);
-
-userSchema.comparePassword = function(attemptedPW, hashedPW, callback) {
+userSchema.methods.comparePassword = function(attemptedPW) {
+  var defer = Q.defer();
+  var hashedPW = this.password;
   bcrypt.compare(attemptedPW, hashedPW, function(err, isMatch) {
     if(err) {
-      return callback(err);
+      defer.reject(err);
+    } else {
+      defer.resolve(isMatch);
     }
-    callback(null, isMatch);
   });
+  return defer.promise;
 };
 
 userSchema.pre('save', function(next) {
-  var cipher = bluebird.promisify(bcrypt.hash);
-  return cipher(this.password, null, null).bind(this)
-    .then(function(hash) {
-      this.password = hash;
+  var user = this;
+  
+  // only hash the password if it is new or modified
+  if(!user.isModified('password')) {
+    return next();
+  }
+  // create salt
+  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if(err) {
+      return next(err);
+    }
+    // hash password with salt
+    bcrypt.hash(user.password, salt, null, function(err, hash) {
+      if(err) {
+        return next(err);
+      }
+      // save hashed password to user
+      user.password = hash;
+      user.salt = salt;
       next();
     });
+  });
 });
+
+var User = mongoose.model('User', userSchema);
 
 module.exports = User;

@@ -26,7 +26,7 @@ angular.module('hikexpert.auth', [])
   };
   
   // clean up comments
-  // $scope.signout = function () {
-  //   Auth.signout();
-  // };
+  $scope.signout = function () {
+    Auth.signout();
+  };
 });

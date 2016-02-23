@@ -15,6 +15,22 @@ var unirest = require('unirest');
 var userControllers = require('./controllers/userControllers.js');
 
 var app = express();
+
+// create and connect to database
+var mongoose = require('mongoose');
+
+var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/hikexpertdb';
+console.log(mongoURI);
+mongoose.connect(mongoURI);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection.error'));
+db.once('open', function() {
+  console.log("Mongoose connection open");
+});
+
+
+
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -75,5 +91,6 @@ app.post('/api/coords', function(req, res){
 //   console.log(coordinates)
 // });
 
+// connect to the database
 
 app.listen(port);

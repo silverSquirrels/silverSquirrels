@@ -9,15 +9,51 @@ angular.module('hikexpert.services', [])
       url: 'api/coords',
       data: userInfo
     }).then(function(resp){
-
       console.log('response in the factory', resp);
       return resp.data;
-      
     });
   };
 
   return {
     getCoords : getCoords
   };
-
+})
+.factory('Auth', function($http, $location, $window) {
+  var signin = function(user) {
+    return $http({
+      method: 'POST',
+      url: '/signin',
+      data: user
+    })
+    .then(function(resp) {
+      return resp.data.token;
+    });
+  };
+  
+  var signup = function(user) {
+    return $http({
+      method: 'POST',
+      url: '/signup',
+      data: user
+    })
+    .then(function(resp) {
+      return resp.data.token;
+    });
+  };
+  
+  var isAuth = function() {
+    return !!$window.localStorage.getItem('com.hikexpert');
+  };
+  
+  var signout = function() {
+    $window.localStroage.removeItem('com.hikexpert');
+    $location.path('/signin');
+  };
+  
+  return {
+    signin : signin,
+    signup : signup,
+    isAuth : isAuth,
+    signout : signout
+  };
 });

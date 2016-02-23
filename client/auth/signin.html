@@ -1,6 +1,6 @@
 <div id='signin' class="container">
   <h1>signin</h1>
-  <form name="signinForm" ng-submit='' class="row">
+  <form name="signinForm" ng-submit='signin()' class="row">
     <input type='text' class="col s4" ng-model='user.username' name="signinUser" placeholder="Enter your username" required ng-class="{'error': signinUser.$invalid && signinUser.$dirty}"/>
     <input type="password" class="col s4 offset-s1" ng-model='user.password' name="signinPassword" placeholder="Enter your password" required ng-class="{'error': signinPassword.$invalid && signinForm.$dirty}"/>
     <button>signin</button>
