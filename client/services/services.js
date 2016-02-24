@@ -18,6 +18,7 @@ angular.module('hikexpert.services', [])
     getCoords : getCoords
   };
 })
+
 .factory('Auth', function($http, $location, $window) {
   var signin = function(user) {
     return $http({
@@ -46,7 +47,7 @@ angular.module('hikexpert.services', [])
   };
   
   var signout = function() {
-    $window.localStroage.removeItem('com.hikexpert');
+    $window.localStorage.removeItem('com.hikexpert');
     $location.path('/signin');
   };
   
