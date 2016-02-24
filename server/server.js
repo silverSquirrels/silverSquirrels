@@ -44,6 +44,9 @@ app.post('/signin', userControllers.signin);
 app.post('/signup', userControllers.signup);
 app.get('/signedin', userControllers.checkAuth);
 app.get('/getUser', userControllers.getUser);
+app.post('/hasDone', userControllers.hasDone);
+app.post('/wantToDo', userControllers.wantToDo);
+
 
 app.get('/', function(req, res){
   res.send('Hello world');

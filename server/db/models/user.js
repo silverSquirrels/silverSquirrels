@@ -13,11 +13,12 @@ var userSchema = new mongoose.Schema ({
     type: String,
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.Now
-  },
-  salt: String
+  created_at: {type: Date},
+  updated_at: {type: Date},
+
+  salt: String,
+  haveDone: [String],
+  wantToDo: [String]
 });
 
 userSchema.methods.comparePassword = function(attemptedPW) {
@@ -35,6 +36,12 @@ userSchema.methods.comparePassword = function(attemptedPW) {
 
 userSchema.pre('save', function(next) {
   var user = this;
+
+  now = new Date();
+  user.updated_at = now;
+  if ( !user.created_at ) {
+    user.created_at = now;
+  }
   
   // only hash the password if it is new or modified
   if(!user.isModified('password')) {

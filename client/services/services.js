@@ -24,7 +24,20 @@ angular.module('hikexpert.services', [])
     });
   };
 
+  var trailPost = function (trailName, url) {
+    var trailObj = {
+      trailName : trailName
+    }
+    return $http({
+      method: 'POST',
+      url : url,
+      data : trailObj
+    });
+  };
+  
+
   return {
+    trailPost : trailPost,
     getUser : getUser,
     getCoords : getCoords
   };

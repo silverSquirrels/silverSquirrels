@@ -33,5 +33,13 @@ Because of the material.select() we had to call to initialize the select form --
  <div id="map">
 
  </div>
+ <h3> Trails I Have Done: </h3>
+ <div ng-repeat='trailName in userInfo.haveDone'>
+   <p>{{trailName}}</p>
+ </div>
+ <h3> Trails I Want To Do: </h3>
+ <div ng-repeat='trailName in userInfo.wantToDo'>
+   <p>{{trailName}}</p>
+ </div>
 
 </div>
