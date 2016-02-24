@@ -4,10 +4,10 @@ angular.module('hikexpert.home', [])
  
   $scope.userInfo = {}; 
   $scope.loading = true;
-  ///// Get user's name upon load
+  ///// Get user's name and trails upon load
   $scope.getUser = function(){
     Home.getUser()
-    .then (function(data) {
+    .then (function (data) {
       $scope.userInfo.username = data.username;
       $scope.userInfo.haveDone = data.haveDone;
       $scope.userInfo.wantToDo = data.wantToDo;
@@ -19,7 +19,18 @@ angular.module('hikexpert.home', [])
   $scope.getUser();
   ///////
   $scope.trailPost = Home.trailPost;
-  
+
+  $scope.moveTrail = function (trailName, url) {
+    Home.trailPost(trailName, url)
+    .then(function (response) {
+      if(response) {
+        console.log(response)
+        $scope.getUser();
+      }
+    });
+  };
+
+
 
   $scope.getCoords = function(userInfo){
   navigator.geolocation.getCurrentPosition(function(position) {
@@ -95,6 +106,7 @@ angular.module('hikexpert.home', [])
     $scope.getUser();
 
   });
+
 
 });
 

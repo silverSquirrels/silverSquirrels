@@ -113,7 +113,7 @@ module.exports = {
       });
     }
   },
-  hasDone : function(req, res, next) {
+  hasDone : function (req, res, next) {
     var trailName = req.body.trailName;
     var token = req.headers['x-access-token'];
     if(!token) {
@@ -125,7 +125,7 @@ module.exports = {
           next(new Error('Failed to find user!'));
         }
         console.log(foundUser.haveDone)
-        foundUser.haveDone.push(trailName);
+        foundUser.haveDone.addToSet(trailName);
         foundUser.save();
         console.log(foundUser.haveDone)
         res.sendStatus(202, 'yo');
@@ -133,7 +133,7 @@ module.exports = {
 
     }
   },
-  wantToDo : function(req, res, next) {
+  wantToDo : function (req, res, next) {
     var trailName = req.body.trailName;
     var token = req.headers['x-access-token'];
     if(!token) {
@@ -144,11 +144,33 @@ module.exports = {
         if(err){
           next(new Error('Failed to find user!'));
         }        
-        foundUser.wantToDo.push(trailName);
+        foundUser.wantToDo.addToSet(trailName);
         foundUser.save();
         res.sendStatus(202, 'yo');
       });
 
     }
-  }
+  },
+  moveTrails : function (req, res, next) {
+    console.log('called!!')
+    var trailName = req.body.trailName;
+    var token = req.headers['x-access-token'];
+    if(!token) {
+      next(new Error('No token'));
+    } else {
+      var user = jwt.decode(token, 'superskrull');
+      User.findOne({ username : user.username}).exec(function (err, foundUser){
+        if(err){
+          next(new Error('Failed to find user!'));
+        }
+        console.log(foundUser);       
+        foundUser.wantToDo.pull(trailName);
+        foundUser.haveDone.addToSet(trailName);
+        console.log(foundUser);
+        foundUser.save();
+        res.sendStatus(202, 'yo');
+      });
+
+    }
+  },
 };
