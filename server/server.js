@@ -46,6 +46,9 @@ app.get('/signedin', userControllers.checkAuth);
 app.get('/getUser', userControllers.getUser);
 app.post('/hasDone', userControllers.hasDone);
 app.post('/wantToDo', userControllers.wantToDo);
+app.post('/moveTrails', userControllers.moveTrails);
+
+
 
 
 app.get('/', function(req, res){
