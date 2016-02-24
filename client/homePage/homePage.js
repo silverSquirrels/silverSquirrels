@@ -4,18 +4,22 @@ angular.module('hikexpert.home', [])
  
   $scope.userInfo = {}; 
   $scope.loading = true;
-
+  ///// Get user's name upon load
   $scope.getUser = function(){
     Home.getUser()
     .then (function(data) {
-      $scope.userInfo.username = data;
+      $scope.userInfo.username = data.username;
+      $scope.userInfo.haveDone = data.haveDone;
+      $scope.userInfo.wantToDo = data.wantToDo;
     })
     .catch(function (err) {
       console.log('error in getUser', err);
     });
   };
-
   $scope.getUser();
+  ///////
+  $scope.trailPost = Home.trailPost;
+  
 
   $scope.getCoords = function(userInfo){
   navigator.geolocation.getCurrentPosition(function(position) {
@@ -71,21 +75,24 @@ angular.module('hikexpert.home', [])
     }).addTo(map).bindPopup("Current Location").openPopup();
   });
 
-  $scope.testFunc = function(input){
-    console.log('testFunc!', input);
-   };
   // Ugly jQuery hack to implement click listeners
   $('body').on('click', '.have', function(){
     console.log('name of trail', $(this).children().html());
     var trailName = $(this).children().html();
-    $scope.testFunc(trailName);
+    $scope.trailPost(trailName, '/hasDone');
+    $scope.getUser();
+
   });
 
   $('body').on('click', '.want-to', function(){
     console.log('name of trail', $(this).children().html());
+    var trailName = $(this).children().html();
+    $scope.trailPost(trailName, '/wantToDo');
+    $scope.getUser();
+    
   });
 
-})
+});
 
 
 
