@@ -43,6 +43,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.post('/signin', userControllers.signin);
 app.post('/signup', userControllers.signup);
 app.get('/signedin', userControllers.checkAuth);
+app.get('/getUser', userControllers.getUser);
 
 app.get('/', function(req, res){
   res.send('Hello world');
