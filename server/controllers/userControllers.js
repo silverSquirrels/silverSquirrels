@@ -125,7 +125,7 @@ module.exports = {
           next(new Error('Failed to find user!'));
         }
         console.log(foundUser.haveDone)
-        foundUser.haveDone.push(trailName);
+        foundUser.haveDone.addToSet(trailName);
         foundUser.save();
         console.log(foundUser.haveDone)
         res.sendStatus(202, 'yo');
@@ -144,7 +144,7 @@ module.exports = {
         if(err){
           next(new Error('Failed to find user!'));
         }        
-        foundUser.wantToDo.push(trailName);
+        foundUser.wantToDo.addToSet(trailName);
         foundUser.save();
         res.sendStatus(202, 'yo');
       });
