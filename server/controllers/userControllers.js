@@ -61,6 +61,31 @@ module.exports = {
         next(error);
       });
   },
+
+  getUser: function(req, res, next){
+    // check user authentication
+    // grab token from header
+    var token = req.headers['x-access-token'];
+    if(!token) {
+      next(new Error('No token!'));
+    } else {
+      // decode token
+      var user = jwt.decode(token, 'superskrull');
+    // check if user is in database
+    var findUser = Q.nbind(User.findOne, User);
+    findUser({username: user.username})
+      .then(function(foundUser) {
+        if(foundUser) {
+          res.send(foundUser.username);
+        } else {
+          res.send(401);
+        }
+      })
+      .fail(function(error) {
+        next(error);
+      });
+    }
+  },
   
   checkAuth: function(req, res, next) {
     // check user authentication

@@ -14,7 +14,18 @@ angular.module('hikexpert.services', [])
     });
   };
 
+  var getUser = function(){
+    return $http({
+      method: 'GET',
+      url: '/getUser'
+    })
+    .then(function (resp) {
+      return resp.data;
+    });
+  };
+
   return {
+    getUser : getUser,
     getCoords : getCoords
   };
 })

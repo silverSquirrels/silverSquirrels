@@ -1,15 +1,23 @@
 angular.module('hikexpert.home', [])
 
 .controller('HomePageController', function($scope, $rootScope, Home){
-  // // Initalize the <select> element for Materalize:
-  //   $(document).ready(function() {
-  //     $('select').material_select();
-  //   });
-  // //
+ 
   $scope.userInfo = {}; 
   $scope.loading = true;
-  $scope.getCoords = function(userInfo){
 
+  $scope.getUser = function(){
+    Home.getUser()
+    .then (function(data) {
+      $scope.userInfo.username = data;
+    })
+    .catch(function (err) {
+      console.log('error in getUser', err);
+    });
+  };
+
+  $scope.getUser();
+
+  $scope.getCoords = function(userInfo){
   navigator.geolocation.getCurrentPosition(function(position) {
       $scope.loading = true;  
 
@@ -29,8 +37,6 @@ angular.module('hikexpert.home', [])
       });
     });
   };
-
-
   ///// Get user's location, render a leaflet map showing that location when they land on this page
   navigator.geolocation.getCurrentPosition(function(position) {
     console.log(position.coords.latitude, position.coords.longitude);
