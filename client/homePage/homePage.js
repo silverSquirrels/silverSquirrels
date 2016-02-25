@@ -4,6 +4,7 @@ angular.module('hikexpert.home', [])
   $scope.userInfo = {}; 
   $scope.loading = true;
   $scope.markers = [];
+  $scope.hikerStatus = 'City-Dweller';
 
   $scope.maxFilter = function(current, max){
     if(current > max){
@@ -11,6 +12,16 @@ angular.module('hikexpert.home', [])
     }
     return current;
   };
+  var updateStatus = function(){
+    var hikes = $scope.userInfo.haveDone.length;
+    if(hikes >= 100){
+      $scope.hikerStatus = 'Explorer'
+    } else if(hikes >= 25){
+      $scope.hikerStatus = 'Hiker';
+    } else if(hikes >= 5){
+      $scope.hikerStatus = 'Wanderer';
+    }
+  }
   var fillBar = function(targetBar, hikeTarget, totalHikes){
     var barLength = (totalHikes / hikeTarget * 100).toString() + '%';
     if(totalHikes < hikeTarget){
@@ -18,6 +29,7 @@ angular.module('hikexpert.home', [])
     } else{
       $(targetBar).css('width', '100%');
     }
+    updateStatus();
   }
 
   ///// Get user's name and trails upon load
