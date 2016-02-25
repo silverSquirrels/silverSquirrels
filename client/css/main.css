@@ -1,10 +1,12 @@
 #map{
+
  height: 400px;
  width: 95%;
  margin: 30px auto;
 }
 
  body {
+  background-color: #fffdfd;
      display: flex;
      min-height: 100vh;
      flex-direction: column;
@@ -16,6 +18,7 @@
 a {
   cursor: pointer;
 }
+
 
 .page-footer{
   margin-top: 15em !important;
@@ -29,4 +32,9 @@ a {
   background-color: red;
   color: red;
  }
+
+.test{
+  display: block;
+  margin-top: 100px;
+}
 
