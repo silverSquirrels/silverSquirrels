@@ -3,36 +3,57 @@
   <head>
     <title>HikeXpert</title>
 
+    <script src='lib/jquery/dist/jquery.min.js'></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-route/angular-route.js"></script>
     <script src="lib/leaflet/dist/leaflet-src.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src='lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js'></script>
-    
-    <link rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"  media="screen,projection"/>
+    <!--<link rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>-->
     <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
     <link href="./css/main.css" rel="stylesheet"/>
   </head>
 
   <body>
 
-    <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#/signin" class="brand-logo">HikeXpert</a>
-      <ul class="right hide-on-med-and-down">
-      </ul>
+   <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+
+      </button>
+      <a class="navbar-brand" href="/#/">HikeXpert</a>
     </div>
-  </nav>
 
-  
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Link <span class="sr-only">(current)</span></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="/#/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
   <div ng-view></div>
-  <script src='lib/jquery/dist/jquery.min.js'></script>
-  <script src='lib/materialize/dist/js/materialize.min.js'></script>
 
 
-  <script src="./homePage/map.js"></script>
-  <script src="./homePage/homePage.js"></script>
-  <script src="./auth/auth.js"></script>
-  <script src="services/services.js"></script>
-  <script src="app.js"></script>
 
   <footer class="page-footer light-blue lighten-1">
           <div class="container">
@@ -54,5 +75,10 @@
             </div>
           </div>
         </footer>
+  <script src="./homePage/map.js"></script>
+  <script src="./homePage/homePage.js"></script>
+  <script src="./auth/auth.js"></script>
+  <script src="services/services.js"></script>
+  <script src="app.js"></script>
   </body>
 </html>

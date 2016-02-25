@@ -1,9 +1,11 @@
 <div id='signin' class="container">
-  <h1>signin</h1>
+  <h2 class="form-signin-heading">Please sign in</h2>
   <form name="signinForm" ng-submit='signin()' class="row">
-    <input type='text' class="col s4" ng-model='user.username' name="signinUser" placeholder="Enter your username" required ng-class="{'error': signinUser.$invalid && signinUser.$dirty}"/>
-    <input type="password" class="col s4 offset-s1" ng-model='user.password' name="signinPassword" placeholder="Enter your password" required ng-class="{'error': signinPassword.$invalid && signinForm.$dirty}"/>
-    <button>signin</button>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type='text' id="inputUsername" class="form-control" ng-model='user.username' name="signinUser" placeholder="Enter your username" required ng-class="{'error': signinUser.$invalid && signinUser.$dirty}"/>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" ng-model='user.password' name="signinPassword" placeholder="Enter your password" required ng-class="{'error': signinPassword.$invalid && signinForm.$dirty}"/>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
   </form>
   <a href="#/signup">Don't have an account? <strong>Signup</strong> ...</a>
       <div ng-if='signinForm.signinUser.$error.required && signinForm.$dirty' class='message'>
