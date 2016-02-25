@@ -4,6 +4,10 @@ angular.module('hikexpert.home', [])
  
   $scope.userInfo = {}; 
   $scope.loading = true;
+  //$scope.markers = [];
+
+  window.markers = [];
+
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
     Home.getUser()
@@ -30,28 +34,38 @@ angular.module('hikexpert.home', [])
     });
   };
 
+  var myIcon = L.icon({
+    iconUrl : 'http://stuff.samat.org/Test-Cases/Leaflet/881-Marker-Subclassing/marker-icon-red.png'
+  });
 
 
   $scope.getCoords = function(userInfo){
-  navigator.geolocation.getCurrentPosition(function(position) {
-      $scope.loading = true;  
-
-      $scope.userInfo.lat = position.coords.latitude;
-      $scope.userInfo.long = position.coords.longitude;
-      console.log('userinfo before factory', userInfo);
-      Home.getCoords(userInfo)
-      .then(function(data){
-        //$scope.coordinates =
-        console.log('data in HomePageController', data);
-        data.forEach(function(trail, i){
-          marker = new L.marker(trail.coordinates)
-            .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
-
-        });
-      $scope.loading = false;  
-      });
+    $scope.loading = true;  
+    $scope.markers.forEach(function (marker) {
+      $scope.map.removeLayer(marker);
     });
+    navigator.geolocation.getCurrentPosition(function(position) {
+        $scope.userInfo.lat = position.coords.latitude;
+        $scope.userInfo.long = position.coords.longitude;
+        console.log('userinfo before factory', userInfo);
+        Home.getCoords(userInfo)
+        .then(function(data){
+          //$scope.coordinates =
+          console.log('data in HomePageController', data);
+          data.forEach(function(trail, i){
+            marker = new L.marker(trail.coordinates, {title: trail.name}, {icon : myIcon})
+            // push to our own array?
+            // when clicked, alter this html/css
+              .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
+
+            //window.markers.push(marker);
+            $scope.markers.push(marker);
+          });
+        $scope.loading = false;  
+        });
+      });
   };
+
   ///// Get user's location, render a leaflet map showing that location when they land on this page
   navigator.geolocation.getCurrentPosition(function(position) {
     console.log(position.coords.latitude, position.coords.longitude);
@@ -85,6 +99,7 @@ angular.module('hikexpert.home', [])
       fillOpacity: 1
     }).addTo(map).bindPopup("Current Location").openPopup();
   });
+
 
   // Ugly jQuery hack to implement click listeners
   $('body').on('click', '.have', function(){
