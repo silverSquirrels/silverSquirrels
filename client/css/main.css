@@ -25,3 +25,8 @@ a {
   display: none;
  }
 
+ .red {
+  background-color: red;
+  color: red;
+ }
+
