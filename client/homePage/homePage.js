@@ -83,7 +83,7 @@ angular.module('hikexpert.home', [])
   });
   var haveTrailIcon = L.AwesomeMarkers.icon({
     icon: 'tree-conifer',
-    iconColor: '##008148'
+    iconColor: '#008148'
   });
   
 
@@ -158,7 +158,7 @@ angular.module('hikexpert.home', [])
     var trailName = $(this).children().html();
 
     // make this its own function
-    $scope.changeColor(trailName, haveTrailIcon);
+    $scope.changeColor(trailName, haveTrailIcon, 'did it');
     //////////// ^^^^^
 
     $scope.trailPost(trailName, '/hasDone');
@@ -177,7 +177,7 @@ angular.module('hikexpert.home', [])
 
   });
   ///// Helpers ////
-  $scope.changeColor = function (trailName, icon) {
+  $scope.changeColor = function (trailName, icon, intent) {
       $scope.markers.forEach(function(element, i, arr){
         console.log(element.options.title);
         console.log(trailName);
@@ -185,11 +185,14 @@ angular.module('hikexpert.home', [])
         var latlng = element._latlng;
         $scope.map.removeLayer(element);
         
-        element = L.marker([latlng.lat, latlng.lng], {icon: icon}).addTo($scope.map);
-
-        element.closePopup();
-        //arr[i].bindPopup("You rocked this") 
-        //arr[i].openPopup();
+        element = L.marker([latlng.lat, latlng.lng], {icon: icon}, {trailName: trailName}).addTo($scope.map);
+        if(intent === 'did it') {
+          element.bindPopup('<b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
+        } else {
+          element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trailName+'</span></a>');
+          //arr[i].bindPopup("You rocked this") 
+          //arr[i].openPopup();
+        }
       }
     });
 
