@@ -53,12 +53,22 @@ angular.module('hikexpert.home', [])
   });
   var mapMarker = L.AwesomeMarkers.icon({
     icon: 'map-marker',
-    markerColor: 'red'
+    iconColor: 'red' //#F0F0C9
   });
   var asterisk = L.AwesomeMarkers.icon({
     icon: 'asterisk',
-    markerColor: 'green'
+    iconColor: 'green'
   });
+  var wantTrailIcon = L.AwesomeMarkers.icon({
+    icon: 'tree-conifer',
+    iconColor: '#C6C013'
+  });
+  var haveTrailIcon = L.AwesomeMarkers.icon({
+    icon: 'tree-conifer',
+    iconColor: '##008148'
+  });
+  
+
   ////////////////////////
 
 
@@ -130,7 +140,7 @@ angular.module('hikexpert.home', [])
     var trailName = $(this).children().html();
 
     // make this its own function
-    $scope.changeColor(trailName);
+    $scope.changeColor(trailName, haveTrailIcon);
     //////////// ^^^^^
 
     $scope.trailPost(trailName, '/hasDone');
@@ -143,12 +153,13 @@ angular.module('hikexpert.home', [])
     console.log('name of trail', $(this).children().html());
     var trailName = $(this).children().html();
     //console.log(trailName)
+    $scope.changeColor(trailName, wantTrailIcon);
     $scope.trailPost(trailName, '/wantToDo');
     $scope.getUser();
 
   });
   ///// Helpers ////
-  $scope.changeColor = function (trailName) {
+  $scope.changeColor = function (trailName, icon) {
       $scope.markers.forEach(function(element, i, arr){
         console.log(element.options.title);
         console.log(trailName);
@@ -156,9 +167,9 @@ angular.module('hikexpert.home', [])
         var latlng = element._latlng;
         $scope.map.removeLayer(element);
         
-        arr[i] = L.marker([latlng.lat, latlng.lng], {icon: asterisk}).addTo($scope.map);
+        element = L.marker([latlng.lat, latlng.lng], {icon: icon}).addTo($scope.map);
 
-        arr[i].closePopup();
+        element.closePopup();
         //arr[i].bindPopup("You rocked this") 
         //arr[i].openPopup();
       }

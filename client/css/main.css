@@ -102,8 +102,9 @@ a {
   text-align: center;
 }
 .glyphicon {
-  color: red !important;
-  font-size: 35px !important;
+  font-size: 35px !important; 
+}
+.icon {
   
 }
 
