@@ -1,10 +1,17 @@
 angular.module('hikexpert.home', [])
-
 .controller('HomePageController', function($scope, $rootScope, Home){
  
   $scope.userInfo = {}; 
   $scope.loading = true;
   $scope.markers = [];
+
+  $scope.maxFilter = function(current, max){
+    if(current > max){
+      return max;
+    }
+    return current;
+  };
+
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
     Home.getUser()
@@ -12,6 +19,16 @@ angular.module('hikexpert.home', [])
       $scope.userInfo.username = data.username;
       $scope.userInfo.haveDone = data.haveDone;
       $scope.userInfo.wantToDo = data.wantToDo;
+      
+
+      //set progress bar lengths
+      var hikes = $scope.userInfo.haveDone.length;
+      var barLength = (hikes / 5 * 100).toString() + '%';
+      if(hikes < 5){
+        $('#test').css('width', barLength);
+      } else{
+        $('#test').css('width', '100%');
+      }
     })
     .catch(function (err) {
       console.log('error in getUser', err);
@@ -107,6 +124,7 @@ angular.module('hikexpert.home', [])
        // element.iconUrl = 'http://stuff.samat.org/Test-Cases/Leaflet/881-Marker-Subclassing/marker-icon-red.png';
 
   // Ugly jQuery hack to implement click listeners
+
   $('body').on('click', '.have', function(){
     console.log('name of trail', $(this).children().html());
     var trailName = $(this).children().html();
