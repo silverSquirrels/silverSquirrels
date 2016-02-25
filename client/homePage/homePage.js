@@ -6,7 +6,7 @@ angular.module('hikexpert.home', [])
   $scope.loading = true;
   $scope.markers = [];
 
-  //window.markers = [];
+  window.markers = [];
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
@@ -34,9 +34,19 @@ angular.module('hikexpert.home', [])
     });
   };
 
+  // Icons for map //
   var myIcon = L.icon({
     iconUrl : 'http://stuff.samat.org/Test-Cases/Leaflet/881-Marker-Subclassing/marker-icon-red.png'
   });
+  var mapMarker = L.AwesomeMarkers.icon({
+    icon: 'map-marker',
+    markerColor: 'red'
+  });
+  var asterisk = L.AwesomeMarkers.icon({
+    icon: 'asterisk',
+    markerColor: 'green'
+  });
+  ////////////////////////
 
 
   $scope.getCoords = function(userInfo){
@@ -54,12 +64,13 @@ angular.module('hikexpert.home', [])
           //$scope.coordinates =
           console.log('data in HomePageController', data);
           data.forEach(function(trail, i){
-            marker = new L.marker(trail.coordinates, {title: trail.name}, {icon : myIcon})
+            marker = new L.marker(trail.coordinates, {title: trail.name})
             // push to our own array?
             // when clicked, alter this html/css
+            // This is part of an ugly jQuery hack. Hidden spans contain the name of the trail, so we can get at that later. Undoubtedly, there is a better way to do this.
               .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
 
-            //window.markers.push(marker);
+            window.markers.push(marker);
             $scope.markers.push(marker);
           });
         $scope.loading = false;  
@@ -94,19 +105,39 @@ angular.module('hikexpert.home', [])
     }).addTo(map);
 
       // Add a circle showing user's location to the map
-    var circle = L.circle([lat, long], 500, {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 1
-    }).addTo(map).bindPopup("Current Location").openPopup();
+    // var circle = L.circle([lat, long], 500, {
+    //   color: 'red',
+    //   fillColor: '#f03',
+    //   fillOpacity: 1
+    // }).addTo(map).bindPopup("Current Location").openPopup();
+
+    L.marker([lat, long], {icon: mapMarker}).addTo(map).bindPopup("Here you are").openPopup();
+
   });
 
+       // element.iconUrl = 'http://stuff.samat.org/Test-Cases/Leaflet/881-Marker-Subclassing/marker-icon-red.png';
 
   // Ugly jQuery hack to implement click listeners
   $('body').on('click', '.have', function(){
     console.log('name of trail', $(this).children().html());
     var trailName = $(this).children().html();
-    //console.log(trailName)
+
+    // make this its own function
+    $scope.markers.forEach(function(element, i, arr){
+        console.log(element.options.title);
+        console.log(trailName)
+      if(element.options.title === trailName){
+        var latlng = element._latlng;
+        $scope.map.removeLayer(element);
+        
+        arr[i] = L.marker([latlng.lat, latlng.lng], {icon: asterisk}).addTo($scope.map);
+
+        arr[i].closePopup();
+        arr[i].bindPopup("You rocked this") 
+        arr[i].openPopup();
+      }
+    });
+    //////////// ^^^^^
 
     $scope.trailPost(trailName, '/hasDone');
 
