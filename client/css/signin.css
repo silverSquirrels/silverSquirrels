@@ -1,9 +1,10 @@
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
 }
-
+#signin {
+  background: #ebe9e9;
+}
 .form-signin {
   max-width: 330px;
   padding: 15px;
@@ -12,6 +13,9 @@ body {
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
   margin-bottom: 10px;
+}
+.form-signin-heading {
+  color: #034732;
 }
 .form-signin .checkbox {
   font-weight: normal;
@@ -37,4 +41,19 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+.form-control {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.go-to-signup > a{
+  color: #034732;
+}
+.btn {
+  background-color: #008148;
+  color: #ebe9e9;
+}
+.btn:hover {
+  background-color: #034732;
+  color: #f0f0c9;
 }
