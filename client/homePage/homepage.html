@@ -1,10 +1,10 @@
 
 
 <div class='container'>
-  <div class="jumbotron">
+  
     <h1 test>Hello {{userInfo.username}}</h1>
-    <button class="pull-right" ng-controller='AuthController' ng-click="signout()">Sign Out</button>
-</div>
+    
+
 
 
 <!-- Materialize got in the way of angular's data binding here:
@@ -45,7 +45,14 @@ Because of the material.select() we had to call to initialize the select form --
     </div>
 </form> -->
 <div class='gif-container'>
-  <span ng-if="loading"><img src="assets/spiffygif_46x46.gif"></span>
+  <div ng-if="loading">
+    <p class='loading'>Getting an aerial view...</p>
+    <span class="glyphicon glyphicon-plane loading-icon"></span>
+  </div>
+  <div ng-if='getting_markers'>
+    <span class='getting_markers'>Unpacking and placing markers...</span>
+    <span class="glyphicon glyphicon-map-marker loading-icon"></span>
+  </div>
 </div>
 
  <div id="map">

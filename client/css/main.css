@@ -17,12 +17,21 @@ main {
 a {
   cursor: pointer;
 }
-
+.navbar {
+  border-radius: 0px;
+}
 .navbar, footer {
   background: #034732;
 }
+.nav-tree {
+  color: #c6c013;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%)
+}
 .home-link {
-  font-size: 30px;
+  font-family: 'Lato', sans-serif;  
+  font-size: 36px;
   color: #c6c013;
 }
 .home-link:hover{
@@ -57,7 +66,7 @@ a {
   text-align: center;
   font: normal 18px sans-serif;
   padding: 45px;
-  margin-top: 80px;
+  margin-top: auto;
 }
 
 .footer-basic-centered .footer-company-motto{
@@ -84,6 +93,10 @@ a {
   display:inline-block;
   text-decoration: none;
   color: inherit;
+}
+.loading, .getting_markers, .loading-icon {
+  font-size: 20px;
+  color: #034732;
 }
 
 

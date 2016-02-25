@@ -3,6 +3,7 @@ angular.module('hikexpert.home', [])
  
   $scope.userInfo = {}; 
   $scope.loading = true;
+  $scope.getting_markers = false;
   $scope.markers = [];
   $scope.hikerStatus = 'City-Dweller';
 
@@ -91,7 +92,7 @@ angular.module('hikexpert.home', [])
 
 
   $scope.getCoords = function(userInfo){
-    $scope.loading = true;  
+    $scope.getting_markers = true;  
     $scope.markers.forEach(function (marker) {
       $scope.map.removeLayer(marker);
     });
@@ -110,7 +111,7 @@ angular.module('hikexpert.home', [])
             // store markers in an array on the $scope.
             $scope.markers.push(marker);
           });
-        $scope.loading = false;  
+        $scope.getting_markers = false;  
         });
       });
   };

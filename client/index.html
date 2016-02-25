@@ -13,6 +13,7 @@
     <!--<link rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>-->
     <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="leaflet-awesome-markers/leaflet.awesome-markers.css">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='./css/signin.css' rel='stylesheet'/>
     <link href='./css/signup.css' rel='stylesheet'/>
     <link href="./css/main.css" rel="stylesheet"/>
@@ -27,7 +28,7 @@
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
       </button>
-      <a class="navbar-brand home-link" href="/#/">HikeXpert </a>
+      <a class="navbar-brand home-link" href="/#/">HikeXpert </a><span class="glyphicon glyphicon-tree-conifer nav-tree"></span>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -40,11 +41,11 @@
         <li class="dropdown">
           <a href="/#/" class="dropdown-toggle profile-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
+            <li><a href="/#/user">User Profile</a></li>
 <!--             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li> -->
             <li role="separator" class="divider"></li>
-            <li><a href="#">Sign Out</a></li>
+            <li><a ng-controller='AuthController' ng-click="signout()">Sign Out</a></li>
           </ul>
         </li>
       </ul>

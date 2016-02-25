@@ -1,8 +1,8 @@
 <div class='container'>
-  <div class="jumbotron">
-    <h1 test>{{userInfo.username}} - {{hikerStatus}}</h1>
-    <button class="pull-right" ng-controller='AuthController' ng-click="signout()">Sign Out</button>
-  </div>
+
+  <h1>{{userInfo.username}}</h1>
+  <h2>{{hikerStatus}}</h2>
+
 
 
 <!-- Materialize got in the way of angular's data binding here:
@@ -56,14 +56,18 @@ Because of the material.select() we had to call to initialize the select form --
   </div>
 
 </div>
+<div class='col-xs-6'>
  <h3> Trails I Have Done: </h3>
- <div ng-repeat='trailName in userInfo.haveDone track by $index'>
-   <p>{{trailName}}</p>
+  <div ng-repeat='trailName in userInfo.haveDone track by $index'>
+    <p>{{trailName}}</p>
+  </div>
  </div>
+ <div class='col-xs-6'>
  <h3> Trails I Want To Do: </h3>
  <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
    <p>{{trailName}}</p>
    <button ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button>
+ </div>
  </div>
 
 </div>
