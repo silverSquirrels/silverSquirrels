@@ -16,6 +16,10 @@ angular.module('hikexpert', [
       templateUrl: 'auth/signin.html',
       controller: 'AuthController'
     })
+    .when('/user', {
+      templateUrl: 'user/user.html',
+      controller: 'HomePageController'
+    })
     .when('/signup', {
       templateUrl: 'auth/signup.html',
       controller: 'AuthController'
