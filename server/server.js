@@ -1,11 +1,13 @@
  // Cody recommended doing this
 // Makes it so the .env file is read locally to get API key
 // but on heroku if the NODE_ENV config var is set to production, app will look there
-/*if(process.env.NODE_ENV !== 'production'){
-  require('dotenv').config();
-}*/
+
 /// This is how to access the api key:
 /// process.env.TRAIL_API_KEY
+
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
 
 var express = require('express');
 var morgan = require('morgan');
@@ -28,9 +30,6 @@ db.once('open', function() {
   console.log("Mongoose connection open");
 });
 
-
-
-
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -48,15 +47,11 @@ app.post('/hasDone', userControllers.hasDone);
 app.post('/wantToDo', userControllers.wantToDo);
 app.post('/moveTrails', userControllers.moveTrails);
 
-
-
-
 app.get('/', function(req, res){
   res.send('Hello world');
 });
 
 app.post('/api/coords', function(req, res){
-
   var radius = req.body.radius;
   var lat = req.body.lat;
   var long = req.body.long;
@@ -66,7 +61,6 @@ app.post('/api/coords', function(req, res){
     .header("X-Mashape-Key", process.env.TRAIL_API_KEY)
     .header("Accept", "text/plain")
   .end(function(result){
-    
     if(result.body.places){
       var coordinates = result.body.places.map(function(el){
         // Organize data into an object with name and coordinates properties:
@@ -82,26 +76,5 @@ app.post('/api/coords', function(req, res){
     }
   });
 });
-
-
-// unirest.get("https://trailapi-trailapi.p.mashape.com/?lat=42&limit=20&lon=-87&q[activities_activity_type_name_eq]=hiking&radius=30")
-// .header("X-Mashape-Key", "qblT0DCbM3msh34GG2Nv6BWzEdl9p1wJPKnjsn7pGKt7415nQZ")
-// .header("Accept", "text/plain")
-// .end(function (result) {
-//   //console.log(result.status, result.headers, result.body);
-
-//   result.body.places.forEach(function(element){
-//     //console.log('=============',element)
-//     console.log(element.name);
-//     console.log(element.lat);
-//     console.log(element.lon);
-//   });
-//   var coordinates = result.body.places.map(function(el){
-//       return [el.lat, el.lon];
-//     });
-//   console.log(coordinates)
-// });
-
-// connect to the database
 
 app.listen(port);

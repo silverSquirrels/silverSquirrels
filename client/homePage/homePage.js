@@ -40,6 +40,7 @@ angular.module('hikexpert.home', [])
 
 
   $scope.getCoords = function(userInfo){
+    console.log('userinfo in getcoords', userInfo)
     $scope.loading = true;  
     $scope.markers.forEach(function (marker) {
       $scope.map.removeLayer(marker);
