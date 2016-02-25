@@ -5,9 +5,6 @@ angular.module('hikexpert.home', [])
   $scope.userInfo = {}; 
   $scope.loading = true;
   $scope.markers = [];
-
-  window.markers = [];
-
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
     Home.getUser()
@@ -28,7 +25,6 @@ angular.module('hikexpert.home', [])
     Home.trailPost(trailName, url)
     .then(function (response) {
       if(response) {
-        console.log(response)
         $scope.getUser();
       }
     });
@@ -50,7 +46,6 @@ angular.module('hikexpert.home', [])
 
 
   $scope.getCoords = function(userInfo){
-    console.log('userinfo in getcoords', userInfo)
     $scope.loading = true;  
     $scope.markers.forEach(function (marker) {
       $scope.map.removeLayer(marker);
@@ -65,12 +60,9 @@ angular.module('hikexpert.home', [])
           console.log('data in HomePageController', data);
           data.forEach(function(trail, i){
             marker = new L.marker(trail.coordinates, {title: trail.name})
-            // push to our own array?
-            // when clicked, alter this html/css
             // This is part of an ugly jQuery hack. Hidden spans contain the name of the trail, so we can get at that later. Undoubtedly, there is a better way to do this.
               .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
-
-            window.markers.push(marker);
+            // store markers in an array on the $scope.
             $scope.markers.push(marker);
           });
         $scope.loading = false;  
@@ -84,14 +76,11 @@ angular.module('hikexpert.home', [])
     var lat = position.coords.latitude;
     var long = position.coords.longitude;
 
-    // Couldn't get the ng-if to work on spiffygiv...
+    // Couldn't get the ng-if to work on spiffygif...
     $scope.loading = false;   
     // So use apply...makes it work!
     $scope.$apply();
-
-    console.log(lat);
-    console.log(long);
-
+    
     // Initialize the leaflet map:
     var map = L.map('map').setView([lat, long], 9);
     // Set it on the angular scope:
@@ -123,20 +112,7 @@ angular.module('hikexpert.home', [])
     var trailName = $(this).children().html();
 
     // make this its own function
-    $scope.markers.forEach(function(element, i, arr){
-        console.log(element.options.title);
-        console.log(trailName)
-      if(element.options.title === trailName){
-        var latlng = element._latlng;
-        $scope.map.removeLayer(element);
-        
-        arr[i] = L.marker([latlng.lat, latlng.lng], {icon: asterisk}).addTo($scope.map);
-
-        arr[i].closePopup();
-        arr[i].bindPopup("You rocked this") 
-        arr[i].openPopup();
-      }
-    });
+    $scope.changeColor(trailName);
     //////////// ^^^^^
 
     $scope.trailPost(trailName, '/hasDone');
@@ -153,6 +129,24 @@ angular.module('hikexpert.home', [])
     $scope.getUser();
 
   });
+  ///// Helpers ////
+  $scope.changeColor = function (trailName) {
+      $scope.markers.forEach(function(element, i, arr){
+        console.log(element.options.title);
+        console.log(trailName);
+      if(element.options.title === trailName){
+        var latlng = element._latlng;
+        $scope.map.removeLayer(element);
+        
+        arr[i] = L.marker([latlng.lat, latlng.lng], {icon: asterisk}).addTo($scope.map);
+
+        arr[i].closePopup();
+        //arr[i].bindPopup("You rocked this") 
+        //arr[i].openPopup();
+      }
+    });
+
+  };
 
 
 });
