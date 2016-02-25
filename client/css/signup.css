@@ -1,7 +1,6 @@
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
 }
 
 .form-signup {
@@ -12,6 +11,9 @@ body {
 .form-signup .form-signup-heading,
 .form-signup .checkbox {
   margin-bottom: 10px;
+}
+.form-signup-heading {
+  color: #034732;
 }
 .form-signup .checkbox {
   font-weight: normal;
@@ -37,4 +39,19 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+.form-control {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.go-to-signin > a {
+  color: #034732;
+}
+.btn {
+  background-color: #008148;
+  color: #ebe9e9;
+}
+.btn:hover {
+  background-color: #034732;
+  color: #f0f0c9;
 }

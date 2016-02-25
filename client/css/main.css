@@ -1,23 +1,40 @@
 #map{
-
- height: 400px;
- width: 95%;
- margin: 30px auto;
-
+  height: 400px;
+  width: 95%;
+  margin: 30px auto;
 }
 
- body {
-  background-color: #fffdfd;
-     display: flex;
-     min-height: 100vh;
-     flex-direction: column;
- }
- main {
-     flex: 1 0 auto;
- }
+body {
+  background-color: #ebe9e9;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+main {
+  flex: 1 0 auto;
+}
 
 a {
   cursor: pointer;
+}
+
+.navbar, footer {
+  background: #034732;
+}
+.home-link {
+  font-size: 30px;
+  color: #c6c013;
+}
+.home-link:hover{
+  color: #ebe9e9;
+}
+.profile-menu {
+  color: #c6c013;
+  font-size: 20px;
+}
+.nav > li > a:hover, .nav > li > a:focus, .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+  color: #ebe9e9;
+  background: #034732;
 }
 
 .page-footer{
@@ -34,25 +51,23 @@ a {
  }
 
 .footer-basic-centered{
-  background-color: #292c2f;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
   width: 100%;
   text-align: center;
   font: normal 18px sans-serif;
-
   padding: 45px;
   margin-top: 80px;
 }
 
 .footer-basic-centered .footer-company-motto{
-  color:  #8d9093;
+  color:  #f0f0c9;
   font-size: 24px;
   margin: 0;
 }
 
 .footer-basic-centered .footer-company-name{
-  color:  #8f9296;
+  color:  #f0f0c9;
   font-size: 14px;
   margin: 0;
 }
@@ -60,7 +75,7 @@ a {
 .footer-basic-centered .footer-links{
   list-style: none;
   font-weight: bold;
-  color:  #ffffff;
+  color:  #f0f0c9;
   padding: 35px 0 23px;
   margin: 0;
 }
@@ -70,6 +85,7 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
 
 /* If you don't want the footer to be responsive, remove these media queries */
 

@@ -13,37 +13,38 @@
     <!--<link rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>-->
     <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="leaflet-awesome-markers/leaflet.awesome-markers.css">
+    <link href='./css/signin.css' rel='stylesheet'/>
+    <link href='./css/signup.css' rel='stylesheet'/>
     <link href="./css/main.css" rel="stylesheet"/>
   </head>
 
   <body>
 
-<nav class="navbar navbar-default">
+<nav class="navbar">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
-
       </button>
-      <a class="navbar-brand" href="/#/">HikeXpert </a>
+      <a class="navbar-brand home-link" href="/#/">HikeXpert </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+<!--       <ul class="nav navbar-nav">
         <li><a href="#">Link <span class="sr-only">(current)</span></a></li>
-      </ul>
+      </ul> -->
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
+<!--         <li><a href="#">Link</a></li> -->
         <li class="dropdown">
-          <a href="/#/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <a href="/#/" class="dropdown-toggle profile-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+<!--             <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li> -->
             <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href="#">Sign Out</a></li>
           </ul>
         </li>
       </ul>
@@ -52,13 +53,13 @@
 </nav>
 
 
-  <div ng-view></div>
+  <div class='main-view' ng-view></div>
 
 
 
       <footer class="footer-basic-centered footer">
 
-      <p class="footer-company-motto">The company motto.</p>
+      <p class="footer-company-motto">Take a Hike!</p>
 
       <p class="footer-links">
         <a href="#">Home</a>
@@ -74,7 +75,7 @@
         <a href="#">Contact</a>
       </p>
 
-      <p class="footer-company-name">Company Name &copy; 2015</p>
+      <p class="footer-company-name">HikeXpert &copy; 2016</p>
 
     </footer>
   <script src="leaflet-awesome-markers/leaflet.awesome-markers.min.js"></script>
