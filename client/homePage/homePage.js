@@ -4,9 +4,9 @@ angular.module('hikexpert.home', [])
  
   $scope.userInfo = {}; 
   $scope.loading = true;
-  //$scope.markers = [];
+  $scope.markers = [];
 
-  window.markers = [];
+  //window.markers = [];
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
