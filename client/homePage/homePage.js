@@ -11,6 +11,14 @@ angular.module('hikexpert.home', [])
     }
     return current;
   };
+  var fillBar = function(targetBar, hikeTarget, totalHikes){
+    var barLength = (totalHikes / hikeTarget * 100).toString() + '%';
+    if(totalHikes < hikeTarget){
+      $(targetBar).css('width', barLength);
+    } else{
+      $(targetBar).css('width', '100%');
+    }
+  }
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
@@ -24,11 +32,9 @@ angular.module('hikexpert.home', [])
       //set progress bar lengths
       var hikes = $scope.userInfo.haveDone.length;
       var barLength = (hikes / 5 * 100).toString() + '%';
-      if(hikes < 5){
-        $('#test').css('width', barLength);
-      } else{
-        $('#test').css('width', '100%');
-      }
+      fillBar('#hikeFive', 5, hikes);
+      fillBar('#hikeTwentyFive', 25, hikes);
+      fillBar('#hikeHundred', 100, hikes);
     })
     .catch(function (err) {
       console.log('error in getUser', err);
