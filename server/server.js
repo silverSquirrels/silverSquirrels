@@ -1,9 +1,9 @@
-// Cody recommended doing this
+ // Cody recommended doing this
 // Makes it so the .env file is read locally to get API key
 // but on heroku if the NODE_ENV config var is set to production, app will look there
-if(process.env.NODE_ENV !== 'production'){
+/*if(process.env.NODE_ENV !== 'production'){
   require('dotenv').config();
-}
+}*/
 /// This is how to access the api key:
 /// process.env.TRAIL_API_KEY
 
@@ -39,7 +39,7 @@ var port = process.env.PORT || 4000;
 
 app.use(express.static(path.join(__dirname, '../client')));
 
-// Routes for user signin, signup, and signedin 
+// Routes for user signin, signup, and signedin
 app.post('/signin', userControllers.signin);
 app.post('/signup', userControllers.signup);
 app.get('/signedin', userControllers.checkAuth);

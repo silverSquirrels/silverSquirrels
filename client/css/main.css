@@ -1,4 +1,5 @@
 #map{
+
  height: 400px;
  width: 95%;
  margin: 30px auto;
@@ -18,11 +19,7 @@ a {
   cursor: pointer;
 }
 
-.page-footer{
-  margin-top: 15em !important;
- }
-
- .hidden {
-  display: none;
- }
-
+.test{
+  display: block;
+  margin-top: 100px;
+}

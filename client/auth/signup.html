@@ -1,9 +1,11 @@
 <div id='signup' class='container'>
-  <h1>signup</h1>
+  <h2 class="form-signin-heading">Please sign up</h2>
   <form name="signupForm" ng-submit='signup()' class='row' novalidate>
-    <input type='text' class="col s4" ng-model='user.username' name="signUpUser" placeholder="Enter a username" required />
-    <input type="password" class="col s4 offset-s1" ng-model='user.password' name="signUpPassword" placeholder="Enter a password" required />
-    <button>signup</button>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type='text' id="inputUsername" class="form-control" ng-model='user.username' name="signUpUser" placeholder="Enter a username" required />
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" ng-model='user.password' name="signUpPassword" placeholder="Enter a password" required />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
   </form>
   <a href="#/signin">Already have an account? <strong>Signin</strong> ...</a>
     <div ng-if='signupForm.signUpUser.$error.required && signupForm.$dirty' class='message'>
@@ -13,3 +15,4 @@
         <h2>Password required</h2>
     </div>
 </div>
+
