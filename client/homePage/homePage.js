@@ -123,20 +123,7 @@ angular.module('hikexpert.home', [])
     var trailName = $(this).children().html();
 
     // make this its own function
-    $scope.markers.forEach(function(element, i, arr){
-        console.log(element.options.title);
-        console.log(trailName)
-      if(element.options.title === trailName){
-        var latlng = element._latlng;
-        $scope.map.removeLayer(element);
-        
-        arr[i] = L.marker([latlng.lat, latlng.lng], {icon: asterisk}).addTo($scope.map);
-
-        arr[i].closePopup();
-        arr[i].bindPopup("You rocked this") 
-        arr[i].openPopup();
-      }
-    });
+    $scope.changeColor(trailName);
     //////////// ^^^^^
 
     $scope.trailPost(trailName, '/hasDone');
@@ -153,6 +140,24 @@ angular.module('hikexpert.home', [])
     $scope.getUser();
 
   });
+  ///// Helpers ////
+  $scope.changeColor = function (trailName) {
+      $scope.markers.forEach(function(element, i, arr){
+        console.log(element.options.title);
+        console.log(trailName)
+      if(element.options.title === trailName){
+        var latlng = element._latlng;
+        $scope.map.removeLayer(element);
+        
+        arr[i] = L.marker([latlng.lat, latlng.lng], {icon: asterisk}).addTo($scope.map);
+
+        arr[i].closePopup();
+        //arr[i].bindPopup("You rocked this") 
+        //arr[i].openPopup();
+      }
+    });
+
+  };
 
 
 });
