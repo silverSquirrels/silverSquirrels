@@ -96,3 +96,14 @@ a {
   }
 }
 
+.gif-container {
+  height: 30px;
+  text-align: center;
+}
+.glyphicon {
+  color: red !important;
+  font-size: 35px !important;
+  
+}
+
+
