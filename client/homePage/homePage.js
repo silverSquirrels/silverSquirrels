@@ -4,9 +4,9 @@ angular.module('hikexpert.home', [])
  
   $scope.userInfo = {}; 
   $scope.loading = true;
-  //$scope.markers = [];
+  $scope.markers = [];
 
-  window.markers = [];
+  //window.markers = [];
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
@@ -40,6 +40,7 @@ angular.module('hikexpert.home', [])
 
 
   $scope.getCoords = function(userInfo){
+    console.log('userinfo in getcoords', userInfo)
     $scope.loading = true;  
     $scope.markers.forEach(function (marker) {
       $scope.map.removeLayer(marker);
