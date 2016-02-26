@@ -78,7 +78,7 @@ angular.module('hikexpert.home', [])
     icon: 'tree-conifer',
     iconColor: '#C6C013'
   });
-  var greenIcon = L.AwesomeMarkers.icon({
+  $scope.greenIcon = L.AwesomeMarkers.icon({
     icon: 'tree-conifer',
     iconColor: '#008148'
   });
@@ -106,7 +106,7 @@ angular.module('hikexpert.home', [])
             //console.log(trail.name);
             // If it is in the haveDone array, makes its class 'want-to' and give option 'i want to hike again'
             if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
-              marker = L.marker(trail.coordinates, {icon: greenIcon})
+              marker = L.marker(trail.coordinates, {icon: $scope.greenIcon})
                 .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
               // L.marker will not take more than two parameters ... !?
               // So title is set here:
@@ -170,7 +170,7 @@ angular.module('hikexpert.home', [])
     var trailName = $(this).children().html();
 
     // make this its own function
-    $scope.changeColor(trailName, greenIcon, 'did it');
+    $scope.changeColor(trailName, $scope.greenIcon, 'did it');
     //////////// ^^^^^
 
     $scope.trailPost(trailName, '/hasDone');
@@ -202,7 +202,7 @@ angular.module('hikexpert.home', [])
         // If they clicked "I have hiked this":
         // Remove the 'have hiked' option
         if(intent === 'did it') {
-          element.bindPopup('<b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
+          element.bindPopup('Been here, done that<br /><b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
         } 
         // If they clicked "I want to hike this":
         // Remove the 'want to' option
