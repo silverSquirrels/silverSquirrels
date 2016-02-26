@@ -1,11 +1,11 @@
 angular.module('hikexpert.home', [])
 .controller('HomePageController', function($scope, $rootScope, Home){
- 
   $scope.userInfo = {}; 
   $scope.loading = true;
   $scope.getting_markers = false;
   $scope.markers = [];
   $scope.hikerStatus = 'City-Dweller';
+  /////////////// PROGRESS BARS ////////////////////////////////
   //Makes it so numerator cannot exceed denom in progress bar
   $scope.maxFilter = function(current, max){
     if(current > max){
@@ -17,13 +17,13 @@ angular.module('hikexpert.home', [])
   var updateStatus = function(){
     var hikes = $scope.userInfo.haveDone.length;
     if(hikes >= 100){
-      $scope.hikerStatus = 'Explorer'
+      $scope.hikerStatus = 'Explorer';
     } else if(hikes >= 25){
       $scope.hikerStatus = 'Hiker';
     } else if(hikes >= 5){
       $scope.hikerStatus = 'Wanderer';
     }
-  }
+  };
   //Given target bar in the form '#barID', hikeTarget as an integer, and total hikes
   //Fills target bar the appropriate percent or 100% if total exceeds target
   var fillBar = function(targetBar, hikeTarget, totalHikes){
@@ -34,7 +34,8 @@ angular.module('hikexpert.home', [])
       $(targetBar).css('width', '100%');
     }
     updateStatus();
-  }
+  };
+  /////////////// END PROGRESS BARS ////////////////////////////////
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
@@ -44,7 +45,6 @@ angular.module('hikexpert.home', [])
       $scope.userInfo.haveDone = data.haveDone;
       $scope.userInfo.wantToDo = data.wantToDo;
       
-
       //set progress bar lengths
       var hikes = $scope.userInfo.haveDone.length;
       var barLength = (hikes / 5 * 100).toString() + '%';
@@ -56,20 +56,22 @@ angular.module('hikexpert.home', [])
       console.log('error in getUser', err);
     });
   };
+  //////// Call getUser to bring down user's info from DB ///
   $scope.getUser();
-  ///////
+  //////// trailPost is defined in services.js
   $scope.trailPost = Home.trailPost;
-
+  /////// moves trails from 'want to do' array to 'have done' array
   $scope.moveTrail = function (trailName, url) {
     Home.trailPost(trailName, url)
     .then(function (response) {
       if(response) {
+        // Update view with the new information
         $scope.getUser();
       }
     });
   };
 
-  // Icons for map //
+  /// Icons for map, uses leaflet-awesome-markers library ///
   var mapMarker = L.AwesomeMarkers.icon({
     icon: 'map-marker',
     iconColor: 'red' //#F0F0C9
@@ -78,42 +80,45 @@ angular.module('hikexpert.home', [])
     icon: 'tree-conifer',
     iconColor: '#C6C013'
   });
-  var greenIcon = L.AwesomeMarkers.icon({
+  /// This one needed to be bound to $scope b/c it is called in homepage.html
+  $scope.greenIcon = L.AwesomeMarkers.icon({
     icon: 'tree-conifer',
     iconColor: '#008148'
   });
   
 
-  ////////////////////////
+/// getCoords function /////////////
+/// empties out the map, sends user's info to the server, gets API data, uses that data to re-render the icons on the map ///
   $scope.getCoords = function(userInfo){
-    $scope.getting_markers = true;  
+    $scope.getting_markers = true;
+    // Every time this function is called, we re-render the map
+    // This removes all the old info and empties out our markers array  
     $scope.markers.forEach(function (marker) {
       $scope.map.removeLayer(marker);
       $scope.markers = [];
   });
-
+    // Get users coordinates from the browser:
     navigator.geolocation.getCurrentPosition(function(position) {
         $scope.userInfo.lat = position.coords.latitude;
         $scope.userInfo.long = position.coords.longitude;
-        console.log('userinfo before factory', userInfo);
+        // Send them to the server:
         Home.getCoords(userInfo)
         .then(function(data){
-          //$scope.coordinates =
-          console.log('data in HomePageController', data);
+          // data is a bunch of trail objects from the API
           data.forEach(function(trail, i){
             var marker;
-            // If trail is in the wantToDo array
-            //console.log(trail.name);
-            // If it is in the haveDone array, makes its class 'want-to' and give option 'i want to hike again'
+            // We iterate through these objects and decide what kind of icon to display based on the trails presence in our arrays in the DB
+
+            // If it is in the haveDone array, makes its class 'want-to', gives it the greenIcon, and gives option 'I want to hike again'
             if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
-              marker = L.marker(trail.coordinates, {icon: greenIcon})
+              marker = L.marker(trail.coordinates, {icon: $scope.greenIcon})
                 .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
               // L.marker will not take more than two parameters ... !?
               // So title is set here:
               marker.options.title = trail.name;
             } 
-            // If it is in the wantToDo array, makes its class be 'have' and give option 'i have hiked this'
-            // If it is in both, set icon to yellow so they can say they have hiked it (again)
+            // If it is in the wantToDo array, makes its class be 'have', gives it the yellowIcon, and give option 'i have hiked this'
+            // If it is in BOTH arrays, this sets the icon to yellow so they can say they have hiked it (again)
             if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
               marker = L.marker(trail.coordinates, {icon: yellowIcon})
                 .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>').addTo($scope.map).openPopup();
@@ -128,6 +133,7 @@ angular.module('hikexpert.home', [])
               // This is part of an ugly jQuery hack. Hidden spans contain the name of the trail, so we can get at that later. Undoubtedly, there is a better way to do this.
                 .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
             }
+            // Store all the markers in our own array here so we can do work on it later:
             $scope.markers.push(marker);
           });
         $scope.getting_markers = false;  
@@ -135,9 +141,7 @@ angular.module('hikexpert.home', [])
       });
   };
 
-  
-
-  ///// Get user's location, render a leaflet map showing that location when they land on this page
+  ///// This code gets user's location, renders a leaflet map showing that location when they land on this page:
   navigator.geolocation.getCurrentPosition(function(position) {
     console.log(position.coords.latitude, position.coords.longitude);
     var lat = position.coords.latitude;
@@ -159,35 +163,31 @@ angular.module('hikexpert.home', [])
       id: 'mapbox.satellite',
       accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
-
+    // User's location:
     L.marker([lat, long], {icon: mapMarker}).addTo(map).bindPopup("Here you are").openPopup();
 
   });
-
+  ////////////// Click Listeners ////////////////////
   // Ugly jQuery hack to implement click listeners
   $('body').on('click', '.have', function(){
-    //console.log('name of trail', $(this).children().html());
+    // We access trailName through the hidden span:
     var trailName = $(this).children().html();
-
-    // make this its own function
-    $scope.changeColor(trailName, greenIcon, 'did it');
-    //////////// ^^^^^
-
+    // Change icon's color:
+    $scope.changeColor(trailName, $scope.greenIcon, 'did it');
+    // Store trail in hasDone array in DB with trailPost http request:
     $scope.trailPost(trailName, '/hasDone');
-
+    // Re-render new information:
     $scope.getUser();
-
   });
 
   $('body').on('click', '.want-to', function(){
-    console.log('name of trail', $(this).children().html());
     var trailName = $(this).children().html();
     $scope.changeColor(trailName, yellowIcon);
     $scope.trailPost(trailName, '/wantToDo');
     $scope.getUser();
   });
 
-  ///// Helpers ////
+  ///////////// Helpers //////////////
   $scope.changeColor = function (trailName, icon, intent) {
       $scope.markers.forEach(function(element, i, arr){
       if(element.options.title === trailName){
@@ -199,13 +199,13 @@ angular.module('hikexpert.home', [])
         // L.marker will not take more than two parameters ... !?
         // So title is set here:
         element.options.title = trailName;
-        // If they clicked "I have hiked this":
+        // If they clicked "I have hiked this"...
         // Remove the 'have hiked' option
         if(intent === 'did it') {
-          element.bindPopup('<b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
+          element.bindPopup('Been here, done that<br /><b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
         } 
-        // If they clicked "I want to hike this":
-        // Remove the 'want to' option
+        // If they clicked "I want to hike this"...
+        // Remove the 'want to' option:
         else {
           element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span>').openPopup();
         }

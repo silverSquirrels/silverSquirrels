@@ -1,6 +1,8 @@
 <div class='container'>
-  <h1 test>Hello {{userInfo.username}}</h1>    
-  <div class="row">
+
+  <h1 test>Hello {{userInfo.username}}</h1>  
+
+  <div class="row well">
     <div class="col-sm-6">
       <p class="lead">See trails near you! <small>Enter a radius:</small></p>
       <select class="form-control" name="radius" ng-model="userInfo.radius" ng-change="getCoords(userInfo)" >
@@ -26,9 +28,9 @@
     </div>
   </div>
 
-  <div id="map">
+  <!-- This is where the leaflet map renders: -->
+  <div id="map"></div>
 
-  </div>
   <div class="col-xs-6">
     <h3> Trails I Have Done: </h3>
     <div ng-repeat='trailName in userInfo.haveDone track by $index'>
@@ -36,11 +38,13 @@
     </div>
   </div>
 
-  <div class="col-xs-6">
-    <h3> Trails I Want To Do: </h3>
-    <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-      <p>{{trailName}} <button class="btn btn-success" ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button></p>
+   <div class="col-xs-6">
+     <h3> Trails I Want To Do: </h3>
+     <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
+       <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails"); changeColor(this.trailName, greenIcon, "did it")'>Did it!</button></p>
      </div>
-  </div>
+   </div>
+ </div>
 
-</div>
+
+

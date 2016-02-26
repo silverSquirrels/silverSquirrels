@@ -135,8 +135,9 @@ a {
 .glyphicon {
   font-size: 35px !important; 
 }
-.icon {
-  
+
+.did-it-button {
+  margin-left: 8px;
 }
 
 
