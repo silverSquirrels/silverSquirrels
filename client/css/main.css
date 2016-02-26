@@ -10,7 +10,7 @@ body {
   min-height: 100vh;
   flex-direction: column;
 }
-main {
+.main {
   flex: 1 0 auto;
 }
 
@@ -98,9 +98,9 @@ a {
   font-size: 20px;
   color: #034732;
 }
-.titles, .person-name {
+/*.titles, .person-name {
   color: #034732;
-}
+}*/
 
 /* If you don't want the footer to be responsive, remove these media queries */
 
@@ -194,3 +194,20 @@ a {
   background-color: #034732;
   color: #f0f0c9;
 }
+
+.person-img {
+  border-radius: 50%
+}
+
+div.fixed-homepage {
+  height: 1070px;
+}
+div.fixed-user {
+  height: 800px;
+}
+
+div.auth {
+  padding: 80px;
+}
+
+

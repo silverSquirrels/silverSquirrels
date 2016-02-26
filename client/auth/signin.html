@@ -1,4 +1,4 @@
-<div id='signin' class="container col-xs-4 col-md-4 col-md-offset-4 col-xs-offset-4">
+<div id='signin' class="auth well container col-sm-4 col-md-4 col-md-offset-4 col-sm-offset-4">
   <h2 class="form-signin-heading">Please sign in</h2>
   <div >
     <form name="signinForm" ng-submit='signin()' class="row">
@@ -6,17 +6,17 @@
       <input type='text' id="inputUsername" class="form-control" ng-model='user.username' name="signinUser" placeholder="Enter your username" required ng-class="{'error': signinUser.$invalid && signinUser.$dirty}"/>
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" class="form-control" ng-model='user.password' name="signinPassword" placeholder="Enter your password" required ng-class="{'error': signinPassword.$invalid && signinForm.$dirty}"/>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+      <button class="btn btn-lg btn-success btn-block" type="submit">Sign In</button>
     </form>
     <div class='go-to-signup'>
       <a href="#/signup">Don't have an account? <strong>Signup</strong>!</a>
     </div>
   </div>
   
-  <div ng-if='signinForm.signinUser.$error.required && signinForm.$dirty' class='message'>
+  <div class="alert-danger" ng-if='signinForm.signinUser.$error.required && signinForm.$dirty' class='message'>
     <h2>Username required</h2>
   </div>
-  <div ng-show='signinForm.signinPassword.$error.required && signinForm.$dirty' class='message'>
+  <div class="alert-danger" ng-show='signinForm.signinPassword.$error.required && signinForm.$dirty' class='message'>
     <h2>Password required</h2>
   </div>
 </div>
