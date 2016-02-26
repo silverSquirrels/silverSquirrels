@@ -3,13 +3,11 @@ angular.module('hikexpert.services', [])
 .factory('Home', function($http){
 
   var getCoords = function(userInfo){
-    console.log('userInfo in factory $http func', userInfo);
     return $http({
       method: 'POST',
       url: 'api/coords',
       data: userInfo
     }).then(function(resp){
-      console.log('response in the factory', resp);
       return resp.data;
     });
   };
@@ -23,7 +21,7 @@ angular.module('hikexpert.services', [])
       return resp.data;
     });
   };
-
+  // Puts trails in hasDone or wantToDo arrays, based on the url endpoint used
   var trailPost = function (trailName, url) {
     var trailObj = {
       trailName : trailName
