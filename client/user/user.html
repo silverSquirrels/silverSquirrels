@@ -30,13 +30,13 @@
     </div>
   </div>
 
-  <div class='col-xs-6'>
+  <div class='col-sm-6 well'>
    <h3> Trails I Have Done: </h3>
     <div ng-repeat='trailName in userInfo.haveDone track by $index'>
       <p>{{trailName}}</p>
     </div>
   </div>
-   <div class='col-xs-6'>
+   <div class='col-sm-6 well'>
      <h3> Trails I Want To Do: </h3>
      <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
      <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button></p>
