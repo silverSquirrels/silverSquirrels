@@ -1,7 +1,8 @@
 <div class='container'>
-<<<<<<< 622dbdee22bf6bcba1b81aba93cb42f26535ae47
-  <h1 test>Hello {{userInfo.username}}</h1>    
-  <div class="row">
+
+  <h1 test>Hello {{userInfo.username}}</h1>  
+
+  <div class="row well">
     <div class="col-sm-6">
       <p class="lead">See trails near you! <small>Enter a radius:</small></p>
       <select class="form-control" name="radius" ng-model="userInfo.radius" ng-change="getCoords(userInfo)" >
@@ -25,63 +26,25 @@
       <span class='getting_markers'>Unpacking and placing markers...</span>
       <span class="glyphicon glyphicon-map-marker loading-icon"></span>
     </div>
-=======
-  
-    <h1 test>Hello {{userInfo.username}}</h1>
-    
-<div class="row">
-  <div class="col-sm-6">
-    <p class="lead">See trails near you! <small>Enter a radius:</small></p>
-    <select class="form-control" name="radius" ng-model="userInfo.radius" ng-change="getCoords(userInfo)" >
-      <!-- It would be ideal to have a default option, but this doesn't work with jQuery for some reason: -->
-      <!-- <option selected disabled>Select a radius</option> -->
-      <option value="10">10 miles</option>
-      <option value="20">20 miles</option>
-      <option value="50">50 miles</option>
-      <option value="100">100 miles</option>
-    </select>
-  </div>
-</div>
-<br>
-
-<div class='gif-container'>
-  <div ng-if="loading">
-    <p class='loading'>Getting an aerial view...</p>
-    <span class="glyphicon glyphicon-plane loading-icon"></span>
-  </div>
-  <div ng-if='getting_markers'>
-    <span class='getting_markers'>Unpacking and placing markers...</span>
-    <span class="glyphicon glyphicon-map-marker loading-icon"></span>
->>>>>>> (feat) button click changed color of icon
   </div>
 
-  <div id="map">
+  <!-- This is where the leaflet map renders: -->
+  <div id="map"></div>
 
-  </div>
   <div class="col-xs-6">
     <h3> Trails I Have Done: </h3>
     <div ng-repeat='trailName in userInfo.haveDone track by $index'>
      <p>{{trailName}}</p>
-<<<<<<< 622dbdee22bf6bcba1b81aba93cb42f26535ae47
     </div>
   </div>
-=======
-   </div>
- </div>
- <div class="col-xs-6">
-   <h3> Trails I Want To Do: </h3>
-   <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-     <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails"); changeColor(this.trailName, greenIcon, "did it")'>Did it!</button></p>
-     
-   </div>
- </div>
->>>>>>> (feat) button click changed color of icon
 
-  <div class="col-xs-6">
-    <h3> Trails I Want To Do: </h3>
-    <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-      <p>{{trailName}} <button class="btn btn-success" ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button></p>
+   <div class="col-xs-6">
+     <h3> Trails I Want To Do: </h3>
+     <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
+       <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails"); changeColor(this.trailName, greenIcon, "did it")'>Did it!</button></p>
      </div>
-  </div>
+   </div>
+ </div>
 
-</div>
+
+

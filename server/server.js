@@ -5,6 +5,9 @@
 /// This is how to access the api key:
 /// process.env.TRAIL_API_KEY
 
+/// You will need to make a .env file with a TrailAPI key
+/// (the .env files just needs one line: TRAIL_API_KEY: your_key_here)
+/// the 'dotenv' module loads it from there, unless you are on Heroku, where you set it to an environment variable and set NODE_ENV to be 'production'
 if(process.env.NODE_ENV !== 'production'){
   require('dotenv').config();
 }
@@ -38,7 +41,6 @@ var port = process.env.PORT || 4000;
 
 app.use(express.static(path.join(__dirname, '../client')));
 
-// Routes for user signin, signup, and signedin
 app.post('/signin', userControllers.signin);
 app.post('/signup', userControllers.signup);
 app.get('/signedin', userControllers.checkAuth);
@@ -47,16 +49,14 @@ app.post('/hasDone', userControllers.hasDone);
 app.post('/wantToDo', userControllers.wantToDo);
 app.post('/moveTrails', userControllers.moveTrails);
 
-app.get('/', function(req, res){
-  res.send('Hello world');
-});
-
+// Handle trailAPI requests:
 app.post('/api/coords', function(req, res){
   var radius = req.body.radius;
   var lat = req.body.lat;
   var long = req.body.long;
   var limit = 30;
 
+// Unirest is used to get API data, following example on trailAPI website
   unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
     .header("X-Mashape-Key", process.env.TRAIL_API_KEY)
     .header("Accept", "text/plain")
