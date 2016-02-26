@@ -17,6 +17,7 @@ angular.module('hikexpert', [
       controller: 'AuthController'
     })
     .when('/user', {
+      authenticate: true,
       templateUrl: 'user/user.html',
       controller: 'HomePageController'
     })
