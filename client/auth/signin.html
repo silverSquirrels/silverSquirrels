@@ -13,10 +13,10 @@
     </div>
   </div>
   
-  <div class="text-danger" ng-if='signinForm.signinUser.$error.required && signinForm.$dirty' class='message'>
+  <div class="alert-danger" ng-if='signinForm.signinUser.$error.required && signinForm.$dirty' class='message'>
     <h2>Username required</h2>
   </div>
-  <div ng-show='signinForm.signinPassword.$error.required && signinForm.$dirty' class='message'>
+  <div class="alert-danger" ng-show='signinForm.signinPassword.$error.required && signinForm.$dirty' class='message'>
     <h2>Password required</h2>
   </div>
 </div>

@@ -1,6 +1,8 @@
 <div class='container fixed-user'>
   <div class="well">
-    <h1>{{userInfo.username}}</h1>
+    <div class="page-header">
+      <h1>{{userInfo.username}}</h1>
+    </div>
     <h3>Status: {{hikerStatus}}</h3>
   </div>
 
@@ -29,7 +31,7 @@
       </div>
     </div>
   </div>
-
+  <hr>
   <div class='col-sm-6 well'>
    <h3> Trails I Have Done: </h3>
     <div ng-repeat='trailName in userInfo.haveDone track by $index'>

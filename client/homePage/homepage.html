@@ -1,7 +1,7 @@
 <div class='container fixed-homepage'>
-
-  <h1 test>Hello {{userInfo.username}}</h1>  
-
+  <div class="page-header">
+    <h1 test>Hello {{userInfo.username}}</h1>  
+  </div>
   <div class="row well">
     <div class="col-sm-6">
       <p class="lead">See trails near you! <small>Enter a radius:</small></p>
@@ -30,7 +30,7 @@
 
   <!-- This is where the leaflet map renders: -->
   <div id="map"></div>
-
+  <hr>
   <div class="col-sm-6 well">
     <h3> Trails I Have Done: </h3>
     <div ng-repeat='trailName in userInfo.haveDone track by $index'>
