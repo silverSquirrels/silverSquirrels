@@ -1,7 +1,7 @@
 <div class='container'>
   <h1>{{userInfo.username}}</h1>
   <h2>{{hikerStatus}}</h2>
-</div>
+
 
 <div class="container">
   <h3>Complete 5 trails</h3>
@@ -21,27 +21,27 @@
   </div>
 
   <h3>Complete 100 trails</h3>
-  <div class="progress">
-    <div class="progress-bar progress-bar-striped progress-bar-danger active" id="hikeHundred" role="progressbar"
-    aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
-    {{maxFilter(userInfo.haveDone.length, 100)}} / 100
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-danger active" id="hikeHundred" role="progressbar"
+      aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+      {{maxFilter(userInfo.haveDone.length, 100)}} / 100
+      </div>
     </div>
   </div>
-</div>
 
-<div class='col-xs-6'>
- <h3> Trails I Have Done: </h3>
-  <div ng-repeat='trailName in userInfo.haveDone track by $index'>
-    <p>{{trailName}}</p>
+  <div class='col-xs-6'>
+   <h3> Trails I Have Done: </h3>
+    <div ng-repeat='trailName in userInfo.haveDone track by $index'>
+      <p>{{trailName}}</p>
+    </div>
   </div>
-</div>
 
-<div class='col-xs-6'>
- <h3> Trails I Want To Do: </h3>
-   <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-     <p>{{trailName}}</p>
-     <button ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button>
-   </div>
- </div>
+  <div class='col-xs-6'>
+   <h3> Trails I Want To Do: </h3>
+     <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
+       <p>{{trailName}}</p>
+       <button ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button>
+     </div>
+  </div>
 
 </div>
