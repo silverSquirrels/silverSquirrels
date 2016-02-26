@@ -24,6 +24,9 @@ angular.module('hikexpert', [
     .when('/signup', {
       templateUrl: 'auth/signup.html',
       controller: 'AuthController'
+    })
+    .when('/aboutTeam', {
+      templateUrl: 'about/aboutTeam.html'
     });
 
     // We add our $httpInterceptor into the array
