@@ -6,13 +6,14 @@ angular.module('hikexpert.home', [])
   $scope.getting_markers = false;
   $scope.markers = [];
   $scope.hikerStatus = 'City-Dweller';
-
+  //Makes it so numerator cannot exceed denom in progress bar
   $scope.maxFilter = function(current, max){
     if(current > max){
       return max;
     }
     return current;
   };
+  //Checks hike count and changes hiker status based on # of hikes
   var updateStatus = function(){
     var hikes = $scope.userInfo.haveDone.length;
     if(hikes >= 100){
@@ -23,6 +24,8 @@ angular.module('hikexpert.home', [])
       $scope.hikerStatus = 'Wanderer';
     }
   }
+  //Given target bar in the form '#barID', hikeTarget as an integer, and total hikes
+  //Fills target bar the appropriate percent or 100% if total exceeds target
   var fillBar = function(targetBar, hikeTarget, totalHikes){
     var barLength = (totalHikes / hikeTarget * 100).toString() + '%';
     if(totalHikes < hikeTarget){
@@ -156,13 +159,6 @@ angular.module('hikexpert.home', [])
       id: 'mapbox.satellite',
       accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
-
-      // Add a circle showing user's location to the map
-    // var circle = L.circle([lat, long], 500, {
-    //   color: 'red',
-    //   fillColor: '#f03',
-    //   fillOpacity: 1
-    // }).addTo(map).bindPopup("Current Location").openPopup();
 
     L.marker([lat, long], {icon: mapMarker}).addTo(map).bindPopup("Here you are").openPopup();
 
