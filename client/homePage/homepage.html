@@ -67,8 +67,8 @@ Because of the material.select() we had to call to initialize the select form --
  <div class="col-xs-6">
    <h3> Trails I Want To Do: </h3>
    <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-     <p>{{trailName}}</p>
-     <button ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button>
+     <p>{{trailName}} <button class="btn btn-success" ng-click='moveTrail(this.trailName, "/moveTrails")'>Did it!</button></p>
+     
    </div>
  </div>
 
