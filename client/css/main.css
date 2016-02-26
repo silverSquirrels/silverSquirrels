@@ -140,4 +140,57 @@ a {
   margin-left: 8px;
 }
 
-
+.form-signup, .form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signup .form-signup-heading,
+.form-signin .form-signin-heading,
+.form-signup .checkbox,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin-heading, .form-signup-heading {
+  color: #034732;
+}
+.form-signin .checkbox, .form-signup .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control, .form-signup .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus, .form-signup .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="username"], .form-signup input[type="username"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"], .form-signup input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-control {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.go-to-signup > a, .go-to-signin > a {
+  color: #034732;
+}
+.btn {
+  background-color: #008148;
+  color: #ebe9e9;
+}
+.btn:hover {
+  background-color: #034732;
+  color: #f0f0c9;
+}
