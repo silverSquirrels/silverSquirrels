@@ -67,35 +67,28 @@ angular.module('hikexpert.home', [])
   };
 
   // Icons for map //
-  var myIcon = L.icon({
-    iconUrl : 'http://stuff.samat.org/Test-Cases/Leaflet/881-Marker-Subclassing/marker-icon-red.png'
-  });
   var mapMarker = L.AwesomeMarkers.icon({
     icon: 'map-marker',
     iconColor: 'red' //#F0F0C9
   });
-  var asterisk = L.AwesomeMarkers.icon({
-    icon: 'asterisk',
-    iconColor: 'green'
-  });
-  var wantTrailIcon = L.AwesomeMarkers.icon({
+  var yellowIcon = L.AwesomeMarkers.icon({
     icon: 'tree-conifer',
     iconColor: '#C6C013'
   });
-  var haveTrailIcon = L.AwesomeMarkers.icon({
+  var greenIcon = L.AwesomeMarkers.icon({
     icon: 'tree-conifer',
     iconColor: '#008148'
   });
   
 
   ////////////////////////
-
-
   $scope.getCoords = function(userInfo){
     $scope.getting_markers = true;  
     $scope.markers.forEach(function (marker) {
       $scope.map.removeLayer(marker);
-    });
+      $scope.markers = [];
+  });
+
     navigator.geolocation.getCurrentPosition(function(position) {
         $scope.userInfo.lat = position.coords.latitude;
         $scope.userInfo.long = position.coords.longitude;
@@ -105,16 +98,41 @@ angular.module('hikexpert.home', [])
           //$scope.coordinates =
           console.log('data in HomePageController', data);
           data.forEach(function(trail, i){
-            marker = new L.marker(trail.coordinates, {title: trail.name})
-            // This is part of an ugly jQuery hack. Hidden spans contain the name of the trail, so we can get at that later. Undoubtedly, there is a better way to do this.
-              .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
-            // store markers in an array on the $scope.
+            var marker;
+            // If trail is in the wantToDo array
+            //console.log(trail.name);
+            // If it is in the haveDone array, makes its class 'want-to' and give option 'i want to hike again'
+            if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
+              marker = L.marker(trail.coordinates, {icon: greenIcon})
+                .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
+              // L.marker will not take more than two parameters ... !?
+              // So title is set here:
+              marker.options.title = trail.name;
+            } 
+            // If it is in the wantToDo array, makes its class be 'have' and give option 'i have hiked this'
+            // If it is in both, set icon to yellow so they can say they have hiked it (again)
+            if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
+              marker = L.marker(trail.coordinates, {icon: yellowIcon})
+                .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>').addTo($scope.map).openPopup();
+              // L.marker will not take more than two parameters ... !?
+              // So title is set here:
+              marker.options.title = trail.name;
+
+            }
+            // If it's not in either array, keep it default blue icon
+            if ( $scope.userInfo.wantToDo.indexOf(trail.name) === -1 && $scope.userInfo.haveDone.indexOf(trail.name) === -1) {
+              marker = L.marker(trail.coordinates, {title: trail.name})
+              // This is part of an ugly jQuery hack. Hidden spans contain the name of the trail, so we can get at that later. Undoubtedly, there is a better way to do this.
+                .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
+            }
             $scope.markers.push(marker);
           });
         $scope.getting_markers = false;  
         });
       });
   };
+
+  
 
   ///// Get user's location, render a leaflet map showing that location when they land on this page
   navigator.geolocation.getCurrentPosition(function(position) {
@@ -150,16 +168,13 @@ angular.module('hikexpert.home', [])
 
   });
 
-       // element.iconUrl = 'http://stuff.samat.org/Test-Cases/Leaflet/881-Marker-Subclassing/marker-icon-red.png';
-
   // Ugly jQuery hack to implement click listeners
-
   $('body').on('click', '.have', function(){
-    console.log('name of trail', $(this).children().html());
+    //console.log('name of trail', $(this).children().html());
     var trailName = $(this).children().html();
 
     // make this its own function
-    $scope.changeColor(trailName, haveTrailIcon, 'did it');
+    $scope.changeColor(trailName, greenIcon, 'did it');
     //////////// ^^^^^
 
     $scope.trailPost(trailName, '/hasDone');
@@ -171,35 +186,36 @@ angular.module('hikexpert.home', [])
   $('body').on('click', '.want-to', function(){
     console.log('name of trail', $(this).children().html());
     var trailName = $(this).children().html();
-    //console.log(trailName)
-    $scope.changeColor(trailName, wantTrailIcon);
+    $scope.changeColor(trailName, yellowIcon);
     $scope.trailPost(trailName, '/wantToDo');
     $scope.getUser();
-
   });
+
   ///// Helpers ////
   $scope.changeColor = function (trailName, icon, intent) {
       $scope.markers.forEach(function(element, i, arr){
-        console.log(element.options.title);
-        console.log(trailName);
       if(element.options.title === trailName){
         var latlng = element._latlng;
+
         $scope.map.removeLayer(element);
         
-        element = L.marker([latlng.lat, latlng.lng], {icon: icon}, {trailName: trailName}).addTo($scope.map);
+        element = L.marker([latlng.lat, latlng.lng], {icon: icon} ).addTo($scope.map);
+        // L.marker will not take more than two parameters ... !?
+        // So title is set here:
+        element.options.title = trailName;
+        // If they clicked "I have hiked this":
+        // Remove the 'have hiked' option
         if(intent === 'did it') {
           element.bindPopup('<b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
-        } else {
-          element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trailName+'</span></a>');
-          //arr[i].bindPopup("You rocked this") 
-          //arr[i].openPopup();
+        } 
+        // If they clicked "I want to hike this":
+        // Remove the 'want to' option
+        else {
+          element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span>').openPopup();
         }
       }
     });
-
   };
-
-
 });
 
 
