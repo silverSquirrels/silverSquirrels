@@ -77,4 +77,6 @@ app.post('/api/coords', function(req, res){
   });
 });
 
+exports.port = port;
+
 app.listen(port);
