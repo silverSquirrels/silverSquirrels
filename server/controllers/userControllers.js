@@ -95,6 +95,7 @@ module.exports = {
       // decode token
       var user = jwt.decode(token, 'superskrull');
     // check if user is in database
+    
     var findUser = Q.nbind(User.findOne, User);
     findUser({username: user.username})
       .then(function(foundUser) {
@@ -124,10 +125,8 @@ module.exports = {
         if(err){
           next(new Error('Failed to find user!'));
         }
-        console.log(foundUser.haveDone)
         foundUser.haveDone.addToSet(trailName);
         foundUser.save();
-        console.log(foundUser.haveDone)
         res.sendStatus(202, 'yo');
       });
 
@@ -143,7 +142,8 @@ module.exports = {
       User.findOne({ username : user.username}).exec(function (err, foundUser){
         if(err){
           next(new Error('Failed to find user!'));
-        }        
+        }
+        // "addToSet" is a mongo thing, like push but does not allow repeats        
         foundUser.wantToDo.addToSet(trailName);
         foundUser.save();
         res.sendStatus(202, 'yo');
@@ -152,7 +152,7 @@ module.exports = {
     }
   },
   moveTrails : function (req, res, next) {
-    console.log('called!!')
+    console.log('moveTrails called!!')
     var trailName = req.body.trailName;
     var token = req.headers['x-access-token'];
     if(!token) {
@@ -163,10 +163,10 @@ module.exports = {
         if(err){
           next(new Error('Failed to find user!'));
         }
-        console.log(foundUser);       
+        // "pull" removes item from mongo array       
         foundUser.wantToDo.pull(trailName);
+        // add to set adds an item to mongo array, does not allow repeats
         foundUser.haveDone.addToSet(trailName);
-        console.log(foundUser);
         foundUser.save();
         res.sendStatus(202, 'yo');
       });
