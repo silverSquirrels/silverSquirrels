@@ -57,6 +57,7 @@ angular.module('hikexpert.home', [])
     });
   };
   //////// Call getUser to bring down user's info from DB ///
+
   $scope.getUser();
   //////// trailPost is defined in services.js
   $scope.trailPost = Home.trailPost;
@@ -169,6 +170,7 @@ angular.module('hikexpert.home', [])
   });
   ////////////// Click Listeners ////////////////////
   // Ugly jQuery hack to implement click listeners
+  // Bug: one click is transformed into two clicks. Somehow these click listeners get registered twice. This has no effect on functionality.
   $('body').on('click', '.have', function(){
     // We access trailName through the hidden span:
     var trailName = $(this).children().html();
@@ -176,15 +178,23 @@ angular.module('hikexpert.home', [])
     $scope.changeColor(trailName, $scope.greenIcon, 'did it');
     // Store trail in hasDone array in DB with trailPost http request:
     $scope.trailPost(trailName, '/hasDone');
-    // Re-render new information:
-    $scope.getUser();
+    // Make sure it is moved from wantToDo array
+    $scope.moveTrail(trailName, '/moveTrails');
+    // Re-render new information, wait a bit to make sure DB is done saving:
+    // moveTrail will call getUser, so following line is probably unnecessary and left commented out:
+    //$scope.getUser();
+    
+    
   });
 
   $('body').on('click', '.want-to', function(){
     var trailName = $(this).children().html();
     $scope.changeColor(trailName, yellowIcon);
     $scope.trailPost(trailName, '/wantToDo');
-    $scope.getUser();
+    // Re-render new info, waiting a bit so DB has time to finish saving:
+    setTimeout(function(){
+      $scope.getUser();
+    }, 400);
   });
 
   ///////////// Helpers //////////////
