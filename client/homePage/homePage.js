@@ -201,10 +201,11 @@ angular.module('hikexpert.home', [])
   $scope.changeColor = function (trailName, icon, intent) {
       $scope.markers.forEach(function(element, i, arr){
       if(element.options.title === trailName){
+        // _.latlng is a leaflet attribute
         var latlng = element._latlng;
-
+        // remove the marker:
         $scope.map.removeLayer(element);
-        
+        // re-create it as an icon:
         element = L.marker([latlng.lat, latlng.lng], {icon: icon} ).addTo($scope.map);
         // L.marker will not take more than two parameters ... !?
         // So title is set here:
