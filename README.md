@@ -5,12 +5,11 @@ HikeXpert
 
 A gamified hiking trail experience.
 
-
 ## Team
 
-  - __Product Owner__: Eric Broberg
-  - __Scrum Master__: Colton Savage
-  - __Development Team Members__: Andrew Vedady, Mike Frazier
+  - __Product Owner__: Eric Broberg, Ian Akers
+  - __Scrum Master__: Colton Savage, Alex Ko
+  - __Development Team Members__: Andrew Vedady, Mike Frazier, John Soo, JT Yim
 
 ## Table of Contents
 
@@ -29,10 +28,6 @@ A gamified hiking trail experience.
 ## Requirements
 
 - Node 0.12.7
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
 
 ## Development
 
@@ -48,7 +43,7 @@ bower install
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/Nuthinlikeacleanbathroom/HikeXpert/issues)
 
 
 ## Contributing
