@@ -1,8 +1,6 @@
 # Project Name
 HikeXpert
 
-> Pithy project description
-
 A gamified hiking trail experience.
 
 ## Team
@@ -23,7 +21,7 @@ A gamified hiking trail experience.
 
 ## Usage
 
-> Some usage instructions
+Head to hawks-hikexpert.herokuapp.com
 
 ## Requirements
 
