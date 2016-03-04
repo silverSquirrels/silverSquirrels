@@ -48,12 +48,20 @@ angular.module('hikexpert.services', [])
       data: trailObj
     });
   };
+  
+  var syncLocation = function (username, location) {
+    socket.emit('coords', {
+      user: username,
+      location: location
+    });
+  };
 
   return {
     getTrails: getTrails,
     getCoords: getCoords,
     getUser: getUser,
-    trailPost: trailPost
+    trailPost: trailPost,
+    syncLocation: syncLocation
   };
 })
 

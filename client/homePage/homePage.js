@@ -118,14 +118,6 @@ angular.module('hikexpert.home', [])
       queryHome('getTrails', location, $scope.renderTrails);
     });
   };
-  
-  $scope.syncLocation = function() {
-    socket.emit('coords', {
-      user: $scope.userInfo.username,
-      lat: $scope.userInfo.location.lat,
-      long: $scope.userInfo.location.long
-    });
-  };
 
   $scope.updateUserLocation = function(callback) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -242,7 +234,7 @@ angular.module('hikexpert.home', [])
   /////// moves trails from 'want to do' array to 'have done' array
   
   $scope.updateInterval = setInterval(function(){
-    $scope.updateUserLocation($scope.syncLocation);
+    $scope.updateUserLocation(Home.syncLocation($scope.userInfo.username, $scope.userInfo.location));
     if ($scope.userInfo.marker) {
       $scope.userInfo.marker.setLatLng([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
     }   

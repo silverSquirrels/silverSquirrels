@@ -17,6 +17,10 @@ var userSchema = new mongoose.Schema ({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
+  location: {
+    lat: Number,
+    long: Number
+  },
   haveDone: [String],
   wantToDo: [String],
   created_at: Date,
