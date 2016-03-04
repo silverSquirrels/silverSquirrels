@@ -135,6 +135,10 @@ angular.module('hikexpert.home', [])
     });
   };
   
+  setInterval(function(callback){
+    $scope.updateUserLocation($scope.syncLocation);    
+  }, 5000)
+
   $scope.updateUserLocation = function(callback) {
     navigator.geolocation.getCurrentPosition(function(position) {
       $scope.userInfo.location.lat = position.coords.latitude;

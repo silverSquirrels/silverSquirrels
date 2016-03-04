@@ -9,7 +9,7 @@
 /// (the .env files just needs one line: TRAIL_API_KEY: your_key_here)
 /// the 'dotenv' module loads it from there, unless you are on Heroku, where you set it to an environment variable and set NODE_ENV to be 'production'
 if(process.env.NODE_ENV !== 'production'){
-	require('dotenv').config();
+  require('dotenv').config();
 }
 
 var express = require('express');
@@ -31,7 +31,7 @@ mongoose.connect(mongoURI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection.error'));
 db.once('open', function() {
-	console.log("Mongoose connection open");
+  console.log("Mongoose connection open");
 });
 
 app.use(morgan('dev'));
@@ -60,22 +60,23 @@ app.post('/api/coords', geocodeController.getCoords);
 exports.port = port;
 
 var server = app.listen(port, function(){
-	console.log("Listening on port: "+ port)
+  console.log("Listening on port: "+ port)
 });
 
 // Socket Connection
 var io=require('socket.io')(server);
 io.on('connection', function(socket){
-	console.log('*** Client has Connected');	
+  console.log('*** Client has Connected');  
   
   socket.on('coords', function syncCoords(data) {
+    console.log(data);
     socket.emit('coords', data);
   });
   
-	socket.on('disconnect', function(){
-		console.log('!!! User has Disconnected')
-	})
+  socket.on('disconnect', function(){
+    console.log('!!! User has Disconnected')
+  })
 });
 
-
+exports.io = io;
 
