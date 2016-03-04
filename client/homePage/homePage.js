@@ -34,8 +34,7 @@ angular.module('hikexpert.home', [])
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
-    Home.getUser()
-    .then (function (data) {
+    queryHome('getUser', null, function(data) {
       $scope.userInfo.username = data.username;
       $scope.userInfo.haveDone = data.haveDone;
       $scope.userInfo.wantToDo = data.wantToDo;
@@ -46,17 +45,9 @@ angular.module('hikexpert.home', [])
       fillBar('#hikeFive', 5, hikes);
       fillBar('#hikeTwentyFive', 25, hikes);
       fillBar('#hikeHundred', 100, hikes);
-    })
-    .catch(function (err) {
-      console.log('error in getUser', err);
     });
   };
-  //////// Call getUser to bring down user's info from DB ///
 
-  $scope.getUser();
-  //////// trailPost is defined in services.js
-  $scope.trailPost = Home.trailPost;
-  /////// moves trails from 'want to do' array to 'have done' array
   $scope.moveTrail = function (trailName, url) {
     Home.trailPost(trailName, url)
     .then(function (response) {
@@ -66,10 +57,9 @@ angular.module('hikexpert.home', [])
       }
     });
   };
-
   
   /********************************
-    MAP INTERACTION
+    MAP
   ********************************/
   /// Icons for map, uses leaflet-awesome-markers library ///
   var mapMarker = L.AwesomeMarkers.icon({
@@ -188,34 +178,6 @@ angular.module('hikexpert.home', [])
       $scope.markers.push(marker);
     });
   };
-  
-
-  ////////////// Click Listeners ////////////////////
-  // Ugly jQuery hack to implement click listeners
-  // Bug: one click is transformed into two clicks. Somehow these click listeners get registered twice. This has no effect on functionality.
-  $('body').on('click', '.have', function(){
-    // We access trailName through the hidden span:
-    var trailName = $(this).children().html();
-    // Change icon's color:
-    $scope.changeColor(trailName, $scope.greenIcon, 'did it');
-    // Store trail in hasDone array in DB with trailPost http request:
-    $scope.trailPost(trailName, '/hasDone');
-    // Make sure it is moved from wantToDo array
-    $scope.moveTrail(trailName, '/moveTrails');
-    // Re-render new information, wait a bit to make sure DB is done saving:
-    // moveTrail will call getUser, so following line is probably unnecessary and left commented out:
-    //$scope.getUser();
-  });
-
-  $('body').on('click', '.want-to', function(){
-    var trailName = $(this).children().html();
-    $scope.changeColor(trailName, yellowIcon);
-    $scope.trailPost(trailName, '/wantToDo');
-    // Re-render new info, waiting a bit so DB has time to finish saving:
-    setTimeout(function(){
-      $scope.getUser();
-    }, 400);
-  });
 
   ///////////// Helpers //////////////
   var queryHome = function(homeMethod, body, callback) {
@@ -232,7 +194,7 @@ angular.module('hikexpert.home', [])
   };
   
   $scope.changeColor = function (trailName, icon, intent) {
-      $scope.markers.forEach(function(element, i, arr){
+    $scope.markers.forEach(function(element, i, arr){
       if(element.options.title === trailName){
         // _.latlng is a leaflet attribute
         var latlng = element._latlng;
@@ -268,4 +230,37 @@ angular.module('hikexpert.home', [])
   $scope.markers = [];
   $scope.hikerStatus = 'City-Dweller';
   $scope.updateUserLocation($scope.createMap);
+  
+  //////// Call getUser to bring down user's info from DB ///
+  $scope.getUser();
+  //////// trailPost is defined in services.js
+  $scope.trailPost = Home.trailPost;
+  /////// moves trails from 'want to do' array to 'have done' array
+  
+  ////////////// Click Listeners ////////////////////
+  // Ugly jQuery hack to implement click listeners
+  // Bug: one click is transformed into two clicks. Somehow these click listeners get registered twice. This has no effect on functionality.
+  $('body').on('click', '.have', function(){
+    // We access trailName through the hidden span:
+    var trailName = $(this).children().html();
+    // Change icon's color:
+    $scope.changeColor(trailName, $scope.greenIcon, 'did it');
+    // Store trail in hasDone array in DB with trailPost http request:
+    $scope.trailPost(trailName, '/hasDone');
+    // Make sure it is moved from wantToDo array
+    $scope.moveTrail(trailName, '/moveTrails');
+    // Re-render new information, wait a bit to make sure DB is done saving:
+    // moveTrail will call getUser, so following line is probably unnecessary and left commented out:
+    //$scope.getUser();
+  });
+
+  $('body').on('click', '.want-to', function(){
+    var trailName = $(this).children().html();
+    $scope.changeColor(trailName, yellowIcon);
+    $scope.trailPost(trailName, '/wantToDo');
+    // Re-render new info, waiting a bit so DB has time to finish saving:
+    setTimeout(function(){
+      $scope.getUser();
+    }, 400);
+  });
 });
