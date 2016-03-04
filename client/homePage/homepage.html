@@ -13,11 +13,11 @@
           <option value="100">100 miles</option>
         </select>
         <p class="lead">See trails all over the US! <small>Enter a location:</small></p>
-        <input type="text" size="65%" name="search" ng-model="searchData" placeholder="Enter an address, city, or state">
-        <button type="submit" name="submit">Find Trails</button>
+        <input class="form-control" type="text" size="65%" name="search" ng-model="searchData" placeholder="Enter an address, city, or state">
+        <button class="btn btn-success" type="submit" name="submit">Find Trails</button>
       </form>
       <p class="lead">Or:</p>
-      <button name="use-location" ng-click="getTrailsNearUser(userInfo.location)">Use my location</button> 
+      <button class="btn btn-success" name="use-location" ng-click="getTrailsNearUser(userInfo.location)">Use my location</button> 
     </div>
   </div>
 
@@ -41,16 +41,16 @@
     <h3> Trails I Have Done: </h3>
     <div ng-repeat='trailName in userInfo.haveDone track by $index'>
      <p>{{trailName}}</p>
-    </div>
-  </div>
-
-   <div class="col-sm-6 well">
-     <h3> Trails I Want To Do: </h3>
-     <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-       <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails"); changeColor(this.trailName, greenIcon, "did it")'>Did it!</button></p>
-     </div>
    </div>
  </div>
+
+ <div class="col-sm-6 well">
+   <h3> Trails I Want To Do: </h3>
+   <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
+     <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails"); changeColor(this.trailName, greenIcon, "did it")'>Did it!</button></p>
+   </div>
+ </div>
+</div>
 
 
 
