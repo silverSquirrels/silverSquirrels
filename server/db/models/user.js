@@ -21,6 +21,7 @@ var userSchema = new mongoose.Schema ({
     lat: Number,
     long: Number
   },
+  trail: Array,
   haveDone: [String],
   wantToDo: [String],
   created_at: Date,

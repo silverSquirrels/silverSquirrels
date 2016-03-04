@@ -188,8 +188,10 @@ angular.module('hikexpert.home', [])
   $scope.updateUserLocation($scope.createMap);
   $scope.getUser();
   
-  $scope.updateInterval = setInterval(function(){
-    $scope.updateUserLocation(Home.syncLocation($scope.userInfo.username, $scope.userInfo.location));
+  $scope.updateInterval = setInterval(function (){
+    $scope.updateUserLocation(function sync () {
+      Home.syncLocation($scope.userInfo.username, $scope.userInfo.location)
+    });
     if ($scope.userInfo.marker) {
       $scope.userInfo.marker.setLatLng([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
     }   
@@ -215,7 +217,7 @@ angular.module('hikexpert.home', [])
   $('body').on('click', '.want-to', function(){
     var trailName = $(this).children().html();
     $scope.changeColor(trailName, yellowIcon);
-    $scope.trailPost(trailName, '/wantToDo');
+    Home.trailPost(trailName, '/wantToDo');
     // Re-render new info, waiting a bit so DB has time to finish saving:
     setTimeout(function(){
       $scope.getUser();
