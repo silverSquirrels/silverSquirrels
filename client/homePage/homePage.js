@@ -113,6 +113,14 @@ angular.module('hikexpert.home', [])
     });
   };
   
+  $scope.syncLocation = function() {
+    socket.emit('coords', {
+      user: $scope.userInfo.username,
+      lat: $scope.userInfo.lat,
+      long: $scope.userInfo.long
+    });
+  };
+  
   $scope.updateUserLocation = function(callback) {
     navigator.geolocation.getCurrentPosition(function(position) {
       $scope.userInfo.lat = position.coords.latitude;

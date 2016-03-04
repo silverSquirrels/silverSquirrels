@@ -7,7 +7,7 @@
       <form>
         <p class="lead">See trails near you! <small>Enter a radius:</small></p>
         <select class="form-control" name="radius" ng-model="userInfo.radius" ng-change="getTrailsNearUser(userInfo)" >
-         <!--  <option selected>Select a radius</option> -->
+          <option selected default>Select a radius</option>
           <option value="10">10 miles</option>
           <option value="20">20 miles</option>
           <option value="50">50 miles</option>

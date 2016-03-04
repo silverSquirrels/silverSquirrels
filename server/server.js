@@ -62,9 +62,6 @@ app.post('/api/coords', function(req, res){
   unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
     .header("X-Mashape-Key", process.env.TRAIL_API_KEY)
     .header("Accept", "text/plain")
-    .catch(function(err) {
-      console.log('There was an error querying TailAPI:', err);
-    })
     .end(function(result){
       if(result.body.places){
         var coordinates = result.body.places.map(function(el){
@@ -82,6 +79,12 @@ app.post('/api/coords', function(req, res){
     });
 });
 
+app.post('api/cities', function(req, res) {
+  socket.on('cities', function citiesSearch(data) {
+    unirest.post("https://maps.googleapis.com/maps/api/geocode/json?address=")
+  });
+});
+
 exports.port = port;
 
 var server = app.listen(port, function(){
@@ -92,17 +95,15 @@ var server = app.listen(port, function(){
 var io=require('socket.io')(server);
 io.on('connection', function(socket){
 	console.log('*** Client has Connected');	
-	
-	var interval = setInterval(function(){
-		var date = new Date().toString().substring(4,24);
-		socket.emit("time", date); 
-	},5000);
-
+  
+  socket.on('coords', function syncCoords(data) {
+    socket.emit('coords', data);
+  });
+  
 	socket.on('disconnect', function(){
 		console.log('!!! User has Disconnected')
 	})
-
-})
+});
 
 
 
