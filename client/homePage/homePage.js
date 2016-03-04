@@ -92,7 +92,7 @@ angular.module('hikexpert.home', [])
     $scope.$apply();
     
     // Initialize the leaflet map:
-    var map = L.map('map').setView([$scope.userInfo.lat, $scope.userInfo.long], 9);
+    var map = L.map('map').setView([$scope.userInfo.location.lat, $scope.userInfo.location.long], 9);
     // Set it on the angular scope:
     $scope.map = map;
     // Add a tile layer to our map (from mapbox):
@@ -103,20 +103,42 @@ angular.module('hikexpert.home', [])
       accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
     // User's location:
-    L.marker([$scope.userInfo.lat, $scope.userInfo.long], {icon: mapMarker}).addTo(map).bindPopup("Here you are").openPopup();
+    L.marker([$scope.userInfo.location.lat, $scope.userInfo.location.long], {icon: mapMarker}).addTo(map).bindPopup("Here you are").openPopup();
   };
   
-  $scope.getTrailsNearUser = function(userInfo){
+  $scope.getTrailsNearUser = function(location){
     $scope.emptyMap();
     $scope.updateUserLocation(function() {
-      $scope.renderIcons(userInfo);
+      $scope.map.setView([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
+      $scope.renderIcons('getTrails', $scope.userInfo.location);
+    });
+  };
+  
+  $scope.getTrailsNearLocation = function(searchData) {
+    $scope.emptyMap();
+    Home.getCoords(JSON.stringify({search: searchData}))
+      .then(function(location) {
+        location.radius = $scope.userInfo.location.radius;
+        $scope.map.setView([location.lat, location.long]);
+        $scope.renderIcons('getTrails', location)
+      })
+      .catch(function(err) {
+        console.error('There was an error rendering the new coordinates:', err);
+      });
+  };
+  
+  $scope.syncLocation = function() {
+    socket.emit('coords', {
+      user: $scope.userInfo.username,
+      lat: $scope.userInfo.location.lat,
+      long: $scope.userInfo.location.long
     });
   };
   
   $scope.updateUserLocation = function(callback) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      $scope.userInfo.lat = position.coords.latitude;
-      $scope.userInfo.long = position.coords.longitude;
+      $scope.userInfo.location.lat = position.coords.latitude;
+      $scope.userInfo.location.long = position.coords.longitude;
       callback(position);
     })
   };
@@ -132,9 +154,9 @@ angular.module('hikexpert.home', [])
     $scope.getting_markers = false;
   };
   
-  $scope.renderIcons = function(userInfo) {
+  $scope.renderIcons = function(homeMethod, body) {
     $scope.getting_markers = true;
-    Home.getCoords(userInfo)
+    Home[homeMethod](body)
       .then(function(data){
         // data is a bunch of trail objects from the API
         data.forEach(function(trail, i){
@@ -168,7 +190,11 @@ angular.module('hikexpert.home', [])
           // Store all the markers in our own array here so we can do work on it later:
           $scope.markers.push(marker);
         });
+      })
+      .catch(function(err) {
+        console.error('There was an error rendering icons:', err);
       });
+      
     $scope.getting_markers = false;
   };
 
@@ -230,7 +256,10 @@ angular.module('hikexpert.home', [])
   /*************************************
     PAGE INITIALIZATION
   *************************************/
-  $scope.userInfo = {}; 
+  $scope.userInfo = {};
+  $scope.userInfo.location = {};
+  $scope.userInfo.location.radius = 10;
+  $scope.searchData = '';
   $scope.loading = true;
   $scope.getting_markers = false;
   $scope.markers = [];

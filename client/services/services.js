@@ -2,13 +2,29 @@ angular.module('hikexpert.services', [])
 
 .factory('Home', function($http){
 
-  var getCoords = function(userInfo){
+  var getTrails = function(userInfo){
     return $http({
       method: 'POST',
-      url: 'api/coords',
+      url: 'api/trails',
       data: userInfo
-    }).then(function(resp){
-      return resp.data;
+    }).then(function(res){
+      return res.data;
+    })
+    .catch(function(err) {
+      console.error('There was an error getting trails from the server:', err);
+    });
+  };
+  
+  var getCoords = function(searchData) {
+    return $http({
+      method: 'POST',
+      url: '/api/coords',
+      data: searchData
+    }).then(function(res) {
+      return res.data;
+    })
+    .catch(function(err) {
+      console.error('There was an error getting coorinates from server:', err);
     });
   };
 
@@ -17,8 +33,8 @@ angular.module('hikexpert.services', [])
       method: 'GET',
       url: '/getUser'
     })
-    .then(function (resp) {
-      return resp.data;
+    .then(function (res) {
+      return res.data;
     });
   };
   // Puts trails in hasDone or wantToDo arrays, based on the url endpoint used
@@ -28,15 +44,16 @@ angular.module('hikexpert.services', [])
     };
     return $http({
       method: 'POST',
-      url : url,
-      data : trailObj
+      url: url,
+      data: trailObj
     });
   };
 
   return {
-    trailPost : trailPost,
-    getUser : getUser,
-    getCoords : getCoords
+    getTrails: getTrails,
+    getCoords: getCoords,
+    getUser: getUser,
+    trailPost: trailPost
   };
 })
 
@@ -47,8 +64,8 @@ angular.module('hikexpert.services', [])
       url: '/signin',
       data: user
     })
-    .then(function(resp) {
-      return resp.data.token;
+    .then(function(res) {
+      return res.data.token;
     });
   };
   
@@ -58,8 +75,8 @@ angular.module('hikexpert.services', [])
       url: '/signup',
       data: user
     })
-    .then(function(resp) {
-      return resp.data.token;
+    .then(function(res) {
+      return res.data.token;
     });
   };
   
@@ -73,10 +90,10 @@ angular.module('hikexpert.services', [])
   };
   
   return {
-    signin : signin,
-    signup : signup,
-    isAuth : isAuth,
-    signout : signout
+    signin: signin,
+    signup: signup,
+    isAuth: isAuth,
+    signout: signout
   };
 })
 
@@ -87,8 +104,8 @@ angular.module('hikexpert.services', [])
       url: '/friends/add',
       data: newFriend
     })
-    .then(function(resp) {
-      return resp;
+    .then(function(res) {
+      return res;
     });
   };
 
