@@ -33,9 +33,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="/#/" class="dropdown-toggle profile-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
+              <a href="/#/" class="dropdown-toggle profile-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/#/user">User Profile</a></li>
+                <li><a href="/#/user">Profile</a></li>
+                <li><a href="/#/friends">Friends</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a ng-controller='AuthController' ng-click="signout()">Sign Out</a></li>
               </ul>
@@ -58,6 +59,7 @@
     <script src="leaflet-awesome-markers/leaflet.awesome-markers.min.js"></script>
     <script src="./homePage/map.js"></script>
     <script src="./homePage/homePage.js"></script>
+    <script src="./user/user.js"></script>
     <script src="./auth/auth.js"></script>
     <script src="services/services.js"></script>
     <script src="app.js"></script>
