@@ -57,7 +57,7 @@
       <p class="footer-company-name">HikeXpert &copy; 2016</p>
     </footer>
     <script type="text/javascript">
-      $(function(){
+      // $(function(){
         var socket = io();
         socket.on("connect",function(){
           console.log(" ** Socket Connected ");
@@ -68,7 +68,7 @@
         socket.on("time",function(msg){
           console.log("Server: " ,msg);
         });
-       }); 
+       // }); 
     </script>
     <script src="leaflet-awesome-markers/leaflet.awesome-markers.min.js"></script>
     <script src="./homePage/map.js"></script>
