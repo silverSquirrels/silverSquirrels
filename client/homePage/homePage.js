@@ -20,7 +20,7 @@ angular.module('hikexpert.home', [])
       }
     });
   };
-  
+
   /********************************
     MAP
   ********************************/
@@ -37,15 +37,15 @@ angular.module('hikexpert.home', [])
     icon: 'tree-conifer',
     iconColor: '#008148'
   });
-  
+
   $scope.createMap = function() {
-    $scope.loading = false;   
+    $scope.loading = false;
     // Workaround for spiffygif not working with ng-if
     $scope.$apply();
 
     var map = L.map('map').setView([$scope.userInfo.location.lat, $scope.userInfo.location.long], 9);
     $scope.map = map;
-    
+
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18,
@@ -56,7 +56,7 @@ angular.module('hikexpert.home', [])
     $scope.userInfo.marker = L.marker([$scope.userInfo.location.lat, $scope.userInfo.location.long], {icon: mapMarker});
     $scope.userInfo.marker.addTo(map).bindPopup("Here you are").openPopup();
   };
-  
+
   $scope.getTrailsNearUser = function(location){
     $scope.emptyMap();
     $scope.updateUserLocation(function(position) {
@@ -68,7 +68,7 @@ angular.module('hikexpert.home', [])
         });
     });
   };
-  
+
   $scope.getTrailsNearLocation = function(searchData) {
     $scope.emptyMap();
     Home.getCoords(JSON.stringify({search: searchData}))
@@ -91,7 +91,7 @@ angular.module('hikexpert.home', [])
       callback(position);
     })
   };
-  
+
   $scope.emptyMap = function() {
     $scope.getting_markers = true;
     $scope.markers.forEach(function (marker) {
@@ -100,15 +100,16 @@ angular.module('hikexpert.home', [])
     });
     $scope.getting_markers = false;
   };
-  
+
   $scope.renderTrails = function(data) {
     // data is a bunch of trail objects from the API
     data.forEach(function(trail, i){
+      var commentFormHTML = "<form class='comment-form'><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
       var marker;
       if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
         marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
-      } 
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>' + commentFormHTML).addTo($scope.map).openPopup();
+      }
       if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
         marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
           .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>').addTo($scope.map).openPopup();
@@ -136,7 +137,7 @@ angular.module('hikexpert.home', [])
       }
     });
   };
-  
+
   /*************************************
     PAGE INITIALIZATION
   *************************************/
@@ -160,9 +161,9 @@ angular.module('hikexpert.home', [])
     });
     if (!!$scope.userInfo.marker) {
       $scope.userInfo.marker.setLatLng([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
-    }   
+    }
   }, 5000);
-  
+
     // TODO: Fix polyline drawing
   // socket.on('coords', function(data){
   //   var users = Object.keys(data);
@@ -172,7 +173,7 @@ angular.module('hikexpert.home', [])
   //     })
   //   })
   // })
-  
+
   /****************
     LISTENERS
   *****************/
@@ -184,6 +185,7 @@ angular.module('hikexpert.home', [])
     Home.trailPost(trailName, '/hasDone');
     $scope.moveTrail(trailName, '/moveTrails');
   });
+  
 
   $('body').on('click', '.want-to', function(){
     var trailName = $(this).children().html();
@@ -195,3 +197,5 @@ angular.module('hikexpert.home', [])
     }, 400);
   });
 });
+Status API Training Shop Blog About Pricing
+© 2016 GitHub, Inc. Terms Privacy Security Contact Help
