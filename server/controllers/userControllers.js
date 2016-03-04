@@ -222,7 +222,14 @@ module.exports = {
       });
     }
   },
+<<<<<<< e02bf63b73b664e94dd5a11f36b91f70c90428fd
 
+||||||| merged common ancestors
+  
+=======
+  
+<<<<<<< b56c1910746fa22007bceab569c21f6b33046c6e
+>>>>>>> added endpoint to get all friends
   updateLocation: function (data) {
     User.findOne({username: data.user})
       .then(function(results) {
@@ -249,5 +256,31 @@ module.exports = {
       .catch(function errHandler (err) {
         console.log('There was an error querying the database:', err);
       });
+||||||| merged common ancestors
+  updateLocation: function (req, res, next) {
+    
+=======
+  getFriends: function(req, res, next) {
+    var token = req.headers['x-access-token'];
+    if(!token) {
+      next(new Error('No token'));
+    } else {
+      var user = jwt.decode(token, 'superskrull');
+      User.findOne({ username: user.username })
+      .populate('friends', 'username haveDone wantToDo')
+      .exec(function(err, foundUser) {
+        if(err){
+          next(new Error('Failed to find user!'));
+        }
+        res.json({
+          friends: foundUser.friends
+        });
+      });
+    }
+  },
+
+  updateLocation: function (req, res, next) {
+    
+>>>>>>> added endpoint to get all friends
   }
 };

@@ -6,6 +6,7 @@ var userControllers = require('./controllers/userControllers.js');
 var trailController = require('./controllers/TrailController.js');
 var geocodeController = require('./controllers/GeocodeController.js');
 
+<<<<<<< e02bf63b73b664e94dd5a11f36b91f70c90428fd
 <<<<<<< 70827d8f7028189df73e8dc3bfdacbbe4d99c1a1
 if (process.env.NODE_ENV !== 'production'){
   require('dotenv').config();
@@ -18,6 +19,13 @@ if(process.env.NODE_ENV !== 'production'){
 }
 
 >>>>>>> (clean)Removed comments regarding dotenv
+||||||| merged common ancestors
+=======
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
+
+>>>>>>> added endpoint to get all friends
 var app = express();
 
 // create and connect to database
