@@ -1,38 +1,5 @@
 angular.module('hikexpert.home', [])
 .controller('HomePageController', function($scope, $rootScope, Home){
-  /**************************
-    PROGRESS BARS
-  **************************/
-  //Makes it so numerator cannot exceed denom in progress bar
-  $scope.maxFilter = function(current, max){
-    if(current > max){
-      return max;
-    }
-    return current;
-  };
-  //Checks hike count and changes hiker status based on # of hikes
-  var updateStatus = function(){
-    var hikes = $scope.userInfo.haveDone.length;
-    if(hikes >= 100){
-      $scope.hikerStatus = 'Explorer';
-    } else if(hikes >= 25){
-      $scope.hikerStatus = 'Hiker';
-    } else if(hikes >= 5){
-      $scope.hikerStatus = 'Wanderer';
-    }
-  };
-  //Given target bar in the form '#barID', hikeTarget as an integer, and total hikes
-  //Fills target bar the appropriate percent or 100% if total exceeds target
-  var fillBar = function(targetBar, hikeTarget, totalHikes){
-    var barLength = (totalHikes / hikeTarget * 100).toString() + '%';
-    if(totalHikes < hikeTarget){
-      $(targetBar).css('width', barLength);
-    } else{
-      $(targetBar).css('width', '100%');
-    }
-    updateStatus();
-  };
-
   /***************************
     USER
   ****************************/
@@ -43,13 +10,6 @@ angular.module('hikexpert.home', [])
       $scope.userInfo.username = data.username;
       $scope.userInfo.haveDone = data.haveDone;
       $scope.userInfo.wantToDo = data.wantToDo;
-      
-      //set progress bar lengths
-      var hikes = $scope.userInfo.haveDone.length;
-      var barLength = (hikes / 5 * 100).toString() + '%';
-      fillBar('#hikeFive', 5, hikes);
-      fillBar('#hikeTwentyFive', 25, hikes);
-      fillBar('#hikeHundred', 100, hikes);
     });
   };
 
@@ -226,12 +186,7 @@ angular.module('hikexpert.home', [])
   $scope.markers = [];
   $scope.hikerStatus = 'City-Dweller';
   $scope.updateUserLocation($scope.createMap);
-  
-  //////// Call getUser to bring down user's info from DB ///
   $scope.getUser();
-  //////// trailPost is defined in services.js
-  $scope.trailPost = Home.trailPost;
-  /////// moves trails from 'want to do' array to 'have done' array
   
   $scope.updateInterval = setInterval(function(){
     $scope.updateUserLocation(Home.syncLocation($scope.userInfo.username, $scope.userInfo.location));
@@ -249,7 +204,7 @@ angular.module('hikexpert.home', [])
     // Change icon's color:
     $scope.changeColor(trailName, $scope.greenIcon, 'did it');
     // Store trail in hasDone array in DB with trailPost http request:
-    $scope.trailPost(trailName, '/hasDone');
+    Home.trailPost(trailName, '/hasDone');
     // Make sure it is moved from wantToDo array
     $scope.moveTrail(trailName, '/moveTrails');
     // Re-render new information, wait a bit to make sure DB is done saving:
