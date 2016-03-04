@@ -57,9 +57,13 @@ angular.module('hikexpert.user', [])
   $scope.addFriend = function() {
     Friend.addFriend({ newFriend: $scope.newFriend })
     .then(function(res) {
-      console.log(res);
+      $scope.addFriendMessage = 'Friend added!';
+      $scope.newFriend = '';
+      $scope.getFriends();
     })
     .catch(function(err) {
+      $scope.addFriendMessage = 'Not found!';
+      $scope.newFriend = '';
       console.error(err);
     });
   };
