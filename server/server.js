@@ -73,11 +73,18 @@ io.on('connection', function(socket){
   console.log('*** Client has Connected');  
   
   socket.on('coords', function syncCoords(data) {
+<<<<<<< 79d69960a50c37b936e3b6b623606b61aa548c33
     userLocs(data);
     console.log(data);
     socket.emit('coords', data);
 
     require('./controllers/userControllers.js').updateLocation(data);
+||||||| merged common ancestors
+    console.log(data);
+    socket.emit('coords', data);
+=======
+    require('./controllers/userControllers.js').updateLocation(data);
+>>>>>>> (feat)User location syncs to mongo
   });
   
   socket.on('disconnect', function(){
