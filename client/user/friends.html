@@ -7,7 +7,7 @@
       <span>{{ addFriendMessage }}</span>
     </form>
   </div>
-
+  
   <div class="row-fluid">
   <div class="container-fluid pull-left well" ng-repeat="friend in friends | filter: search">
       <h1>{{ friend.username }}</h1>
@@ -15,6 +15,5 @@
       <p>Has done: {{ friend.haveDone.length }} | Wants to do: {{ friend.wantToDo.length }}</p>
     </div>
   </div>
-
+  
 </div>
-
