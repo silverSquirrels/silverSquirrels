@@ -1,17 +1,3 @@
- // Cody recommended doing this
-// Makes it so the .env file is read locally to get API key
-// but on heroku if the NODE_ENV config var is set to production, app will look there
-
-/// This is how to access the api key:
-/// process.env.TRAIL_API_KEY
-
-/// You will need to make a .env file with a TrailAPI key
-/// (the .env files just needs one line: TRAIL_API_KEY: your_key_here)
-/// the 'dotenv' module loads it from there, unless you are on Heroku, where you set it to an environment variable and set NODE_ENV to be 'production'
-if(process.env.NODE_ENV !== 'production'){
-  require('dotenv').config();
-}
-
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -19,6 +5,10 @@ var path = require('path');
 var userControllers = require('./controllers/userControllers.js');
 var trailController = require('./controllers/TrailController.js');
 var geocodeController = require('./controllers/GeocodeController.js');
+
+if (process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
 
 var app = express();
 
@@ -83,9 +73,11 @@ io.on('connection', function(socket){
   console.log('*** Client has Connected');  
   
   socket.on('coords', function syncCoords(data) {
-    // console.log(data);
-    // socket.emit('coords', data);
     userLocs(data);
+    console.log(data);
+    socket.emit('coords', data);
+
+    require('./controllers/userControllers.js').updateLocation(data);
   });
   
   socket.on('disconnect', function(){
