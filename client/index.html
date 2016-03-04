@@ -3,6 +3,7 @@
   <head>
     <title>HikeXpert </title>
 
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src='lib/jquery/dist/jquery.min.js'></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-route/angular-route.js"></script>
@@ -54,7 +55,20 @@
       </p>
       <p class="footer-company-name">HikeXpert &copy; 2016</p>
     </footer>
-
+    <script type="text/javascript">
+      $(function(){
+        var socket = io();
+        socket.on("connect",function(){
+          console.log(" ** Socket Connected ");
+        });
+        socket.on("disconnect",function(){
+          console.log(" !! Socket Disconnected ");
+        });
+        socket.on("time",function(msg){
+          console.log("Server: " ,msg);
+        });
+       }); 
+    </script>
     <script src="leaflet-awesome-markers/leaflet.awesome-markers.min.js"></script>
     <script src="./homePage/map.js"></script>
     <script src="./homePage/homePage.js"></script>

@@ -9,7 +9,7 @@
 /// (the .env files just needs one line: TRAIL_API_KEY: your_key_here)
 /// the 'dotenv' module loads it from there, unless you are on Heroku, where you set it to an environment variable and set NODE_ENV to be 'production'
 if(process.env.NODE_ENV !== 'production'){
-  require('dotenv').config();
+	require('dotenv').config();
 }
 
 var express = require('express');
@@ -30,7 +30,7 @@ mongoose.connect(mongoURI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection.error'));
 db.once('open', function() {
-  console.log("Mongoose connection open");
+	console.log("Mongoose connection open");
 });
 
 app.use(morgan('dev'));
@@ -52,32 +52,53 @@ app.post('/moveTrails', userControllers.moveTrails);
 
 // Handle trailAPI requests:
 app.post('/api/coords', function(req, res){
-  var radius = req.body.radius;
-  var lat = req.body.lat;
-  var long = req.body.long;
-  var limit = 30;
+	var radius = req.body.radius;
+	var lat = req.body.lat;
+	var long = req.body.long;
+	var limit = 30;
 
 // Unirest is used to get API data, following example on trailAPI website
-  unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
-    .header("X-Mashape-Key", process.env.TRAIL_API_KEY)
-    .header("Accept", "text/plain")
-  .end(function(result){
-    if(result.body.places){
-      var coordinates = result.body.places.map(function(el){
-        // Organize data into an object with name and coordinates properties:
-        return {
-          name: el.name,
-          coordinates: [el.lat, el.lon]
-        };
-      });
-      console.log('coordinates', coordinates);
-      res.send(coordinates);
-    } else {
-      res.sendStatus(404);
-    }
-  });
+	unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
+		.header("X-Mashape-Key", process.env.TRAIL_API_KEY)
+		.header("Accept", "text/plain")
+	.end(function(result){
+		if(result.body.places){
+			var coordinates = result.body.places.map(function(el){
+				// Organize data into an object with name and coordinates properties:
+				return {
+					name: el.name,
+					coordinates: [el.lat, el.lon]
+				};
+			});
+			console.log('coordinates', coordinates);
+			res.send(coordinates);
+		} else {
+			res.sendStatus(404);
+		}
+	});
 });
 
 exports.port = port;
 
-app.listen(port);
+var server = app.listen(port, function(){
+	console.log("Listening on port: "+ port)
+});
+
+// Socket Connection
+var io=require('socket.io')(server);
+io.on('connection', function(socket){
+	console.log('*** Client has Connected');	
+	
+	var interval = setInterval(function(){
+		var date = new Date().toString().substring(4,24);
+		socket.emit("time", date); 
+	},5000);
+
+	socket.on('disconnect', function(){
+		console.log('!!! User has Disconnected')
+	})
+
+})
+
+
+
