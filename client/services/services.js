@@ -11,7 +11,7 @@ angular.module('hikexpert.services', [])
       return res.data;
     })
     .catch(function(err) {
-      console.err('There was an error getting trails from the server:', err);
+      console.error('There was an error getting trails from the server:', err);
     });
   };
   

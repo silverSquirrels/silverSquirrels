@@ -109,8 +109,8 @@ angular.module('hikexpert.home', [])
   $scope.getTrailsNearUser = function(location){
     $scope.emptyMap();
     $scope.updateUserLocation(function() {
-      $scope.map.setView([location.lat, location.long]);
-      $scope.renderIcons('getTrails', location);
+      $scope.map.setView([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
+      $scope.renderIcons('getTrails', $scope.userInfo.location);
     });
   };
   
@@ -258,6 +258,7 @@ angular.module('hikexpert.home', [])
   *************************************/
   $scope.userInfo = {};
   $scope.userInfo.location = {};
+  $scope.userInfo.location.radius = 10;
   $scope.searchData = '';
   $scope.loading = true;
   $scope.getting_markers = false;

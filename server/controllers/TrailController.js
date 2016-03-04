@@ -22,7 +22,7 @@ module.exports = {
             };
           });
           
-          console.log('TrailsAPI coordinates:', coordinates);
+          console.log('TrailsAPI coordinates:', coordinates.length);
           res.send(coordinates);
         } else {
           res.sendStatus(404);
