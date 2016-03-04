@@ -128,6 +128,7 @@ angular.module('hikexpert.services', [])
   };
 
   return {
-    addFriend: addFriend
+    addFriend: addFriend,
+    getFriends: getFriends
   };
 });

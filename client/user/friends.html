@@ -6,3 +6,14 @@
 </div>
 
 
+<div class="container">
+  <form ng-submit='getFriends()'>
+    <button type="submit">Get Friend</button>
+  </form>
+</div>
+
+<div class="container" ng-repeat="friend in friends">
+  <h1>{{ friend.username }}</h1>
+  <p>{{ friend.hikerStatus }}</p>
+  <p>Has done: {{ friend.haveDone.length }} | Wants to do: {{ friend.wantToDo.length }}</p>
+</div>

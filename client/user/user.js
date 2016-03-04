@@ -56,8 +56,8 @@ angular.module('hikexpert.user', [])
 
   $scope.addFriend = function() {
     Friend.addFriend({ newFriend: $scope.newFriend })
-    .then(function(data) {
-      console.log(data);
+    .then(function(res) {
+      console.log(res);
     })
     .catch(function(err) {
       console.error(err);
@@ -66,8 +66,19 @@ angular.module('hikexpert.user', [])
 
   $scope.getFriends = function() {
     Friend.getFriends()
-    .then(function(data) {
-      console.log(data);
+    .then(function(res) {
+      $scope.friends = res.data.friends;
+      $scope.friends.forEach(function(friend) {
+        if(friend.hasDone >= 100){
+          friend.hikerStatus = 'Explorer';
+        } else if(friend.hasDone >= 25){
+          friend.hikerStatus = 'Hiker';
+        } else if(friend.hasDone >= 5){
+          friend.hikerStatus = 'Wanderer';
+        } else {
+          friend.hikerStatus = 'City-Dweller';
+        }
+      });
     })
     .catch(function(err) {
       console.error(err);
