@@ -180,9 +180,29 @@ module.exports = {
   },
 
   addFriend: function (req, res, next) {
-    console.log("In addFriend ------------------");
-    console.log("req.body", req.body);
-    console.log("req.query", req.query);
-    res.sendStatus(204);
+    var token = req.headers['x-access-token'];
+    console.log("this is what youre getting", req.body.newFriend);
+    if(!token) {
+      next(new Error('No token'));
+    } else {
+      var user = jwt.decode(token, 'superskrull');
+      User.findOne({ username: user.username }).exec(function(err, foundUser) {
+        if(err){
+          next(new Error('Failed to find user!'));
+        }
+        User.findOne({ username: req.body.newFriend }).exec(function(err, newFriend) {
+          if(err) {
+            next(new Error('addFriend failed'));
+          }
+          if(newFriend) {
+            foundUser.friends.addToSet(newFriend);
+            foundUser.save();
+            res.sendStatus(204);
+          } else {
+            res.sendStatus(404);
+          }
+        });
+      });
+    }
   }
 };

@@ -15,8 +15,7 @@ var userSchema = new mongoose.Schema ({
   },
   friends: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    index: {unique: true, dropDups: true}
+    ref: 'User'
   }],
   haveDone: [String],
   wantToDo: [String],
