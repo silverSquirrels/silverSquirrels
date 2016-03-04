@@ -61,6 +61,7 @@ module.exports = {
         next(error);
       });
   },
+
   checkAuth: function(req, res, next) {
     // check user authentication
     // grab token from header
@@ -85,6 +86,7 @@ module.exports = {
       });
     }
   },
+
   getUser: function(req, res, next){
     // check user authentication
     // grab token from header
@@ -114,6 +116,7 @@ module.exports = {
       });
     }
   },
+
   hasDone : function (req, res, next) {
     var trailName = req.body.trailName;
     var token = req.headers['x-access-token'];
@@ -132,6 +135,7 @@ module.exports = {
 
     }
   },
+
   wantToDo : function (req, res, next) {
     var trailName = req.body.trailName;
     var token = req.headers['x-access-token'];
@@ -151,6 +155,7 @@ module.exports = {
 
     }
   },
+
   moveTrails : function (req, res, next) {
     console.log('moveTrails called!!')
     var trailName = req.body.trailName;
@@ -173,4 +178,11 @@ module.exports = {
 
     }
   },
+
+  addFriend: function (req, res, next) {
+    console.log("In addFriend ------------------");
+    console.log("req.body", req.body);
+    console.log("req.query", req.query);
+    res.sendStatus(204);
+  }
 };

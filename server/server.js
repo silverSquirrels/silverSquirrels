@@ -49,6 +49,7 @@ app.get('/getUser', userControllers.getUser);
 app.post('/hasDone', userControllers.hasDone);
 app.post('/wantToDo', userControllers.wantToDo);
 app.post('/moveTrails', userControllers.moveTrails);
+app.put('/friends/add', userControllers.addFriend);
 
 // Handle trailAPI requests:
 app.post('/api/coords', function(req, res){
