@@ -117,6 +117,16 @@ angular.module('hikexpert.services', [])
     });
   };
 
+  var getFriends = function() {
+    return $http({
+      method: 'GET',
+      url: '/friends/all'
+    })
+    .then(function(res) {
+      return res;
+    });
+  };
+
   return {
     addFriend: addFriend
   };
