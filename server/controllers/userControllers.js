@@ -61,6 +61,7 @@ module.exports = {
         next(error);
       });
   },
+
   checkAuth: function(req, res, next) {
     // check user authentication
     // grab token from header
@@ -85,6 +86,7 @@ module.exports = {
       });
     }
   },
+
   getUser: function(req, res, next){
     // check user authentication
     // grab token from header
@@ -114,6 +116,7 @@ module.exports = {
       });
     }
   },
+
   hasDone : function (req, res, next) {
     var trailName = req.body.trailName;
     var token = req.headers['x-access-token'];
@@ -132,6 +135,7 @@ module.exports = {
 
     }
   },
+
   wantToDo : function (req, res, next) {
     var trailName = req.body.trailName;
     var token = req.headers['x-access-token'];
@@ -151,6 +155,7 @@ module.exports = {
 
     }
   },
+
   moveTrails : function (req, res, next) {
     console.log('moveTrails called!!')
     var trailName = req.body.trailName;
@@ -173,4 +178,31 @@ module.exports = {
 
     }
   },
+
+  addFriend: function (req, res, next) {
+    var token = req.headers['x-access-token'];
+    console.log("this is what youre getting", req.body.newFriend);
+    if(!token) {
+      next(new Error('No token'));
+    } else {
+      var user = jwt.decode(token, 'superskrull');
+      User.findOne({ username: user.username }).exec(function(err, foundUser) {
+        if(err){
+          next(new Error('Failed to find user!'));
+        }
+        User.findOne({ username: req.body.newFriend }).exec(function(err, newFriend) {
+          if(err) {
+            next(new Error('addFriend failed'));
+          }
+          if(newFriend) {
+            foundUser.friends.addToSet(newFriend);
+            foundUser.save();
+            res.sendStatus(204);
+          } else {
+            res.sendStatus(404);
+          }
+        });
+      });
+    }
+  }
 };

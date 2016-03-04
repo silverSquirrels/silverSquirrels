@@ -78,4 +78,21 @@ angular.module('hikexpert.services', [])
     isAuth : isAuth,
     signout : signout
   };
+})
+
+.factory('Friend', function($http, $location, $window) {
+  var addFriend = function(newFriend) {
+    return $http({
+      method: 'PUT',
+      url: '/friends/add',
+      data: newFriend
+    })
+    .then(function(resp) {
+      return resp;
+    });
+  };
+
+  return {
+    addFriend: addFriend
+  };
 });

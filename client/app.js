@@ -1,6 +1,7 @@
 angular.module('hikexpert', [
   'hikexpert.home',
   'hikexpert.auth',
+  'hikexpert.user',
   'ngRoute',
   'hikexpert.services',
   'leaflet-directive'
@@ -20,6 +21,11 @@ angular.module('hikexpert', [
       authenticate: true,
       templateUrl: 'user/user.html',
       controller: 'HomePageController'
+    })
+    .when('/friends', {
+      authenticate: true,
+      templateUrl: 'user/friends.html',
+      controller: 'UserController'
     })
     .when('/signup', {
       templateUrl: 'auth/signup.html',

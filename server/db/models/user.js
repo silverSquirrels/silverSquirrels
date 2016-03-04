@@ -13,12 +13,15 @@ var userSchema = new mongoose.Schema ({
     type: String,
     required: true
   },
-  created_at: {type: Date},
-  updated_at: {type: Date},
-
-  salt: String,
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   haveDone: [String],
-  wantToDo: [String]
+  wantToDo: [String],
+  created_at: Date,
+  updated_at: Date,
+  salt: String
 });
 
 userSchema.methods.comparePassword = function(attemptedPW) {
