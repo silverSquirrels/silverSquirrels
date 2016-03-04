@@ -7,14 +7,14 @@
       <form>
         <p class="lead">See trails near you! <small>Enter a radius:</small></p>
         <select class="form-control" name="radius" ng-model="userInfo.radius" ng-change="getTrailsNearUser(userInfo)" >
-          <option selected>Select a radius</option>
+         <!--  <option selected>Select a radius</option> -->
           <option value="10">10 miles</option>
           <option value="20">20 miles</option>
           <option value="50">50 miles</option>
           <option value="100">100 miles</option>
         </select>
-        <input type="text" name="location" ng-change="getTrailsNearUser(searchData)" placeholer="Or search for a location">
-        <button type="submit" name="submit" ng-submit="getTrailsNearUser(searchData)">Find Trails</button>
+        <!-- <input type="text" name="location" ng-change="getTrailsNearUser(searchData)" placeholer="Or search for a location">
+        <button type="submit" name="submit" ng-submit="getTrailsNearUser(searchData)">Find Trails</button> -->
       </form>
     </div>
   </div>

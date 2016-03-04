@@ -168,7 +168,12 @@ angular.module('hikexpert.home', [])
           // Store all the markers in our own array here so we can do work on it later:
           $scope.markers.push(marker);
         });
+      })
+      .catch(function(err) {
+        console.error('There was an error rendering icons:', err);
+        res.status(500);
       });
+      
     $scope.getting_markers = false;
   };
 

@@ -58,25 +58,28 @@ app.post('/api/coords', function(req, res){
 	var long = req.body.long;
 	var limit = 30;
 
-// Unirest is used to get API data, following example on trailAPI website
-	unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
-		.header("X-Mashape-Key", process.env.TRAIL_API_KEY)
-		.header("Accept", "text/plain")
-	.end(function(result){
-		if(result.body.places){
-			var coordinates = result.body.places.map(function(el){
-				// Organize data into an object with name and coordinates properties:
-				return {
-					name: el.name,
-					coordinates: [el.lat, el.lon]
-				};
-			});
-			console.log('coordinates', coordinates);
-			res.send(coordinates);
-		} else {
-			res.sendStatus(404);
-		}
-	});
+  // Unirest is used to get API data, following example on trailAPI website
+  unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
+    .header("X-Mashape-Key", process.env.TRAIL_API_KEY)
+    .header("Accept", "text/plain")
+    .catch(function(err) {
+      console.log('There was an error querying TailAPI:', err);
+    })
+    .end(function(result){
+      if(result.body.places){
+        var coordinates = result.body.places.map(function(el){
+          // Organize data into an object with name and coordinates properties:
+          return {
+            name: el.name,
+            coordinates: [el.lat, el.lon]
+          };
+        });
+        console.log('coordinates', coordinates);
+        res.send(coordinates);
+      } else {
+        res.sendStatus(404);
+      }
+    });
 });
 
 exports.port = port;
