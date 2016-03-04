@@ -6,10 +6,18 @@ var userControllers = require('./controllers/userControllers.js');
 var trailController = require('./controllers/TrailController.js');
 var geocodeController = require('./controllers/GeocodeController.js');
 
+<<<<<<< 70827d8f7028189df73e8dc3bfdacbbe4d99c1a1
 if (process.env.NODE_ENV !== 'production'){
   require('dotenv').config();
 }
 
+||||||| merged common ancestors
+=======
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
+
+>>>>>>> (clean)Removed comments regarding dotenv
 var app = express();
 
 // create and connect to database
@@ -73,18 +81,15 @@ io.on('connection', function(socket){
   console.log('*** Client has Connected');  
   
   socket.on('coords', function syncCoords(data) {
-<<<<<<< 79d69960a50c37b936e3b6b623606b61aa548c33
     userLocs(data);
     console.log(data);
     socket.emit('coords', data);
 
     require('./controllers/userControllers.js').updateLocation(data);
-||||||| merged common ancestors
     console.log(data);
     socket.emit('coords', data);
-=======
+
     require('./controllers/userControllers.js').updateLocation(data);
->>>>>>> (feat)User location syncs to mongo
   });
   
   socket.on('disconnect', function(){
