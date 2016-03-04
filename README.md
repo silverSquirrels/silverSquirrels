@@ -2,6 +2,7 @@
 HikeXpert
 
 A gamified hiking trail experience.
+[Check out our press release!](PRESS-RELEASE.md)
 
 ## Team
 
@@ -15,7 +16,6 @@ A gamified hiking trail experience.
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
 1. [Team](#team)
 1. [Contributing](#contributing)
 
@@ -47,3 +47,4 @@ View the project roadmap [here](https://github.com/Nuthinlikeacleanbathroom/Hike
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+Please use the [STYLE GUIDE](STYLE-GUIDE.md) when creating or editing code.
