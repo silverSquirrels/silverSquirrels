@@ -204,5 +204,9 @@ module.exports = {
         });
       });
     }
+  },
+  
+  updateLocation: function (req, res, next) {
+    
   }
 };

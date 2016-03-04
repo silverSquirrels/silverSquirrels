@@ -20,7 +20,7 @@ angular.module('hikexpert', [
     .when('/user', {
       authenticate: true,
       templateUrl: 'user/user.html',
-      controller: 'HomePageController'
+      controller: 'UserController'
     })
     .when('/friends', {
       authenticate: true,
