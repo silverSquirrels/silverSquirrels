@@ -16,8 +16,9 @@ var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var path = require('path');
-var unirest = require('unirest');
 var userControllers = require('./controllers/userControllers.js');
+var trailController = require('./controllers/TrailController.js');
+var geocodeController = require('./controllers/GeocodeController.js');
 
 var app = express();
 
@@ -52,38 +53,9 @@ app.post('/moveTrails', userControllers.moveTrails);
 app.put('/friends/add', userControllers.addFriend);
 
 // Handle trailAPI requests:
-app.post('/api/coords', function(req, res){
-	var radius = req.body.radius;
-	var lat = req.body.lat;
-	var long = req.body.long;
-	var limit = 30;
-
-  // Unirest is used to get API data, following example on trailAPI website
-  unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
-    .header("X-Mashape-Key", process.env.TRAIL_API_KEY)
-    .header("Accept", "text/plain")
-    .end(function(result){
-      if(result.body.places){
-        var coordinates = result.body.places.map(function(el){
-          // Organize data into an object with name and coordinates properties:
-          return {
-            name: el.name,
-            coordinates: [el.lat, el.lon]
-          };
-        });
-        console.log('coordinates', coordinates);
-        res.send(coordinates);
-      } else {
-        res.sendStatus(404);
-      }
-    });
-});
-
-app.post('api/cities', function(req, res) {
-  socket.on('cities', function citiesSearch(data) {
-    unirest.post("https://maps.googleapis.com/maps/api/geocode/json?address=")
-  });
-});
+app.post('/api/trails', trailController.getTrails);
+// Handle geocode API requests
+app.post('/api/coords', geocodeController.getCoords);
 
 exports.port = port;
 

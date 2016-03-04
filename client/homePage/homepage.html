@@ -4,17 +4,19 @@
   </div>
   <div class="row well">
     <div class="col-sm-6">
-      <form>
-        <p class="lead">See trails near you! <small>Enter a radius:</small></p>
-        <select class="form-control" name="radius" ng-model="userInfo.radius" ng-change="getTrailsNearUser(userInfo)" >
-          <option selected default>Select a radius</option>
-          <option value="10">10 miles</option>
+      <form ng-submit="getTrailsNearLocation(searchData)">
+        <p class="lead">Select a radius:</p>
+        <select class="form-control" name="radius" ng-model="userInfo.location.radius" >
+          <option selected value="10">10 miles</option>
           <option value="20">20 miles</option>
           <option value="50">50 miles</option>
           <option value="100">100 miles</option>
         </select>
-        <!-- <input type="text" name="location" ng-change="getTrailsNearUser(searchData)" placeholer="Or search for a location">
-        <button type="submit" name="submit" ng-submit="getTrailsNearUser(searchData)">Find Trails</button> -->
+        <p class="lead">See trails all over the US! <small>Enter a location:</small></p>
+        <input type="text" name="search" ng-model="searchData" placeholer="Or search for a location">
+        <button type="submit" name="submit">Find Trails</button>
+        <p class="lead">Or:</p>
+        <button name="use-location" ng-click="getTrailsNearUser(userInfo.location)">Use my location</button> 
       </form>
     </div>
   </div>
