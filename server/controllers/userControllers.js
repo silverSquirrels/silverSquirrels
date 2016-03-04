@@ -179,9 +179,8 @@ module.exports = {
     }
   },
 
-  addFriend: function (req, res, next) {
+  addFriend: function(req, res, next) {
     var token = req.headers['x-access-token'];
-    console.log("this is what youre getting", req.body.newFriend);
     if(!token) {
       next(new Error('No token'));
     } else {
@@ -206,6 +205,25 @@ module.exports = {
     }
   },
   
+  getFriends: function(req, res, next) {
+    var token = req.headers['x-access-token'];
+    if(!token) {
+      next(new Error('No token'));
+    } else {
+      var user = jwt.decode(token, 'superskrull');
+      User.findOne({ username: user.username })
+      .populate('friends', 'username haveDone wantToDo')
+      .exec(function(err, foundUser) {
+        if(err){
+          next(new Error('Failed to find user!'));
+        }
+        res.json({
+          friends: foundUser.friends
+        });
+      });
+    }
+  },
+
   updateLocation: function (req, res, next) {
     
   }

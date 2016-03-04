@@ -51,6 +51,7 @@ app.post('/hasDone', userControllers.hasDone);
 app.post('/wantToDo', userControllers.wantToDo);
 app.post('/moveTrails', userControllers.moveTrails);
 app.put('/friends/add', userControllers.addFriend);
+app.get('/friends/all', userControllers.getFriends);
 
 // Handle trailAPI requests:
 app.post('/api/trails', trailController.getTrails);

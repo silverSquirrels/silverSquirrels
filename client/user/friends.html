@@ -1,8 +1,19 @@
-<div class="container">
-  <form ng-submit='addFriend()'>
-    <input type="text" placeholder="new friend" ng-model="newFriend" required></input>
-    <button type="submit">Add Friend</button>
-  </form>
+<div class="container" data-ng-init="getFriends()">
+
+  <div class="container">
+    <form class="form-inline form-group col-md-6" ng-submit="addFriend()">
+      <input class="form-control" type="text" placeholder="username" ng-model="newFriend" required></input>
+      <button class="btn btn-success" type="submit">Add Friend</button>
+      <span>{{ addFriendMessage }}</span>
+    </form>
+  </div>
+
+  <div class="row-fluid">
+  <div class="container-fluid pull-left well" ng-repeat="friend in friends | filter: search">
+      <h1>{{ friend.username }}</h1>
+      <p>{{ friend.hikerStatus }}</p>
+      <p>Has done: {{ friend.haveDone.length }} | Wants to do: {{ friend.wantToDo.length }}</p>
+    </div>
+  </div>
+
 </div>
-
-

@@ -210,4 +210,11 @@ div.auth {
   padding: 80px;
 }
 
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
 
