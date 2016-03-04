@@ -270,8 +270,3 @@ angular.module('hikexpert.home', [])
   $scope.hikerStatus = 'City-Dweller';
   $scope.updateUserLocation($scope.createMap);
 });
-
-
-
-
-
