@@ -1,6 +1,8 @@
 angular.module('hikexpert.home', [])
 .controller('HomePageController', function($scope, $rootScope, Home){
-  /////////////// PROGRESS BARS ////////////////////////////////
+  /**************************
+    PROGRESS BARS
+  **************************/
   //Makes it so numerator cannot exceed denom in progress bar
   $scope.maxFilter = function(current, max){
     if(current > max){
@@ -30,7 +32,10 @@ angular.module('hikexpert.home', [])
     }
     updateStatus();
   };
-  /////////////// END PROGRESS BARS ////////////////////////////////
+
+  /***************************
+    USER
+  ****************************/
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
@@ -93,7 +98,8 @@ angular.module('hikexpert.home', [])
       accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
     // User's location:
-    L.marker([$scope.userInfo.location.lat, $scope.userInfo.location.long], {icon: mapMarker}).addTo(map).bindPopup("Here you are").openPopup();
+    $scope.userInfo.marker = L.marker([$scope.userInfo.location.lat, $scope.userInfo.location.long], {icon: mapMarker});
+    $scope.userInfo.marker.addTo(map).bindPopup("Here you are").openPopup();
   };
   
   $scope.getTrailsNearUser = function(location){
@@ -120,10 +126,6 @@ angular.module('hikexpert.home', [])
       long: $scope.userInfo.location.long
     });
   };
-  
-  setInterval(function(callback){
-    $scope.updateUserLocation($scope.syncLocation);    
-  }, 5000)
 
   $scope.updateUserLocation = function(callback) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -179,7 +181,9 @@ angular.module('hikexpert.home', [])
     });
   };
 
-  ///////////// Helpers //////////////
+  /****************************
+    HELPERS
+  *****************************/
   var queryHome = function(homeMethod, body, callback) {
     $scope.getting_markers = true;
     Home[homeMethod](body)
@@ -236,6 +240,13 @@ angular.module('hikexpert.home', [])
   //////// trailPost is defined in services.js
   $scope.trailPost = Home.trailPost;
   /////// moves trails from 'want to do' array to 'have done' array
+  
+  $scope.updateInterval = setInterval(function(){
+    $scope.updateUserLocation($scope.syncLocation);
+    if ($scope.userInfo.marker) {
+      $scope.userInfo.marker.setLatLng([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
+    }   
+  }, 5000);
   
   ////////////// Click Listeners ////////////////////
   // Ugly jQuery hack to implement click listeners
