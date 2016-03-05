@@ -79,6 +79,21 @@ angular.module('hikexpert.home', [])
     });
   };
 
+  
+  // TODO: Fix polyline drawing
+  socket.on('coords', function(data){
+    var users = Object.keys(data);
+    users.forEach(function(user){
+      data[user].forEach(function(location){
+        L.polyline(LatLng[location[0], location[1]], {color: 'red'}).addTo(map);
+      })
+    })
+  })
+
+  setInterval(function(callback){
+    $scope.updateUserLocation($scope.syncLocation);    
+  }, 5000)
+
   $scope.updateUserLocation = function(callback) {
     navigator.geolocation.getCurrentPosition(function(position) {
       $scope.userInfo.location.lat = position.coords.latitude;
