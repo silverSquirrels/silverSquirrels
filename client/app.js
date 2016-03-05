@@ -2,6 +2,7 @@ angular.module('hikexpert', [
   'hikexpert.home',
   'hikexpert.auth',
   'hikexpert.user',
+  'hikexpert.chat',
   'ngRoute',
   'hikexpert.services',
   'leaflet-directive'
@@ -13,10 +14,6 @@ angular.module('hikexpert', [
       templateUrl: 'homePage/homepage.html',
       controller: 'HomePageController'
     })
-    .when('/signin', {
-      templateUrl: 'auth/signin.html',
-      controller: 'AuthController'
-    })
     .when('/user', {
       authenticate: true,
       templateUrl: 'user/user.html',
@@ -26,6 +23,15 @@ angular.module('hikexpert', [
       authenticate: true,
       templateUrl: 'user/friends.html',
       controller: 'UserController'
+    })
+    .when('/chat', {
+      authenticate: true,
+      templateUrl: 'chat/chat.html',
+      controller: 'ChatController'
+    })
+    .when('/signin', {
+      templateUrl: 'auth/signin.html',
+      controller: 'AuthController'
     })
     .when('/signup', {
       templateUrl: 'auth/signup.html',
