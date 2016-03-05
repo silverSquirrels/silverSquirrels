@@ -104,18 +104,20 @@ angular.module('hikexpert.home', [])
   $scope.renderTrails = function(data) {
     // data is a bunch of trail objects from the API
     data.forEach(function(trail, i){
+      var commentFormHTML = "<form class='comment-form'><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
+      var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>";
       var marker;
       if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
-        marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
+        marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name, rating: trail.rating, difficulty: trail.difficulty, time: trail.time})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>'+ commentFormHTML).addTo($scope.map).openPopup();
       }
       if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
-        marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>').addTo($scope.map).openPopup();
+        marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name, rating: trail.rating, difficulty: trail.difficulty, time: trail.time})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>' + statsDisplayHTML).addTo($scope.map).openPopup();
       }
       if ( $scope.userInfo.wantToDo.indexOf(trail.name) === -1 && $scope.userInfo.haveDone.indexOf(trail.name) === -1) {
-        marker = L.marker(trail.coordinates, {title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map);
+        marker = L.marker(trail.coordinates, {title: trail.name, rating: trail.rating, difficulty: trail.difficulty, time: trail.time})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>' + statsDisplayHTML).addTo($scope.map);
       }
       $scope.markers.push(marker);
     });

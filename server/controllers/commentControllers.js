@@ -81,7 +81,7 @@ module.exports = {
     // var getAllStats = Q.denodeify(module.exports.getAllStats);
   // Unirest is used to get API data, following example on trailAPI website
     unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
-      .header("X-Mashape-Key", 'AbCpru5TaLmshYZXSEgdDyebyrAkp1lmuZrjsnETV9pzmRhHHi')
+      .header("X-Mashape-Key", process.env.TRAIL_API_KEY)
       .header("Accept", "text/plain")
     .end(function(result){
       // console.log(result);
