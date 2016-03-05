@@ -64,13 +64,27 @@ var server = app.listen(port, function(){
 });
 
 // Socket Connection
+
+// Placeholder
+var zz = {}
+function userLocs(data){
+  if( zz[data.user] ){
+    zz[data.user].push([data.lat,data.long]);
+  }else{
+    zz[data.user]=[[data.lat,data.long]];
+  }
+  zz.length >= 100 && ( zz.splice(0,10) );
+  io.emit('coords',zz)
+};
+
 var io=require('socket.io')(server);
 io.on('connection', function(socket){
   console.log('*** Client has Connected');  
   
   socket.on('coords', function syncCoords(data) {
-    console.log(data);
-    socket.emit('coords', data);
+    // console.log(data);
+    // socket.emit('coords', data);
+    userLocs(data);
   });
   
   socket.on('disconnect', function(){
