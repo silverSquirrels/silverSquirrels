@@ -71,7 +71,7 @@ angular.module('hikexpert.home', [])
 
   $scope.getTrailsNearLocation = function(searchData) {
     $scope.emptyMap();
-    Home.getCoords(JSON.stringify({search: searchData}))
+    Home.getCoords({search: searchData})
       .then(function(location) {
         // Add radius so the query to trailAPI works
         location.radius = $scope.userInfo.location.radius;
@@ -148,6 +148,7 @@ angular.module('hikexpert.home', [])
   $scope.userInfo = {};
   $scope.userInfo.location = {};
   $scope.userInfo.location.radius = 10;
+  $scope.userInfo.trails;
   $scope.searchData = '';
   $scope.loading = true;
   $scope.getting_markers = false;
