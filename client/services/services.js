@@ -48,12 +48,20 @@ angular.module('hikexpert.services', [])
       data: trailObj
     });
   };
+  
+  var syncLocation = function (username, location) {
+    socket.emit('coords', {
+      user: username,
+      location: location
+    });
+  };
 
   return {
     getTrails: getTrails,
     getCoords: getCoords,
     getUser: getUser,
-    trailPost: trailPost
+    trailPost: trailPost,
+    syncLocation: syncLocation
   };
 })
 
@@ -109,7 +117,18 @@ angular.module('hikexpert.services', [])
     });
   };
 
+  var getFriends = function() {
+    return $http({
+      method: 'GET',
+      url: '/friends/all'
+    })
+    .then(function(res) {
+      return res;
+    });
+  };
+
   return {
-    addFriend: addFriend
+    addFriend: addFriend,
+    getFriends: getFriends
   };
 });
