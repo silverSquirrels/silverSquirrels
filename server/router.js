@@ -20,5 +20,5 @@ module.exports = function (app, express) {
   app.post('/api/coords', geocodeController.getCoords);
   
   return app;
-}
+};
   
