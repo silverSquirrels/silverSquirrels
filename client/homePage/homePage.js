@@ -108,15 +108,15 @@ angular.module('hikexpert.home', [])
       var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>";
       var marker;
       if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
-        marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name, rating: trail.rating, difficulty: trail.difficulty, time: trail.time})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>'+ commentFormHTML).addTo($scope.map).openPopup();
+        marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
       }
       if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
-        marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name, rating: trail.rating, difficulty: trail.difficulty, time: trail.time})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>' + statsDisplayHTML).addTo($scope.map).openPopup();
+        marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>').addTo($scope.map).openPopup();
       }
       if ( $scope.userInfo.wantToDo.indexOf(trail.name) === -1 && $scope.userInfo.haveDone.indexOf(trail.name) === -1) {
-        marker = L.marker(trail.coordinates, {title: trail.name, rating: trail.rating, difficulty: trail.difficulty, time: trail.time})
+        marker = L.marker(trail.coordinates, {title: trail.name})
           .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>' + statsDisplayHTML).addTo($scope.map);
       }
       $scope.markers.push(marker);
@@ -124,15 +124,18 @@ angular.module('hikexpert.home', [])
   };
 
   $scope.changeColor = function (trailName, icon, intent) {
+    console.log("changeColor");
     $scope.markers.forEach(function(element, i, arr){
       if(element.options.title === trailName){
         var latlng = element._latlng;
         $scope.map.removeLayer(element);
         element = L.marker([latlng.lat, latlng.lng], {icon: icon, title: trailName} ).addTo($scope.map);
         if(intent === 'did it') {
+          console.log("did it");
           element.bindPopup('Been here, done that<br /><b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
         }
         else {
+          console.log("didn't do it");
           element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span>').openPopup();
         }
       }
@@ -189,6 +192,7 @@ angular.module('hikexpert.home', [])
 
   $('body').on('click', '.want-to', function(){
     var trailName = $(this).children().html();
+    console.log(trailName);
     $scope.changeColor(trailName, yellowIcon);
     Home.trailPost(trailName, '/wantToDo');
     // Re-render new info, waiting a bit so DB has time to finish saving:
