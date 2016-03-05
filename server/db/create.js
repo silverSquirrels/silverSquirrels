@@ -1,13 +1,10 @@
 var path = require('path');
 var mongoose = require('mongoose');
 
-if (process.env.NODE_ENV === 'production'){
-  require('dotenv').config();
-}
-var mongoURI = process.env.MONGOLAB_URI;
+var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/hikexpertdb';
 mongoose.connect(mongoURI);
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection.error'));
-db.once('open', console.log.bind(console, 'Mongoose connection open'));
+db.on('error', console.error.bind(console, 'Mongoose connection error: '));
+db.once('open', console.log.bind(console, 'Mongoose connection open: ' + mongoURI));
   
 module.exports = db;
