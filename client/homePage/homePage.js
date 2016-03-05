@@ -1,5 +1,5 @@
 angular.module('hikexpert.home', [])
-.controller('HomePageController', function($scope, $rootScope, Home){
+.controller('HomePageController', function($scope, $rootScope, Home, Socket){
   /***************************
     USER
   ****************************/
@@ -53,14 +53,14 @@ angular.module('hikexpert.home', [])
       accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
     }).addTo(map);
 
-    $scope.userInfo.marker = L.marker([$scope.userInfo.location.lat, $scope.userInfo.location.long], {icon: mapMarker});
+    $scope.userInfo.marker = L.marker([$scope.userInfo.location.lat, $scope.userInfo.location.long], {icon: mapMarker, autoPan: false});
     $scope.userInfo.marker.addTo(map).bindPopup("Here you are").openPopup();
   };
 
   $scope.getTrailsNearUser = function(location){
     $scope.emptyMap();
     $scope.updateUserLocation(function(position) {
-      $scope.map.addEventListener('popupopen');
+      $scope.userInfo.marker.openPopup();
       $scope.map.setView([position.coords.latitude, position.coords.longitude]);
       Home.getTrails($scope.userInfo.location)
         .then(function(data){
@@ -76,7 +76,7 @@ angular.module('hikexpert.home', [])
         // Add radius so the query to trailAPI works
         location.radius = $scope.userInfo.location.radius;
         $scope.map.setView([location.lat, location.long]);
-        $scope.map.removeEventListener('popupopen');
+        $scope.userInfo.marker.closePopup();
         Home.getTrails(location)
           .then(function(data) {
             $scope.renderTrails(data);
@@ -156,13 +156,14 @@ angular.module('hikexpert.home', [])
   /*************
     SOCKETS
   **************/
+  
   $scope.updateInterval = setInterval(function (){
     $scope.updateUserLocation(function sync () {
-      Home.syncLocation($scope.userInfo.username, $scope.userInfo.location)
+      Socket.emit('coords', {user: $scope.userInfo.username, location: $scope.userInfo.location});
+      if (!!$scope.userInfo.marker) {
+        $scope.userInfo.marker.setLatLng([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
+      }
     });
-    if (!!$scope.userInfo.marker) {
-      $scope.userInfo.marker.setLatLng([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
-    }
   }, 5000);
 
     // TODO: Fix polyline drawing
