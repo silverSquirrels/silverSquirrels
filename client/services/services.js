@@ -105,7 +105,7 @@ angular.module('hikexpert.services', [])
   };
 })
 
-.factory('Friend', function($http, $location, $window) {
+.factory('Friend', function($http) {
   var addFriend = function(newFriend) {
     return $http({
       method: 'PUT',
@@ -131,4 +131,9 @@ angular.module('hikexpert.services', [])
     addFriend: addFriend,
     getFriends: getFriends
   };
+})
+
+.factory('Chat', function($http) {
+
+  return {};
 });
