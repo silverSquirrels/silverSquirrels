@@ -1,7 +1,9 @@
 <div class="container">
 
   <div class="chat">
-    <div></div>
+    <div ng-repeat="message in messages track by $index">
+      <p>{{ message }}</p>
+    </div>
   </div>
 
   <form id="send-message" ng-submit="sendMessage()">

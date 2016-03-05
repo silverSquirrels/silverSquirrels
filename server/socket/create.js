@@ -10,7 +10,7 @@ module.exports = function(server) {
     io.emit('coords', users);
   };
 
-  var io=require('socket.io')(server);
+  var io = require('socket.io')(server);
   io.on('connection', function(socket){
     console.log('*** Client has Connected ***');  
     
@@ -19,6 +19,19 @@ module.exports = function(server) {
       socket.emit('coords', data);
       require('../controllers/userControllers.js').updateLocation(data);
     });
+
+
+    ////////////////// CHAT //////////////////
+    socket.on('send message', function(data) {
+      console.log(data);
+      io.sockets.emit('new message', data);
+    });
+
+
+
+
+
+
     
     socket.on('disconnect', function(){
       console.log('!!! User has Disconnected !!!')

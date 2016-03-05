@@ -1,6 +1,11 @@
 angular.module('hikexpert.chat', [])
 
 .controller('ChatController', function($scope, Socket){
+  $scope.messages = [];
+
+  Socket.on('new message', function(data) {
+    $scope.messages.push(data);
+  });
 
   $scope.sendMessage = function() {
     console.log($scope.text);
@@ -9,4 +14,5 @@ angular.module('hikexpert.chat', [])
     angular.element('#text').focus();
   };
   
+
 });
