@@ -14,7 +14,7 @@ angular.module('hikexpert.services', [])
       console.error('There was an error getting trails from the server:', err);
     });
   };
-  
+
   var getCoords = function(searchData) {
     return $http({
       method: 'POST',
@@ -48,7 +48,7 @@ angular.module('hikexpert.services', [])
       data: trailObj
     });
   };
-  
+
   var syncLocation = function (username, location) {
     Socket.emit('coords', {
       user: username,
@@ -56,12 +56,30 @@ angular.module('hikexpert.services', [])
     });
   };
 
+  var commentPost = function(options){
+    console.log("comentPost");
+    return $http({
+      method: 'POST',
+      url : '/comment',
+      data: options
+    });
+  };
+
+  var getComments = function(){
+    return $http({
+      method: 'GET',
+      url : '/comment'
+    });
+  }
+
   return {
     getTrails: getTrails,
     getCoords: getCoords,
     getUser: getUser,
     trailPost: trailPost,
-    syncLocation: syncLocation
+    syncLocation: syncLocation,
+    commentPost : commentPost,
+    getComments : getComments
   };
 })
 
@@ -76,7 +94,7 @@ angular.module('hikexpert.services', [])
       return res.data.token;
     });
   };
-  
+
   var signup = function(user) {
     return $http({
       method: 'POST',
@@ -87,16 +105,16 @@ angular.module('hikexpert.services', [])
       return res.data.token;
     });
   };
-  
+
   var isAuth = function() {
     return !!$window.localStorage.getItem('com.hikexpert');
   };
-  
+
   var signout = function() {
     $window.localStorage.removeItem('com.hikexpert');
     $location.path('/signin');
   };
-  
+
   return {
     signin: signin,
     signup: signup,
