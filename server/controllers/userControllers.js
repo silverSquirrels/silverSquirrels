@@ -203,7 +203,8 @@ module.exports = {
         });
       });
     }
-
+  },
+  
   getFriends: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if(!token) {
