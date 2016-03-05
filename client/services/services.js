@@ -1,6 +1,6 @@
 angular.module('hikexpert.services', [])
 
-.factory('Home', function($http){
+.factory('Home', function($http, Socket){
 
   var getTrails = function(userInfo){
     return $http({
@@ -50,7 +50,7 @@ angular.module('hikexpert.services', [])
   };
   
   var syncLocation = function (username, location) {
-    socket.emit('coords', {
+    Socket.emit('coords', {
       user: username,
       location: location
     });
@@ -136,4 +136,32 @@ angular.module('hikexpert.services', [])
 .factory('Chat', function($http) {
 
   return {};
+})
+
+.factory('Socket', function($rootScope) {
+  var socket = io.connect();
+  var on = function (eventName, callback) {
+    socket.on(eventName, function () {
+      var args = arguments;
+      $rootScope.$apply(function () {
+        callback.apply(socket, args);
+      });
+    });
+  };
+
+  var emit = function (eventName, data, callback) {
+    socket.emit(eventName, data, function () {
+      var args = arguments;
+      $rootScope.$apply(function () {
+        if (callback) {
+          callback.apply(socket, args);
+        }
+      });
+    });
+  };
+
+  return {
+    on: on,
+    emit: emit
+  };
 });

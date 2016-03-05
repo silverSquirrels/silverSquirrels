@@ -1,10 +1,12 @@
 <div class="container">
 
-  <div class="chat"></div>
+  <div class="chat">
+    <div></div>
+  </div>
 
-  <form id="send-message">
-    <input id="message"></input>
-    <button type="submit"></button>
+  <form id="send-message" ng-submit="sendMessage()">
+    <input id="text" ng-model="text" required></input>
+    <button type="submit">Send</button>
   </form>
 
 </div>
