@@ -85,7 +85,9 @@ angular.module('hikexpert.home', [])
     var users = Object.keys(data);
     users.forEach(function(user){
       data[user].forEach(function(location){
-        L.polyline(LatLng[location[0], location[1]], {color: 'red'}).addTo(map);
+        var latlng = latLng(location[0], location[1]);
+        var polyline = L.polyline(latlng, {color: 'red'}).addTo(map);
+        console.log(polyline);
       })
     })
   })
