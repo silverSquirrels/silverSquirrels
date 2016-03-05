@@ -49,13 +49,6 @@ angular.module('hikexpert.services', [])
     });
   };
 
-  var syncLocation = function (username, location) {
-    Socket.emit('coords', {
-      user: username,
-      location: location
-    });
-  };
-
   var commentPost = function(options){
     console.log("comentPost");
     return $http({
@@ -77,7 +70,6 @@ angular.module('hikexpert.services', [])
     getCoords: getCoords,
     getUser: getUser,
     trailPost: trailPost,
-    syncLocation: syncLocation,
     commentPost : commentPost,
     getComments : getComments
   };
