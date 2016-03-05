@@ -104,11 +104,10 @@ angular.module('hikexpert.home', [])
   $scope.renderTrails = function(data) {
     // data is a bunch of trail objects from the API
     data.forEach(function(trail, i){
-      var commentFormHTML = "<form class='comment-form'><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
       var marker;
       if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
         marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>' + commentFormHTML).addTo($scope.map).openPopup();
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
       }
       if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
         marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
@@ -185,7 +184,6 @@ angular.module('hikexpert.home', [])
     Home.trailPost(trailName, '/hasDone');
     $scope.moveTrail(trailName, '/moveTrails');
   });
-  
 
   $('body').on('click', '.want-to', function(){
     var trailName = $(this).children().html();
@@ -197,5 +195,3 @@ angular.module('hikexpert.home', [])
     }, 400);
   });
 });
-Status API Training Shop Blog About Pricing
-© 2016 GitHub, Inc. Terms Privacy Security Contact Help

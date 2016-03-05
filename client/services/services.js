@@ -57,17 +57,18 @@ angular.module('hikexpert.services', [])
   };
 
   var commentPost = function(options){
+    console.log("comentPost");
     return $http({
       method: 'POST',
-      url : "/comment",
+      url : '/comment',
       data: options
-    })
-  }
+    });
+  };
 
   var getComments = function(){
     return $http({
       method: 'GET',
-      url : "/comment"
+      url : '/comment'
     });
   }
 

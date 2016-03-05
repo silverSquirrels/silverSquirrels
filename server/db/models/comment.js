@@ -11,11 +11,12 @@ var commentSchema = new mongoose.Schema({
   time: Number
 })
 
-commentSchema.methods.getStats = function(){
-  var output = {};
+commentSchema.methods.getStats = function(trail, cb){
+var defer = Q.defer();
   // console.log("!!!!!!!!!!");
-  // console.log(this);
-  this.model('Comment').find({trail: this.trail}, 'rating difficulty time').then(function(results){
+
+  this.model('Comment').find({trail: this.trail}, 'rating difficulty time', function(err, results){
+    var output = {};
     var ratingTotal = 0;
     var difficultyTotal = 0;
     var timeTotal = 0
@@ -25,13 +26,12 @@ commentSchema.methods.getStats = function(){
         difficultyTotal += comment.difficulty;
         timeTotal += comment.timeTotal;
     });
-    output.rating = ratingTotal / results.length;
-    output.difficulty = difficultyTotal / results.length;
-    output.time = timeTotal / results.length;
+    trail.rating = ratingTotal / results.length;
+    trail.difficulty = difficultyTotal / results.length;
+    trail.time = timeTotal / results.length;
     // output = trail;
-    console.log(output);
+    cb(trail);
   });
-  return output;
 }
 
 

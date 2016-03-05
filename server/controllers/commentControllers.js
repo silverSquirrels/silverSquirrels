@@ -1,10 +1,12 @@
 var Comment = require('../db/models/comment.js');
 var Q = require('q');
 var unirest = require('unirest');
+var Promise = require("bluebird");
 
 
 module.exports = {
   submit: function(req, res, next){
+    console.log("create");
     var create = Q.nbind(Comment.create, Comment);
     var options = {
       username : req.body.info,
@@ -16,8 +18,8 @@ module.exports = {
     }
 
     create(options).then(function(result){
-    }).fail(function(error){
-      next(error);
+      // console.log(result);
+      res.json(result);
     });
 
   },
@@ -43,23 +45,31 @@ module.exports = {
       }
     })
   },
-  getAllStats : function(trails){
-    var trailsStats = {};
-    var finished = trails.length;
-    console.log("in getAllStats");
-    trails.forEach(function(trail, i){
-      console.log("in forEach");
-      new Comment({trail: trail.name}).getStats().then(function(results){
-        console.log("got stats");
-        trailsStats[trail.name] = results;
-      }, function(error){
-        console.log("error", error);
-      }, function(){
-        console.log("progress");
-      });
 
-    });
-    return trailsStats;
+  getAllStats : function(trails, cb){
+    var asyncMap = function(tasks, callback){
+      var resultsArray = [];
+      var resultsCount = 0;
+
+     for (var i = 0; i < tasks.length; i++){
+       (function(i){
+         tasks[i](function(val){
+          resultsArray[i] = val;
+          resultsCount++;
+          if (resultsCount === tasks.length){
+            callback(resultsArray);
+          }
+         });
+       })(i);
+     }
+    };
+
+    var tasks = trails.map(function(trail){
+     return function(next){
+       Comment({trail: trail.name}).getStats(trail, next);
+    }});
+
+    asyncMap(tasks, cb);
   },
 
   getTrails : function(req, res, next){
@@ -68,7 +78,7 @@ module.exports = {
     var long = req.body.long;
     var limit = 30;
     var comment = new Comment();
-    var getAllStats = Q.fbind(module.exports.getAllStats);
+    // var getAllStats = Q.denodeify(module.exports.getAllStats);
   // Unirest is used to get API data, following example on trailAPI website
     unirest.get("https://trailapi-trailapi.p.mashape.com/?lat="+lat+"&"+limit+"=20&lon="+long+"&q[activities_activity_type_name_eq]=hiking&radius="+radius)
       .header("X-Mashape-Key", 'AbCpru5TaLmshYZXSEgdDyebyrAkp1lmuZrjsnETV9pzmRhHHi')
@@ -85,9 +95,9 @@ module.exports = {
           // Organize data into an object with name and coordinates properties:
         })
         // console.log(Comment);
-        getAllStats(trails).then(function(trails){
-          console.log('trails', trails);
-          res.send(trails);
+        module.exports.getAllStats(trails, function(results){
+          console.log(results);
+          res.send(results);
         });
 
       } else {
