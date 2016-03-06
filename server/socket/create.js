@@ -43,7 +43,6 @@ module.exports = function(server) {
     ///////////////// CHAT //////////////////
 
 
-
     
 
     socket.on('disconnect', function(data){
