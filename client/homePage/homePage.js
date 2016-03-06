@@ -7,18 +7,12 @@ angular.module('hikexpert.home', [])
     Home.getUser()
       .then(function(data) {
         $scope.userInfo.username = data.username;
-        $scope.userInfo.trails = data.trails;
+        $scope.userInfo.trails = data.trails.reduce(function(memo, trailObj){
+          memo[trailObj.trailName] = trailObj.done;
+          return memo;
+        }, {});
         $scope.userInfo.trail = data.trail;
       });
-  };
-
-  $scope.moveTrail = function (trailName, url) {
-    Home.trailPost(trailName, url)
-    .then(function (response) {
-      if(response) {
-        $scope.getUser();
-      }
-    });
   };
 
   /********************************
@@ -255,13 +249,13 @@ angular.module('hikexpert.home', [])
     LISTENERS
   *****************/
   // jQuery workaround to implement click listeners
-  // Bug: one click is transformed into two clicks. Somehow these click listeners get registered twice. This has no effect on functionality.
+  // Bug: one click is transformed into two clicks. 
+  // Somehow these click listeners get registered twice.
   $('body').on('click', '.have', function(){
     var trailName = $(this).children().html();
     if (!!$scope.userInfo.trails[trailName]) {
       Home.trailPut(trailName)
         .then(function(result) {
-          console.log(result);
           $scope.userInfo.trails[trailName] = !$scope.userInfo.trails[trailName];
           $scope.changeColor(trailName, $scope.greenIcon, 'did it');
         })
@@ -287,7 +281,6 @@ angular.module('hikexpert.home', [])
     if (!!$scope.userInfo.trails[trailName]) {
       Home.trailPut(trailName)
         .then(function(result) {
-          console.log(result);
           $scope.userInfo.trails[trailName] = !$scope.userInfo.trails[trailName];
           $scope.changeColor(trailName, yellowIcon);
         })
@@ -297,7 +290,6 @@ angular.module('hikexpert.home', [])
     } else {
       Home.trailPost(trailName)
         .then(function(result) {
-          console.log(result);
           $scope.userInfo.trails[trailName] = false;
           $scope.changeColor(trailName, yellowIcon);
         })

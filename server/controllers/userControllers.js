@@ -1,4 +1,5 @@
 var User = require('../db/models/user.js');
+var Trail = require('../db/models/trail.js');
 var Q = require('q');
 var jwt = require('jwt-simple');
 
@@ -132,8 +133,13 @@ module.exports = {
           console.log('Failed to find user while adding trail:', err);
           res.sendStatus(404);
         }
-        foundUser.trails[trailName] = {done: false};
-        foundUser.save();
+        foundUser.trails.addToSet({trailName: trailName, done: false});
+        console.log(foundUser);
+        foundUser.save()
+          .then(function(result) {
+            res.sendStatus(202);
+          });
+        console.log(foundUser);
         res.sendStatus(202);
       })
       .catch(function(err) {
@@ -157,14 +163,20 @@ module.exports = {
           console.log('Failed to find user while updating trail:', err);
           res.sendStatus(404);
         }
-        foundUser.trails[trailName] = !foundUser.trails[trailName];
-        foundUser.save();
-        res.sendStatus(202);
+        foundUser.trails[trailIdx].done = !foundUser.trails[trailIdx].done;
+        foundUser.save()
+          .then(function(result) {
+            res.send(202);
+          })
+          .catch(function(err) {
+            console.error('There was an error saving user', user.username, ':', err);
+          });
+        res.sendStatus(500);
       })
       .catch(function(err) {
         console.log('There was an error changing trail:', err);
         res.sendStatus(500);
-      })
+      });
   },
 
   addFriend: function(req, res, next) {

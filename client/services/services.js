@@ -24,7 +24,7 @@ angular.module('hikexpert.services', [])
       return res.data;
     })
     .catch(function(err) {
-      console.error('There was an error getting coorinates from server:', err);
+      console.error('There was an error getting coordinates from server:', err);
     });
   };
 

@@ -14,6 +14,10 @@ angular.module('hikexpert', [
       templateUrl: 'homePage/homepage.html',
       controller: 'HomePageController'
     })
+    .when('/trail', {
+      authenticate: true,
+      templateUrl: 'Trail'
+    })
     .when('/user', {
       authenticate: true,
       templateUrl: 'user/user.html',

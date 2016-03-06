@@ -7,17 +7,25 @@ angular.module('hikexpert.user', [])
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
-    queryHome('getUser', null, function(data) {
-      $scope.userInfo.username = data.username;
-      $scope.userInfo.haveDone = data.haveDone;
-      $scope.userInfo.wantToDo = data.wantToDo;
-      
-      //set progress bar lengths
-      var hikes = $scope.userInfo.haveDone.length;
-      var barLength = (hikes / 5 * 100).toString() + '%';
-      fillBar('#hikeFive', 5, hikes);
-      fillBar('#hikeTwentyFive', 25, hikes);
-      fillBar('#hikeHundred', 100, hikes);
+    Home.getUser()
+      .then(function(data) {
+        $scope.userInfo.username = data.username;
+        $scope.userInfo.trails = data.trails;
+        $scope.userInfo.trail = data.trail;
+        
+        $scope.userInfo.hikes = Object.keys($scope.userInfo.trails).reduce(function(memo, trailName) {
+          if ($scope.userInfo.trails.done) {
+            ++memo.done;
+            return memo;
+          } 
+          memo.undone++;
+          return memo;
+        }, {done: 0, undone: 0});
+        
+        var barLength = ($scope.userInfo.hikes.done / 5 * 100).toString() + '%';
+        fillBar('#hikeFive', 5, $scope.userInfo.hikes.done);
+        fillBar('#hikeTwentyFive', 25, $scope.userInfo.hikes.done);
+        fillBar('#hikeHundred', 100, $scope.userInfo.hikes.done);
     });
   };
   
@@ -33,7 +41,7 @@ angular.module('hikexpert.user', [])
   };
   //Checks hike count and changes hiker status based on # of hikes
   var updateStatus = function(){
-    var hikes = $scope.userInfo.haveDone.length;
+    var hikes = $scope.userInfo.hikes.done;
     if(hikes >= 100){
       $scope.hikerStatus = 'Explorer';
     } else if(hikes >= 25){
@@ -87,22 +95,6 @@ angular.module('hikexpert.user', [])
     .catch(function(err) {
       console.error(err);
     });
-  };
-  
-  /****************************
-    HELPERS
-  *****************************/
-  var queryHome = function(homeMethod, body, callback) {
-    $scope.getting_markers = true;
-    Home[homeMethod](body)
-      .then(function(data){
-        callback(data);
-      })
-      .catch(function(err) {
-        console.error('There was an error rendering icons:', err);
-      });
-      
-    $scope.getting_markers = false;
   };
   
   /***************************
