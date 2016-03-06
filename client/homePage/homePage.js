@@ -37,8 +37,8 @@ angular.module('hikexpert.home', [])
     icon: 'tree-conifer',
     iconColor: '#008148'
   });
-  
-  var commentFormHTML = 
+
+  var commentFormHTML =
     "<form class='comment-form'> \
       <textarea class='comment-text' placeholder='Comments'></textarea>\
       <br />Rating\
@@ -58,13 +58,13 @@ angular.module('hikexpert.home', [])
       <br />Hours to hike<input type=number class='time'></number><br />\
       <button type='button' class=comment-button>click</button>\
     </form>";
-    
+
   var statsDisplayHTML = function(trail){
     return "<p class=rating-disp>Rating: " + trail.rating + "</p>\
     <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p>\
     <p class=time-disp>Time: " + trail.time + "</p>";
   };
-  
+
   var markerCases = {
     true: function hasDone(trail) {
       return L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
@@ -99,7 +99,7 @@ angular.module('hikexpert.home', [])
       .setView([$scope.userInfo.location.lat, $scope.userInfo.location.long], 9);
     $scope.map = map;
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw', 
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw',
     {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18,
@@ -120,6 +120,9 @@ angular.module('hikexpert.home', [])
       $scope.map.setView([position.coords.latitude, position.coords.longitude]);
       Home.getTrails($scope.userInfo.location)
         .then(function(data){
+          data.forEach(function(trail){
+            $scope.trails[trail.name] = trail;
+          })
           $scope.renderTrails(data);
         });
     });
@@ -135,6 +138,9 @@ angular.module('hikexpert.home', [])
         $scope.userInfo.marker.closePopup();
         Home.getTrails(location)
           .then(function(data) {
+            data.forEach(function(trail){
+              $scope.trails[trail.name] = trail;
+            })
             $scope.renderTrails(data);
           });
       });
@@ -165,12 +171,30 @@ angular.module('hikexpert.home', [])
         marker = markerCases[$scope.userInfo.trails[trail.name]](trail);
       } else {
         marker = markerCases['notInList'](trail);
+      var seeCommentsHTML = "<a class=see-comments>See comments for this trail</a>"
+      var commentFormHTML = "<form class=comment-form><span class=hidden>"+ trail.name + "</span><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
+      var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>" + seeCommentsHTML;
+      var marker;
+      if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
+        marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>' + commentFormHTML).addTo($scope.map).openPopup();
+      }
+      if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
+        marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a>' + statsDisplayHTML).addTo($scope.map).openPopup();
+      }
+      if ( $scope.userInfo.wantToDo.indexOf(trail.name) === -1 && $scope.userInfo.haveDone.indexOf(trail.name) === -1) {
+        marker = L.marker(trail.coordinates, {title: trail.name})
+          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>' + statsDisplayHTML).addTo($scope.map);
       }
       $scope.markers.push(marker);
     });
   };
 
   $scope.changeColor = function (trailName, icon, intent) {
+    var seeCommentsHTML = "<a class=see-comments>See comments for this trail</a>"
+    var commentFormHTML = "<form class=comment-form><span class=hidden>"+trailName+"</span><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
+    var statsDisplayHTML = "<p class=rating-disp>Rating: " + $scope.trails[trailName].rating + "</p> <p class=difficulty-disp>Difficulty: " + $scope.trails[trailName].difficulty + "</p> <p class=time-disp>Time: " + $scope.trails[trailName].time + "</p>" + seeCommentsHTML;
     console.log("changeColor");
     $scope.markers.forEach(function(element, i, arr){
       if(element.options.title === trailName){
@@ -178,10 +202,10 @@ angular.module('hikexpert.home', [])
         $scope.map.removeLayer(element);
         element = L.marker([latlng.lat, latlng.lng], {icon: icon, title: trailName} ).addTo($scope.map);
         if(intent === 'did it') {
-          element.bindPopup('Been here, done that<br /><b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
+          element.bindPopup('Been here, done that<br /><b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>' + commentFormHTML).openPopup();
         }
         else {
-          element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span>').openPopup();
+          element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span></a>' + statsDisplayHTML).openPopup();
         }
       }
     });
@@ -190,6 +214,7 @@ angular.module('hikexpert.home', [])
   /*************************************
     PAGE INITIALIZATION
   *************************************/
+  $scope.trails = {};
   $scope.userInfo = {};
   $scope.userInfo.location = {};
   $scope.userInfo.location.radius = 10;
@@ -201,11 +226,12 @@ angular.module('hikexpert.home', [])
   $scope.hikerStatus = 'City-Dweller';
   $scope.updateUserLocation($scope.createMap);
   $scope.getUser();
+  $scope.comments;
 
   /*************
     SOCKETS
   **************/
-  
+
   $scope.updateInterval = setInterval(function (){
     $scope.updateUserLocation(function sync () {
       Socket.emit('coords', {user: $scope.userInfo.username, location: $scope.userInfo.location});
@@ -282,4 +308,31 @@ angular.module('hikexpert.home', [])
         })
     }
   });
+
+  $('body').on('click', '.comment-button', function(){
+    var $form = $(this).parent();
+    console.log($form);
+    var options = {
+      trail: $form.find('.hidden').html(),
+      text : $form.find('.comment-text').val(),
+      rating: $form.find('.rating').val(),
+      difficulty : $form.find('.difficulty').val(),
+      time : $form.find('.time').val()
+    };
+    $form.parent().html("Thank you for your submission");
+    console.log(options);
+    Home.commentPost(options);
+  });
+
+  $('body').on('click', '.see-comments', function(){
+    var $parent = $(this).parent();
+    console.log($parent);
+    var trail = $parent.find('.hidden').html()
+    Home.getComments(trail).then(function(commentsData){
+      console.log(commentsData);
+      $scope.comments = commentsData;
+    });
+  });
+
+
 });
