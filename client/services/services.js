@@ -31,23 +31,28 @@ angular.module('hikexpert.services', [])
   var getUser = function(){
     return $http({
       method: 'GET',
-      url: '/getUser'
+      url: '/user/getUser'
     })
     .then(function (res) {
       return res.data;
     });
   };
   // Puts trails in hasDone or wantToDo arrays, based on the url endpoint used
-  var trailPost = function (trailName, url) {
-    var trailObj = {
-      trailName : trailName
-    };
+  var trailPost = function (trailName) {
     return $http({
       method: 'POST',
-      url: url,
-      data: trailObj
+      url: 'user/trails',
+      data: {trailName: trailName}
     });
   };
+  
+  var trailPut = function(trailName) {
+    return $http({
+      method: 'PUT',
+      url: '/user/trails',
+      data: {trailName: trailName}
+    });
+  }
 
   var commentPost = function(options){
     console.log("comentPost");
@@ -70,6 +75,7 @@ angular.module('hikexpert.services', [])
     getCoords: getCoords,
     getUser: getUser,
     trailPost: trailPost,
+    trailPut: trailPut,
     commentPost : commentPost,
     getComments : getComments
   };
