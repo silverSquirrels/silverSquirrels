@@ -161,7 +161,26 @@ angular.module('hikexpert.services', [])
 })
 
 .factory('Socket', function($rootScope) {
-  var socket = io.connect({query: "username=" + $rootScope.username});
+  var socket = io.connect();
+  var sender = '';
+  var recipient = '';
+
+  var getSender = function() {
+    return sender;
+  };
+
+  var setSender = function(val) {
+    sender = val;
+  };
+
+  var getRecipient = function() {
+    return recipient;
+  };
+
+  var setRecipient = function(val) {
+    recipient = val;
+  };
+
   var on = function (eventName, callback) {
     socket.on(eventName, function () {
       var args = arguments;
@@ -183,6 +202,10 @@ angular.module('hikexpert.services', [])
   };
 
   return {
+    getSender: getSender,
+    setSender: setSender,
+    getRecipient: getRecipient,
+    setRecipient: setRecipient,
     on: on,
     emit: emit
   };

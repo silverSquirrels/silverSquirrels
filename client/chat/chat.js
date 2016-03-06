@@ -1,7 +1,8 @@
 angular.module('hikexpert.chat', [])
 
 .controller('ChatController', function($scope, $rootScope, Socket){
-  var sender = $rootScope.username;
+  console.log(Socket.sender);
+  var sender = Socket.getSender();
   var recipient = 'john';
   $scope.messages = [];
 
