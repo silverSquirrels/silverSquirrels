@@ -2,10 +2,8 @@ angular.module('hikexpert.chat', [])
 
 .controller('ChatController', function($scope, $rootScope, Socket){
   $scope.sender = Socket.getSender();
-  $scope.recipient = 'john';
+  $scope.recipient = Socket.getRecipient();
   $scope.messages = [];
-  $scope.messages = [{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},];
-
 
   Socket.on('new message', function(data) {
     $scope.messages.push(data);
