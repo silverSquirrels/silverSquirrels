@@ -48,8 +48,8 @@ module.exports = {
 
   getAllStats : function(trails, cb){
     var asyncMap = function(tasks, callback){
-      var resultsArray = [];
-      var resultsCount = 0;
+    var resultsArray = [];
+    var resultsCount = 0;
 
      for (var i = 0; i < tasks.length; i++){
        (function(i){
@@ -87,7 +87,6 @@ module.exports = {
       // console.log(result);
       if(result.body.places){
         var trails = result.body.places.map(function(el){
-          console.log(el.name);
             return {
               name: el.name,
               coordinates: [el.lat, el.lon],
@@ -96,7 +95,6 @@ module.exports = {
         })
         // console.log(Comment);
         module.exports.getAllStats(trails, function(results){
-          console.log(results);
           res.send(results);
         });
 

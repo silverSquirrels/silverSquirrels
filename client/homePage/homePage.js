@@ -7,8 +7,8 @@ angular.module('hikexpert.home', [])
     Home.getUser()
       .then(function(data) {
         $scope.userInfo.username = data.username;
-        $scope.userInfo.haveDone = data.haveDone;
-        $scope.userInfo.wantToDo = data.wantToDo;
+        $scope.userInfo.trails = data.trails;
+        $scope.userInfo.trail = data.trail;
       });
   };
 
@@ -37,24 +37,80 @@ angular.module('hikexpert.home', [])
     icon: 'tree-conifer',
     iconColor: '#008148'
   });
+  
+  var commentFormHTML = 
+    "<form class='comment-form'> \
+      <textarea class='comment-text' placeholder='Comments'></textarea>\
+      <br />Rating\
+      <select class='rating'>\
+        <option value=1''>1</option>\
+        <option value='2'>2</option>\
+        <option value='3'>3</option>\
+        <option value='4'>4</option>\
+      </select>\
+      Difficulty:\
+      <select class='difficulty'>\
+        <option value=1''>1</option>\
+        <option value='2'>2</option>\
+        <option value='3'>3</option>\
+        <option value='4'>4</option>\
+      </select>\
+      <br />Hours to hike<input type=number class='time'></number><br />\
+      <button type='button' class=comment-button>click</button>\
+    </form>";
+    
+  var statsDisplayHTML = function(trail){
+    return "<p class=rating-disp>Rating: " + trail.rating + "</p>\
+    <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p>\
+    <p class=time-disp>Time: " + trail.time + "</p>";
+  };
+  
+  var markerCases = {
+    true: function hasDone(trail) {
+      return L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
+        .bindPopup(
+          '<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>')
+        .addTo($scope.map)
+        .openPopup();
+    },
+    false: function wantsToDo(trail) {
+      return L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
+        .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>')
+        .addTo($scope.map)
+        .openPopup();
+    },
+    notInList: function notInList(trail) {
+      return L.marker(trail.coordinates, {title: trail.name})
+        .bindPopup(
+          '<b>'+trail.name+'</b>\
+          <br />\
+          <a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a>\
+          <br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>' + statsDisplayHTML(trail))
+        .addTo($scope.map);
+    }
+  }
 
   $scope.createMap = function() {
     $scope.loading = false;
     // Workaround for spiffygif not working with ng-if
     $scope.$apply();
 
-    var map = L.map('map').setView([$scope.userInfo.location.lat, $scope.userInfo.location.long], 9);
+    var map = L.map('map')
+      .setView([$scope.userInfo.location.lat, $scope.userInfo.location.long], 9);
     $scope.map = map;
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw', {
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw', 
+    {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18,
       id: 'mapbox.satellite',
       accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
-    }).addTo(map);
+    })
+    .addTo(map);
 
     $scope.userInfo.marker = L.marker([$scope.userInfo.location.lat, $scope.userInfo.location.long], {icon: mapMarker, autoPan: false});
-    $scope.userInfo.marker.addTo(map).bindPopup("Here you are").openPopup();
+    $scope.userInfo.marker.addTo(map).bindPopup("Here you are")
+      .openPopup();
   };
 
   $scope.getTrailsNearUser = function(location){
@@ -104,20 +160,11 @@ angular.module('hikexpert.home', [])
   $scope.renderTrails = function(data) {
     // data is a bunch of trail objects from the API
     data.forEach(function(trail, i){
-      var commentFormHTML = "<form class='comment-form'><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
-      var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>";
       var marker;
-      if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
-        marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>').addTo($scope.map).openPopup();
-      }
-      if ( $scope.userInfo.wantToDo.indexOf(trail.name) > -1 ) {
-        marker = L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>').addTo($scope.map).openPopup();
-      }
-      if ( $scope.userInfo.wantToDo.indexOf(trail.name) === -1 && $scope.userInfo.haveDone.indexOf(trail.name) === -1) {
-        marker = L.marker(trail.coordinates, {title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a><br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>' + statsDisplayHTML).addTo($scope.map);
+      if (!!$scope.userInfo[trail.name]) {
+        marker = markerCases[$scope.userInfo.trails[trail.name]](trail);
+      } else {
+        marker = markerCases['notInList'](trail);
       }
       $scope.markers.push(marker);
     });
@@ -131,11 +178,9 @@ angular.module('hikexpert.home', [])
         $scope.map.removeLayer(element);
         element = L.marker([latlng.lat, latlng.lng], {icon: icon, title: trailName} ).addTo($scope.map);
         if(intent === 'did it') {
-          console.log("did it");
           element.bindPopup('Been here, done that<br /><b>'+trailName+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trailName+'</span></a>').openPopup();
         }
         else {
-          console.log("didn't do it");
           element.bindPopup('<b>'+trailName+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trailName+'</span>').openPopup();
         }
       }
@@ -148,7 +193,7 @@ angular.module('hikexpert.home', [])
   $scope.userInfo = {};
   $scope.userInfo.location = {};
   $scope.userInfo.location.radius = 10;
-  $scope.userInfo.trails;
+  $scope.userInfo.trails = {};
   $scope.searchData = '';
   $scope.loading = true;
   $scope.getting_markers = false;
@@ -187,19 +232,54 @@ angular.module('hikexpert.home', [])
   // Bug: one click is transformed into two clicks. Somehow these click listeners get registered twice. This has no effect on functionality.
   $('body').on('click', '.have', function(){
     var trailName = $(this).children().html();
-    $scope.changeColor(trailName, $scope.greenIcon, 'did it');
-    Home.trailPost(trailName, '/hasDone');
-    $scope.moveTrail(trailName, '/moveTrails');
+    if (!!$scope.userInfo.trails[trailName]) {
+      Home.trailPut(trailName)
+        .then(function(result) {
+          console.log(result);
+          $scope.userInfo.trails[trailName] = !$scope.userInfo.trails[trailName];
+          $scope.changeColor(trailName, $scope.greenIcon, 'did it');
+        })
+        .catch(function(err) {
+          console.error('There was an error changing the user\'s trail property!', err);
+        });
+    } else {
+      Home.trailPost(trailName)
+        .then(function(result) {
+          $scope.userInfo.trails[trailName] = true;
+          $scope.changeColor(trailName, $scope.greenIcon, 'did it');
+        })
+        .catch(function(err) {
+          if (err) {
+            console.log('There was an error adding the trail to the user\'s trails:', err);
+          }
+        });
+    }
   });
 
   $('body').on('click', '.want-to', function(){
     var trailName = $(this).children().html();
-    console.log(trailName);
-    $scope.changeColor(trailName, yellowIcon);
-    Home.trailPost(trailName, '/wantToDo');
-    // Re-render new info, waiting a bit so DB has time to finish saving:
-    setTimeout(function(){
-      $scope.getUser();
-    }, 400);
+    if (!!$scope.userInfo.trails[trailName]) {
+      Home.trailPut(trailName)
+        .then(function(result) {
+          console.log(result);
+          $scope.userInfo.trails[trailName] = !$scope.userInfo.trails[trailName];
+          $scope.changeColor(trailName, yellowIcon);
+        })
+        .catch(function(err) {
+          console.error('There was an error changing the user\'s trail property!', err);
+        });
+    } else {
+      Home.trailPost(trailName)
+        .then(function(result) {
+          console.log(result);
+          $scope.userInfo.trails[trailName] = false;
+          $scope.changeColor(trailName, yellowIcon);
+        })
+        .catch(function(err) {
+          if (err) {
+            console.error('There was an error adding the trail to the user\'s trails:', err);
+          }
+        })
+    }
   });
 });

@@ -22,9 +22,11 @@ var userSchema = new mongoose.Schema ({
     long: Number
   },
   trail: Array,
-  trails: [Object],
-  haveDone: [String],
-  wantToDo: [String],
+  trails: {
+    trailName: {
+      done: Boolean
+    }
+  },
   created_at: Date,
   updated_at: Date,
   salt: String
