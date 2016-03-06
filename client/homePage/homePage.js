@@ -171,8 +171,9 @@ angular.module('hikexpert.home', [])
         marker = markerCases[$scope.userInfo.trails[trail.name]](trail);
       } else {
         marker = markerCases['notInList'](trail);
+      var seeCommentsHTML = "<a class=see-comments>See comments for this trail</a>"
       var commentFormHTML = "<form class=comment-form><span class=hidden>"+ trail.name + "</span><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
-      var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>";
+      var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>" + seeCommentsHTML;
       var marker;
       if ( $scope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
         marker = L.marker(trail.coordinates, {icon: $scope.greenIcon, title: trail.name})
@@ -191,8 +192,9 @@ angular.module('hikexpert.home', [])
   };
 
   $scope.changeColor = function (trailName, icon, intent) {
+    var seeCommentsHTML = "<a class=see-comments>See comments for this trail</a>"
     var commentFormHTML = "<form class=comment-form><span class=hidden>"+trailName+"</span><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
-    var statsDisplayHTML = "<p class=rating-disp>Rating: " + $scope.trails[trailName].rating + "</p> <p class=difficulty-disp>Difficulty: " + $scope.trails[trailName].difficulty + "</p> <p class=time-disp>Time: " + $scope.trails[trailName].time + "</p>";
+    var statsDisplayHTML = "<p class=rating-disp>Rating: " + $scope.trails[trailName].rating + "</p> <p class=difficulty-disp>Difficulty: " + $scope.trails[trailName].difficulty + "</p> <p class=time-disp>Time: " + $scope.trails[trailName].time + "</p>" + seeCommentsHTML;
     console.log("changeColor");
     $scope.markers.forEach(function(element, i, arr){
       if(element.options.title === trailName){
@@ -224,6 +226,7 @@ angular.module('hikexpert.home', [])
   $scope.hikerStatus = 'City-Dweller';
   $scope.updateUserLocation($scope.createMap);
   $scope.getUser();
+  $scope.comments;
 
   /*************
     SOCKETS
@@ -319,12 +322,16 @@ angular.module('hikexpert.home', [])
     $form.parent().html("Thank you for your submission");
     console.log(options);
     Home.commentPost(options);
+  });
 
-    // var options = {
-    //
-    // }
-    // Home.commentPost(trailName, option);
-    // $scope.moveTrail(trailName, '/moveTrails');
+  $('body').on('click', '.see-comments', function(){
+    var $parent = $(this).parent();
+    console.log($parent);
+    var trail = $parent.find('.hidden').html()
+    Home.getComments(trail).then(function(commentsData){
+      console.log(commentsData);
+      $scope.comments = commentsData;
+    });
   });
 
 

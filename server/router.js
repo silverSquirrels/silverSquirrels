@@ -20,6 +20,7 @@ module.exports = function (app, express) {
   // Handle geocode API requests
   app.post('/api/coords', geocodeController.getCoords);
   app.post('/comment', commentControllers.submit);
+  app.get('/comments', commentControllers.getTrailComments);
 
   return app;
 };

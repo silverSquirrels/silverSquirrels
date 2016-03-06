@@ -45,7 +45,7 @@ angular.module('hikexpert.services', [])
       data: {trailName: trailName}
     });
   };
-  
+
   var trailPut = function(trailName) {
     return $http({
       method: 'PUT',
@@ -63,10 +63,16 @@ angular.module('hikexpert.services', [])
     });
   };
 
-  var getComments = function(){
+  var getComments = function(trail){
+    console.log(trail);
+    var uriComponent = encodeURIComponent(trail);
+    console.log(uriComponent);
     return $http({
       method: 'GET',
-      url : '/comment'
+      url : '/comments?trail=' + uriComponent
+    }).then(function(res){
+      return(res.data);
+
     });
   }
 
