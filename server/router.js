@@ -11,7 +11,7 @@ module.exports = function (app, express) {
   /// trailPost function in services.js updates the trails arrays with these endpoints:
   app.put('/friends/add', userControllers.addFriend);
   app.get('/friends/all', userControllers.getFriends);
-  
+
   app.put('/user/trails', userControllers.toggleTrail);
   app.post('/user/trails', userControllers.addTrail);
 
@@ -19,6 +19,7 @@ module.exports = function (app, express) {
   app.post('/api/trails', commentControllers.getTrails);
   // Handle geocode API requests
   app.post('/api/coords', geocodeController.getCoords);
+  app.post('/comment', commentControllers.submit);
 
   return app;
 };

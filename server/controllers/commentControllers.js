@@ -18,7 +18,7 @@ module.exports = {
     }
 
     create(options).then(function(result){
-      // console.log(result);
+      console.log(result);
       res.json(result);
     });
 
