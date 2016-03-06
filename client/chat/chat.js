@@ -8,7 +8,6 @@ angular.module('hikexpert.chat', [])
   //$scope.messages = [{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},{sender: 'b', text: 'sd'},];
 
 
-
   Socket.on('new message', function(data) {
     $scope.messages.push(data);
   });
@@ -23,5 +22,4 @@ angular.module('hikexpert.chat', [])
     $scope.text = '';
     angular.element('#text').focus();
   };
-
 });
