@@ -1,6 +1,8 @@
 angular.module('hikexpert.chat', [])
 
-.controller('ChatController', function($scope, Socket){
+.controller('ChatController', function($scope, $rootScope, Socket){
+  var sender = $rootScope.username;
+  var recipient = 'john';
   $scope.messages = [];
 
   Socket.on('new message', function(data) {
@@ -8,11 +10,14 @@ angular.module('hikexpert.chat', [])
   });
 
   $scope.sendMessage = function() {
-    console.log($scope.text);
-    Socket.emit('send message', $scope.text);
+    var message = {
+      sender: sender,
+      recipient: recipient,
+      text: $scope.text
+    };
+    Socket.emit('send message', message);
     $scope.text = '';
     angular.element('#text').focus();
   };
-  
 
 });

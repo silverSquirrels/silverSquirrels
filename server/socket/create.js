@@ -1,3 +1,5 @@
+var connected = {};
+
 module.exports = function(server) {
   var users = {}
   function userLocs(data){
@@ -13,7 +15,14 @@ module.exports = function(server) {
   var io = require('socket.io')(server);
   io.on('connection', function(socket){
     console.log('*** Client has Connected ***');  
+    socket.on('new user', function(data, callback) {
+      socket.username = data;
+      connected[socket.username] = socket;
+      console.log("Sockets connected: " + Object.keys(connected));
+      //callback();
+    });
     
+
     socket.on('coords', function syncCoords(data) {
       userLocs(data);
       socket.emit('coords', data);
@@ -23,19 +32,37 @@ module.exports = function(server) {
 
     ////////////////// CHAT //////////////////
     socket.on('send message', function(data) {
-      console.log(data);
-      io.sockets.emit('new message', data);
+      if(data.recipient in connected) {
+        connected[data.recipient].emit('new message', data);
+      }
+      socket.emit('new message', data);
     });
 
 
 
+    ///////////////// CHAT //////////////////
 
 
 
     
-    socket.on('disconnect', function(){
-      console.log('!!! User has Disconnected !!!')
-    })
+
+    socket.on('disconnect', function(data){
+      console.log('!!! User has Disconnected !!!');
+
+      ///////////////// CHAT //////////////////
+
+      console.log("Disconnected socket: " + socket.username);
+      delete connected[socket.username];
+      console.log("Sockets connected: " + Object.keys(connected));
+
+
+
+
+      ///////////////// CHAT //////////////////
+
+
+
+    });
   });
 
   return io;
