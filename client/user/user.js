@@ -7,17 +7,25 @@ angular.module('hikexpert.user', [])
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
-    queryHome('getUser', null, function(data) {
-      $scope.userInfo.username = data.username;
-      $scope.userInfo.haveDone = data.haveDone;
-      $scope.userInfo.wantToDo = data.wantToDo;
-      
-      //set progress bar lengths
-      var hikes = $scope.userInfo.haveDone.length;
-      var barLength = (hikes / 5 * 100).toString() + '%';
-      fillBar('#hikeFive', 5, hikes);
-      fillBar('#hikeTwentyFive', 25, hikes);
-      fillBar('#hikeHundred', 100, hikes);
+    Home.getUser()
+      .then(function(data) {
+        $rootScope.userInfo.username = data.username;
+        $rootScope.userInfo.trails = data.trails;
+        $rootScope.userInfo.trail = data.trail;
+        
+        $rootScope.userInfo.hikes = Object.keys($rootScope.userInfo.trails).reduce(function(memo, trailName) {
+          if ($rootScope.userInfo.trails.done) {
+            ++memo.done;
+            return memo;
+          } 
+          memo.undone++;
+          return memo;
+        }, {done: 0, undone: 0});
+        
+        var barLength = ($rootScope.userInfo.hikes.done / 5 * 100).toString() + '%';
+        fillBar('#hikeFive', 5, $rootScope.userInfo.hikes.done);
+        fillBar('#hikeTwentyFive', 25, $rootScope.userInfo.hikes.done);
+        fillBar('#hikeHundred', 100, $rootScope.userInfo.hikes.done);
     });
   };
   
@@ -33,7 +41,7 @@ angular.module('hikexpert.user', [])
   };
   //Checks hike count and changes hiker status based on # of hikes
   var updateStatus = function(){
-    var hikes = $scope.userInfo.haveDone.length;
+    var hikes = $rootScope.userInfo.hikes.done;
     if(hikes >= 100){
       $scope.hikerStatus = 'Explorer';
     } else if(hikes >= 25){
@@ -89,27 +97,11 @@ angular.module('hikexpert.user', [])
     });
   };
   
-  /****************************
-    HELPERS
-  *****************************/
-  var queryHome = function(homeMethod, body, callback) {
-    $scope.getting_markers = true;
-    Home[homeMethod](body)
-      .then(function(data){
-        callback(data);
-      })
-      .catch(function(err) {
-        console.error('There was an error rendering icons:', err);
-      });
-      
-    $scope.getting_markers = false;
-  };
-  
   /***************************
     PAGE INITIALIZATION
   ***************************/
-  $scope.userInfo = {};
-  $scope.userInfo.location = {};
+  $rootScope.userInfo = {};
+  $rootScope.userInfo.location = {};
   $scope.hikerStatus = 'City-Dweller';
   $scope.getUser();
 });

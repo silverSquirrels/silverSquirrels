@@ -1,0 +1,24 @@
+<div class='container fixed-homepage'>
+  <div class="row-well">
+    <a ng-click="changeTrail()"><h4>Create a trail</h4></a>
+    <h1 class="page-header">{{ currentTrail.name || 'New Trail' }}</h1>
+  </div>
+  <div class="row-well">
+    <div class="col-sm-6" ng-if="exists == true" ng-model="exists">
+      <h3 class="form-control">Rating</h3>
+      <h3 class="form-control">Comments</h3>
+      <button class="btn btn-success form-control" ng-click="saveTrail(currentTrail)">Save this trail!</button>
+      <button class="btn btn-success form-control" ng-click="haveDone(currentTrail)">I have hiked this trail</button>
+    </div>
+    <form ng-if="exists == false" ng-model="exists" ng-submit="saveTrail(currentTrail)">
+      <label>Name</label>
+      <input class="form-control" type="text" name="name" ng-model="currentTrail.name" size="100%" placeholder="Name the trail">
+        <div>
+          <button class="btn btn-success form-control" ng-if="saved == false" ng-model="saved" ng-click="startTrail(userInfo.CurrentLocation)">Begin hiking</button>
+          <button class="btn btn-success form-control" ng-if="saved == true" ng-model="saved" ng-click="saveTrail(currentTrail)">Save this trail!</button>
+        </div>
+    </form>
+  </div>
+
+  <div id="map"></div>
+</div>
