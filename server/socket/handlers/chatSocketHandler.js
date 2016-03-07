@@ -1,5 +1,5 @@
-// var Chat = require('../../db/models/chat.js');
-// var Message = require('../../db/models/message.js');
+var Chat = require('../../db/models/chat.js');
+var Message = require('../../db/models/message.js');
 var connected = {};
 
 module.exports = function(io) {
