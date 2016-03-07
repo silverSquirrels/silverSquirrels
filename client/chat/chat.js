@@ -16,7 +16,9 @@ angular.module('hikexpert.chat', [])
       recipient: $scope.recipient,
       text: $scope.text
     };
-    Socket.emit('chat:send', message);
+    Socket.emit('chat:send', message, function(data) {
+      $scope.messages.push(data);
+    });
     $scope.text = '';
     angular.element('#text').focus();
   };
