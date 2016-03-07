@@ -167,17 +167,36 @@ angular.module('hikexpert.home', [])
         $scope.userInfo.marker.setLatLng([$scope.userInfo.location.lat, $scope.userInfo.location.long]);
       }
     });
-  }, 5000);
+  }, 1000);
 
-    // TODO: Fix polyline drawing
-  // socket.on('coords', function(data){
-  //   var users = Object.keys(data);
-  //   users.forEach(function(user){
-  //     data[user].forEach(function(location){
-  //       L.polyline(LatLng[location[0], location[1]], {color: 'red'}).addTo(map);
-  //     })
-  //   })
-  // })
+  var locs = {}
+  Socket.on('coordsResp', function(data){
+    console.log('lat', data.location.lat);
+    console.log('long', data.location.long);
+    var point = new L.LatLng(data.location.lat, data.location.long);
+    if( !locs[data.user] ){
+      locs[data.user]=[point]
+    }else{
+      locs[data.user].push(point);
+    }
+  })
+
+  setInterval(function(){
+    drawPath()
+  }, 3000)
+
+  function drawPath(){
+    Object.keys(locs).forEach(function(user){
+      var pointSet = locs[user]
+        var firstpolyline = new L.polyline( pointSet {
+          color: 'red',
+          weight: 3,
+          opacity: 0.5
+          smoothFactor: 1
+        });
+      })
+    })
+  }
 
   /****************
     LISTENERS

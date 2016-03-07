@@ -4,8 +4,9 @@ module.exports = function(server) {
     console.log('*** Client has Connected');  
     
     socket.on('coords', function syncCoords(data) {
+      console.log('loc: ', data)
       require('../controllers/userControllers.js').updateLocation(data);
-      socket.emit('coords', data);
+      io.sockets.emit('coordsResp', data);
     });
     
     socket.on('disconnect', function(){
