@@ -34,10 +34,11 @@
     "jwt-simple": "^0.4.1",
     "mocha": "*",
     "mongoose": "^4.4.4",
+    "mongoose-findorcreate": "^0.1.2",
     "morgan": "^1.6.1",
     "q": "^1.4.1",
     "request": "^2.69.0",
-    "unirest": "^0.4.2",
-    "socket.io": "^1.4.5"
+    "socket.io": "^1.4.5",
+    "unirest": "^0.4.2"
   }
 }

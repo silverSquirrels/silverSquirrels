@@ -7,8 +7,7 @@
     <div class="col-sm-6" ng-if="exists == true">
       <h3 class="form-control">Rating</h3>
       <h3 class="form-control">Comments</h3>
-      <button class="btn btn-success form-control" ng-click="saveTrail(userInfo.currentTrail)">Save this trail!</button>
-      <button class="btn btn-success form-control" ng-click="haveDone(userInfo.currentTrail)">I have hiked this trail</button>
+      <button class="btn btn-success form-control" ng-click="saveTrail(userInfo.currentTrail, hasDone)">{{ hasDone ? 'I have hiked this trail!' : 'I want to hike this trail!' }}</button>
     </div>
     <form ng-if="exists == false" ng-submit="saveTrail(userInfo.currentTrail)">
       <label>Name</label>

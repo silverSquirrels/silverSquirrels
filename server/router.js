@@ -13,7 +13,7 @@ module.exports = function (app, express) {
   app.get('/friends/all', userControllers.getFriends);
 
   app.put('/user/trails', userControllers.toggleTrail);
-  app.post('/user/trails', userControllers.addTrail);
+  app.post('/user/trails', userControllers.addTrailToUserTrails);
 
   // Handle trailAPI requests:
   app.post('/api/trails', commentControllers.getTrails);
