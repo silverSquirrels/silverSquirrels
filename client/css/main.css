@@ -218,3 +218,7 @@ div.auth {
   float: right;
 }
 
+.chat {
+  height: 60vh;
+  overflow: scroll;
+}

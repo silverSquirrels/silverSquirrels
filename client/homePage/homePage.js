@@ -28,6 +28,10 @@ angular.module('hikexpert.home', [])
     Home.getUser()
       .then(function(data) {
         $rootScope.userInfo.username = data.username;
+        Socket.setSender($rootScope.userInfo.username);
+        Socket.emit('new user', $rootScope.userInfo.username, function(data) {
+
+        });
         $rootScope.userInfo.trails = data.trails.reduce(function(memo, trailObj){
           memo[trailObj.trailName] = trailObj.done;
           return memo;
@@ -137,5 +141,4 @@ angular.module('hikexpert.home', [])
         $scope.comments = commentsData;
       });
     });
-    
 });
