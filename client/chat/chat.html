@@ -2,7 +2,7 @@
 
   <h1>{{ recipient }}</h1>
 
-  <div class="chat container-fluid">
+  <div class="chat container-fluid" scroll-glue="glued">
     <div ng-repeat="message in messages track by $index">
       <strong><span>{{ message.sender }}: </span></strong>
       <span>{{ message.text }}</span>

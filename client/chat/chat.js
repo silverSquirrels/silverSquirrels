@@ -4,6 +4,7 @@ angular.module('hikexpert.chat', [])
   $scope.sender = Socket.getSender();
   $scope.recipient = Socket.getRecipient();
   $scope.messages = [];
+  $scope.glued = true;
   angular.element('#text').focus();
 
   Socket.on('chat:receive', function(data) {
@@ -30,7 +31,6 @@ angular.module('hikexpert.chat', [])
     };
     Socket.emit('chat:refresh', users, function(data) {
       $scope.messages = data.messages;
-      console.log(data);
     });
   };
 });

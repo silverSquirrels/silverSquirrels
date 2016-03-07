@@ -19,28 +19,11 @@ module.exports = function(io) {
       callback();
     });
 
-
-
-
-
-
-
-
-
-
-
-
     socket.on('chat:send', function(data, callback) {
-      // if(data.recipient in connected) {
-      //   connected[data.recipient].emit('chat:receive', data);
-      // }
-      // socket.emit('chat:receive', data);
-
       var combos = [
         { 'users': [data.sender, data.recipient] },
         { 'users': [data.recipient, data.sender] }
       ];
-
       Message.create({
         sender: data.sender,
         recipient: data.recipient,
@@ -71,27 +54,20 @@ module.exports = function(io) {
       });
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     socket.on('chat:refresh', function(data, callback) {
       var combos = [
         { 'users': [data.sender, data.recipient] },
         { 'users': [data.recipient, data.sender] }
       ];
-
       Chat.findOne({ $or: combos})
-      .populate('messages')
+      .populate({
+        path: 'messages',
+        options: {
+          sort: {
+            'created_at': 1 
+          }
+        }
+      })
       .exec(function(err, chat) {
         if(err) {
           callback(errorMessage);
@@ -111,7 +87,6 @@ module.exports = function(io) {
           }
         }
       });
-
     });
 
     socket.on('disconnect', function(data){
@@ -120,4 +95,4 @@ module.exports = function(io) {
       console.log("Sockets in chat: " + Object.keys(connected));
     });
   });
-}
+};
