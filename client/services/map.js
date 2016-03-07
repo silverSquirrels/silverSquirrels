@@ -1,5 +1,5 @@
 angular.module('map.services', [])
-  .factory('Map', function($rootScope, Home) {
+  .factory('Map', function($rootScope, $compile, Home) {
     var mapMarker = L.AwesomeMarkers.icon({
       icon: 'map-marker',
       iconColor: 'red' //#F0F0C9
@@ -40,28 +40,40 @@ angular.module('map.services', [])
       <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p>\
       <p class=time-disp>Time: " + trail.time + "</p>";
     };
+    
+    var getPopupHTML = function(trail) {
+      return '<a ng-click="goToTrail(trail)">{{ trail.name }}</a>';
+    }
+    
+    var compileMarker = function(html, trail, $scope) {
+      var linkFunction = $compile(angular.element(html));
+      var newScope = $scope.$new();
+      newScope.trail = trail;
+      newScope.goToTrail = $scope.goToTrail;
+      
+      return linkFunction(newScope)[0];
+    }
 
     var markerCases = {
       true: function hasDone(trail, $scope) {
+        var html = getPopupHTML(trail);
+        
         return L.marker(trail.coordinates, {icon: greenIcon, title: trail.name})
-          .bindPopup(
-            '<b>'+trail.name+'</b><br /><a class="want-to">I want to hike this again<span class="hidden">'+trail.name+'</span></a>')
+          .bindPopup(compileMarker(html, trail, $scope))
           .addTo($scope.map)
           .openPopup();
       },
       false: function wantsToDo(trail, $scope) {
+        var html = getPopupHTML(trail);
         return L.marker(trail.coordinates, {icon: yellowIcon, title: trail.name})
-          .bindPopup('<b>'+trail.name+'</b><br /><a class="have">I have hiked this<span class="hidden">'+trail.name+'</span>')
+          .bindPopup(compileMarker(html, trail, $scope))
           .addTo($scope.map)
           .openPopup();
       },
       notInList: function notInList(trail, $scope) {
+        var html = getPopupHTML(trail);
         return L.marker(trail.coordinates, {title: trail.name})
-          .bindPopup(
-            '<b>'+trail.name+'</b>\
-            <br />\
-            <a class="have">I have hiked this<span class="hidden">'+trail.name+'</span></a>\
-            <br /><a class="want-to">I want to hike this<span class="hidden">'+trail.name+'</span></a>' + statsDisplayHTML(trail))
+          .bindPopup(compileMarker(html, trail, $scope))
           .addTo($scope.map);
       }
     }

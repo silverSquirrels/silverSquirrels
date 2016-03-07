@@ -105,10 +105,10 @@ module.exports = {
         if(foundUser) {
           res.send({
             username: foundUser.username,
-            haveDone: foundUser.haveDone,
-            wantToDo: foundUser.wantToDo,
+            location: foundUser.location,
+            hikerStatus: foundUser.hikerStatus,
             trails: foundUser.trails,
-            trail: foundUser.trail
+            path: foundUser.trail
           });
         } else {
           res.send(401);
@@ -223,28 +223,29 @@ module.exports = {
       });
     }
   },
-
+  //Doesn't require auth because sockets are only initialized after auth
   updateLocation: function (data) {
     User.findOne({username: data.user})
       .then(function(results) {
         results.location.lat = data.location.lat;
         results.location.long = data.location.long;
         
-        if (!results.trail.length) {
-          results.trail.push(results.location);
+        if (!results.path.length) {
+          results.path.push(results.location);
         }
         
-        var last = results.trail[results.trail.length - 1];
+        // Trail.findOne({name: data.name})
+        var last = results.path[results.path.length - 1];
         
         var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2) 
           + Math.pow((last.long - data.location.long), 2));
         
         if (distance > .0001) {
-          results.trail.push(results.location);
+          results.path.addToSet(results.location);
         }
         results.save()
           .catch(function errHandler (err) {
-            console.log('There was an error saving the new location.', err);
+            console.log('There was an error saving the new location:', err);
           });
       })
       .catch(function errHandler (err) {
