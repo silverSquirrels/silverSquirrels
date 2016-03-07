@@ -1,11 +1,13 @@
 angular.module('hikexpert.home', [])
-  .controller('HomePageController', function($scope, $rootScope, Home, Socket, Map){
+  .controller('HomePageController', function($scope, $rootScope, $location, Home, Socket, Map){
     $rootScope.userInfo.location.radius = 10;
     $scope.searchData = '';
     $scope.loading = true;
-    $scope.getting_markers = false;
+    // TODO: fix getting markers ng-if
+    // $scope.getting_markers = false;
     $scope.markers = [];
-    $scope.hikerStatus = 'City-Dweller';
+    // $scope.hikerStatus = 'City-Dweller';
+    
     Map.updateUserLocation(function locationUpdated () {
       $scope.loading = false;
       $scope.$apply();
@@ -32,21 +34,15 @@ angular.module('hikexpert.home', [])
       $location.url('/trail');
     };
 
-
-    Socket.setSender($rootScope.userInfo.username);
-    Socket.emit('new user', $rootScope.userInfo.username, function(data) {
-
-    });
-
     $scope.updateInterval = setInterval(function (){
       Map.updateUserLocation(function sync () {
         Socket.emit('coords', {user: $rootScope.userInfo.username, location: $rootScope.userInfo.location});
-        if (!!$rootScope.userInfo.marker) {
-          $rootScope.userInfo.marker.setLatLng([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long]);
-        }
+          if (!!$rootScope.userInfo.marker) {
+            $rootScope.userInfo.marker.setLatLng([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long]);
+          }
       });
     }, 5000);
-
+    
     var polyFriendsConfig = { color: 'blue', weight: 6, opacity: 0.9 };
     var polyUserConfig = { color: 'red', weight: 6, opacity: 0.9 };
     var userLocs = {}

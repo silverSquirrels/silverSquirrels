@@ -21,7 +21,11 @@ var userSchema = new mongoose.Schema ({
     lat: Number,
     long: Number
   },
-  trail: Array,
+  hikerStatus: {type: String, default: 'City-Dweller'},
+  path: [{
+    lat: Number,
+    long: Number
+  }],
   trails: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Trail',

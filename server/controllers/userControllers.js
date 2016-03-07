@@ -106,6 +106,7 @@ module.exports = {
           res.send({
             username: foundUser.username,
             location: foundUser.location,
+            hikerStatus: foundUser.hikerStatus,
             trails: foundUser.trails,
             path: foundUser.trail
           });
@@ -222,7 +223,7 @@ module.exports = {
       });
     }
   },
-
+  //Doesn't require auth because sockets are only initialized after auth
   updateLocation: function (data) {
     User.findOne({username: data.user})
       .then(function(results) {
@@ -233,6 +234,7 @@ module.exports = {
           results.path.push(results.location);
         }
         
+        // Trail.findOne({name: data.name})
         var last = results.path[results.path.length - 1];
         
         var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2) 
@@ -243,7 +245,7 @@ module.exports = {
         }
         results.save()
           .catch(function errHandler (err) {
-            console.log('There was an error saving the new location.', err);
+            console.log('There was an error saving the new location:', err);
           });
       })
       .catch(function errHandler (err) {

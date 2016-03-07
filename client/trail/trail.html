@@ -1,14 +1,14 @@
 <div class='container fixed-homepage'>
   <div class="row-well">
-    <a ng-click="changeTrail()"><h4>Create a trail</h4></a>
+    <a ng-click="createTrail()"><h4>Create a trail</h4></a>
     <h1 class="page-header">{{ exists ? userInfo.currentTrail.name : 'New Trail' }}</h1>
   </div>
   <div class="row-well">
     <div class="col-sm-6" ng-if="exists == true">
       <h3 class="form-control">Rating</h3>
       <h3 class="form-control">Comments</h3>
-      <button class="btn btn-success form-control" ng-click="saveTrail(currentTrail)">Save this trail!</button>
-      <button class="btn btn-success form-control" ng-click="haveDone(currentTrail)">I have hiked this trail</button>
+      <button class="btn btn-success form-control" ng-click="saveTrail(userInfo.currentTrail)">Save this trail!</button>
+      <button class="btn btn-success form-control" ng-click="haveDone(userInfo.currentTrail)">I have hiked this trail</button>
     </div>
     <form ng-if="exists == false" ng-submit="saveTrail(userInfo.currentTrail)">
       <label>Name</label>

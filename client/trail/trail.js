@@ -6,7 +6,16 @@ angular.module('hikexpert.trail', [])
       Map.placeUserMarker(map);
     });
     
-    $scope.changeTrail = function(trail) {
+    $scope.updateInterval = setInterval(function (){
+      Map.updateUserLocation(function sync () {
+        Socket.emit('coords', {user: $rootScope.userInfo.username, location: $rootScope.userInfo.location});
+          if (!!$rootScope.userInfo.marker) {
+            $rootScope.userInfo.marker.setLatLng([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long]);
+          }
+      });
+    }, 5000);
+    
+    $scope.createTrail = function(trail) {
       if (!trail) {
         $scope.exists = false;
         $scope.map.setView([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long]);
