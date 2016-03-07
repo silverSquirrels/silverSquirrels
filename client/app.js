@@ -81,6 +81,7 @@ angular.module('hikexpert', [
             username: user.username,
             location: user.location,
             trails: user.trails,
+            friends: user.friends,
             hikerStatus: user.hikerStatus,
             path: user.path,
             currentTrail: {
