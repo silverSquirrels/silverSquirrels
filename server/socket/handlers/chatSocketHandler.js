@@ -1,19 +1,21 @@
+var Chat = require('../../db/models/chat.js');
+var Message = require('../../db/models/message.js');
 var connected = {};
 
 module.exports = function(io) {
   io.on('connection', function(socket){
-    socket.on('new user', function(data, callback) {
+    socket.on('chat:connect', function(data, callback) {
       socket.username = data;
       connected[socket.username] = socket;
       console.log("Sockets connected: " + Object.keys(connected));
-      //callback();
+      callback();
     });
 
-    socket.on('send message', function(data) {
+    socket.on('chat:send', function(data) {
       if(data.recipient in connected) {
-        connected[data.recipient].emit('new message', data);
+        connected[data.recipient].emit('chat:receive', data);
       }
-      socket.emit('new message', data);
+      socket.emit('chat:receive', data);
     });
 
     socket.on('disconnect', function(data){

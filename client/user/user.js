@@ -3,35 +3,35 @@ angular.module('hikexpert.user', [])
 .controller('UserController', function($rootScope, $scope, $window, $location, Friend, Home, Socket){
   /***************************
     USER
-  ****************************/
+    ****************************/
 
   ///// Get user's name and trails upon load
   $scope.getUser = function(){
     Home.getUser()
-      .then(function(data) {
-        $rootScope.userInfo.username = data.username;
-        $rootScope.userInfo.trails = data.trails;
-        $rootScope.userInfo.trail = data.trail;
-        
-        $rootScope.userInfo.hikes = Object.keys($rootScope.userInfo.trails).reduce(function(memo, trailName) {
-          if ($rootScope.userInfo.trails.done) {
-            ++memo.done;
-            return memo;
-          } 
-          memo.undone++;
+    .then(function(data) {
+      $rootScope.userInfo.username = data.username;
+      $rootScope.userInfo.trails = data.trails;
+      $rootScope.userInfo.trail = data.trail;
+
+      $rootScope.userInfo.hikes = Object.keys($rootScope.userInfo.trails).reduce(function(memo, trailName) {
+        if ($rootScope.userInfo.trails.done) {
+          ++memo.done;
           return memo;
-        }, {done: 0, undone: 0});
-        
-        var barLength = ($rootScope.userInfo.hikes.done / 5 * 100).toString() + '%';
-        fillBar('#hikeFive', 5, $rootScope.userInfo.hikes.done);
-        fillBar('#hikeTwentyFive', 25, $rootScope.userInfo.hikes.done);
-        fillBar('#hikeHundred', 100, $rootScope.userInfo.hikes.done);
+        } 
+        memo.undone++;
+        return memo;
+      }, {done: 0, undone: 0});
+
+      var barLength = ($rootScope.userInfo.hikes.done / 5 * 100).toString() + '%';
+      fillBar('#hikeFive', 5, $rootScope.userInfo.hikes.done);
+      fillBar('#hikeTwentyFive', 25, $rootScope.userInfo.hikes.done);
+      fillBar('#hikeHundred', 100, $rootScope.userInfo.hikes.done);
     });
   };
   
   /**************************
     PROGRESS BARS
-  **************************/
+    **************************/
   //Makes it so numerator cannot exceed denom in progress bar
   $scope.maxFilter = function(current, max){
     if(current > max){
@@ -99,14 +99,17 @@ angular.module('hikexpert.user', [])
 
   $scope.chat = function(index) {
     Socket.setRecipient($scope.friends[index].username);
-    $location.path('/chat');
+    Socket.setSender($rootScope.userInfo.username);
+    Socket.emit('chat:connect', Socket.getSender(), function() {
+      $location.path('/chat');
+    });
   };
   
   /***************************
     PAGE INITIALIZATION
-  ***************************/
-  $rootScope.userInfo = {};
-  $rootScope.userInfo.location = {};
-  $scope.hikerStatus = 'City-Dweller';
-  $scope.getUser();
-});
+    ***************************/
+    $rootScope.userInfo = {};
+    $rootScope.userInfo.location = {};
+    $scope.hikerStatus = 'City-Dweller';
+    $scope.getUser();
+  });

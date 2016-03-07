@@ -25,9 +25,4 @@ angular.module('friend.services', [])
       addFriend: addFriend,
       getFriends: getFriends
     };
-  })
-
-  .factory('Chat', function($http) {
-
-    return {};
   });
