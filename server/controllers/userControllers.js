@@ -180,9 +180,11 @@ module.exports = {
             console.log('There was an error finding or creating trail to update:', err);
             res.sendStatus(500);
           }
-          foundUser.update({'trails.id': trail.id}, {'$set':{
+          foundUser.update({'trails.id': trail.id}, {$set:{
             'trails.$.done': !trails.$.done
           }});
+          
+          res.sendStatus(202);
           // var trailIdx = foundUser.trails.reduce(function(memo, userTrail, i) {
           //   if (trail.id === userTrail.id) {
           //     return i;

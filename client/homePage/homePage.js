@@ -3,6 +3,7 @@ angular.module('hikexpert.home', [])
     $rootScope.userInfo.location.radius = 10;
     $scope.searchData = '';
     $scope.loading = true;
+    $scope.trails = {};
     // TODO: fix getting markers ng-if
     // $scope.getting_markers = false;
     $scope.markers = [];
