@@ -188,8 +188,15 @@ angular.module('map.services', [])
         }
       });
     };
-    
+
+    var renderPath = function(points, config, $scope){
+      var line = new L.Polyline(points, config).addTo( $scope.map );
+      // *** Will refocus window- do we want ??
+      $scope.map.fitBounds(line.getBounds());
+    }
+
     return {
+      renderPath: renderPath,
       createMap: createMap,
       placeUserMarker: placeUserMarker,
       getTrailsNearUser: getTrailsNearUser,
