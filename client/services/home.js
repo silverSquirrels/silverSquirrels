@@ -36,22 +36,6 @@ angular.module('home.services', [])
         return res.data;
       });
     };
-    // Puts trails in hasDone or wantToDo arrays, based on the url endpoint used
-    var trailPost = function (trailName) {
-      return $http({
-        method: 'POST',
-        url: 'user/trails',
-        data: {trailName: trailName}
-      });
-    };
-
-    var trailPut = function(trailName) {
-      return $http({
-        method: 'PUT',
-        url: '/user/trails',
-        data: {trailName: trailName}
-      });
-    }
 
     var commentPost = function(options){
       console.log("comentPost");
@@ -79,8 +63,6 @@ angular.module('home.services', [])
       getTrails: getTrails,
       getCoords: getCoords,
       getUser: getUser,
-      trailPost: trailPost,
-      trailPut: trailPut,
       commentPost : commentPost,
       getComments : getComments
   };

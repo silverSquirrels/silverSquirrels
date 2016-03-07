@@ -100,7 +100,7 @@ angular.module('map.services', [])
       $rootScope.userInfo.marker.addTo(map).bindPopup("Here you are")
         .openPopup();
     };
-
+    
     var getTrailsNearUser = function(location, $scope){
       emptyMap($scope);
       updateUserLocation(function(position) {

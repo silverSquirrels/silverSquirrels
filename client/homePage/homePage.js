@@ -25,12 +25,20 @@ angular.module('hikexpert.home', [])
     };
     
     $scope.goToTrail = function(trail) {
+      var hasDone = $rootScope.userInfo.trails.reduce(function(memo, rootTrail) {
+        if (trail.name === rootTrail.name) {
+          return rootTrail.done;
+        } else {
+          return memo;
+        }
+      }, false);
       $rootScope.userInfo.currentTrail = {
         name: trail.name,
         location: {
           lat: trail.coordinates[0],
           long: trail.coordinates[1]
-        }
+        },
+        done: hasDone
       };
       $location.url('/trail');
     };

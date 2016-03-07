@@ -1,19 +1,19 @@
 <div class='container fixed-homepage'>
   <div class="row-well">
     <a ng-click="createTrail()"><h4>Create a trail</h4></a>
-    <h1 class="page-header">{{ exists ? userInfo.currentTrail.name : 'New Trail' }}</h1>
+    <h1 class="page-header">{{ userInfo.currentTrail.name }}</h1>
   </div>
   <div class="row-well">
     <div class="col-sm-6" ng-if="exists == true">
       <h3 class="form-control">Rating</h3>
       <h3 class="form-control">Comments</h3>
-      <button class="btn btn-success form-control" ng-click="saveTrail(userInfo.currentTrail, hasDone)">{{ hasDone ? 'I have hiked this trail!' : 'I want to hike this trail!' }}</button>
+      <button class="btn btn-success form-control" ng-click="saveTrail(userInfo.currentTrail)">{{ userInfo.currentTrail.done ? 'I have hiked this trail!' : 'I want to hike this trail!' }}</button>
     </div>
     <form ng-if="exists == false" ng-submit="saveTrail(userInfo.currentTrail)">
       <label>Name</label>
       <input class="form-control" type="text" name="name" ng-model="userInfo.currentTrail.name" size="100%">
         <div>
-          <button class="btn btn-success form-control" ng-if="saved == false" ng-model="saved" ng-click="startTrail(userInfo.CurrentLocation)">Begin hiking</button>
+          <button class="btn btn-success form-control" ng-if="saved == false" ng-model="saved" ng-click="startTrail(userInfo.location)">Begin hiking</button>
           <button class="btn btn-success form-control" ng-if="saved == true" ng-model="saved" ng-click="saveTrail(userInfo.currentTrail)">Save this trail!</button>
         </div>
     </form>

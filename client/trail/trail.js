@@ -1,14 +1,21 @@
 angular.module('hikexpert.trail', [])
-  .controller('TrailController', function($rootScope, $scope, Map, Socket, Home) {
+  .controller('TrailController', function($rootScope, $scope, Map, Socket, Home, Trail) {
     $scope.exists = true;
-    $scope.saved = false;
-    $scope.hasDone = $rootScope.userInfo.trails.reduce(function(memo, trail) {
+    $scope.userTrails = $rootScope.userInfo.trails.reduce(function(memo, trail) {
+      var name = trail.name || trail.trailName
       if (trail.done) {
-        return true;
+        memo[name] = {};
+        memo[name].done = true
+        return memo;
       } else {
-        return false;
+        memo[name] = {};
+        memo[name].done = false
+        return memo;
       }
-    }, false);
+    }, {});
+    $scope.saved = !!$scope.userTrails[$rootScope.userInfo.currentTrail.name] 
+      || false;
+    
     Map.createMap($scope, $rootScope.userInfo.currentTrail.location, function(map) {
       Map.placeUserMarker(map);
     });
@@ -21,6 +28,42 @@ angular.module('hikexpert.trail', [])
           }
       });
     }, 5000);
+    
+    $scope.saveTrail = function(trail) {
+      if (!$scope.userTrails[trail.name]) {
+        addTrailToUserTrails(trail);
+        Trail.post(trail)
+          .then(function(result) {
+            $rootScope.userInfo.trails.push(trail);
+            $scope.hasDone = !$scope.hasDone;
+            $scope.saved = true;
+          })
+          .catch(Trail.errorHandler);
+      } else {
+        trail.done = !$scope.hasDone;
+        Trail.put(trail)
+          .then(function(result, next) {
+            var idx = $rootScope.userInfo.trails.reduce(function(memo, rootTrail, i) {
+              if (trail.name === rootTrail.name) {
+                return i;
+              } else {
+                return memo;
+              }
+            }, -1);
+            if (idx === -1) {
+              next(new Error('There was an error updating userInfo.trails'));
+            } else {
+              $scope.hasDone = !$rootScope.hasDone;
+              $rootScope.userInfo.trails[idx] = trail;
+            }
+          })
+      }
+    };
+    
+    var addTrailToUserTrails = function(trail) {
+      $scope.userTrails[trail.name] = trail;
+      $scope.userTrails[trail.name].done = false;
+    };
     
     $scope.createTrail = function(trail) {
       if (!trail) {
@@ -35,28 +78,29 @@ angular.module('hikexpert.trail', [])
       };
       $rootScope.userInfo.currentTrail = trail;
     };
-        var polyFriendsConfig = { color: 'blue', weight: 6, opacity: 0.9 };
-    var polyUserConfig = { color: 'red', weight: 6, opacity: 0.9 };
-    var userLocs = {}
-    Socket.on('coordsResp', function(data){
-      for(var user in data){
-        if( !userLocs[user] ){
-          userLocs[user] = [];
-        }else{
-          var y = 0.0001; //mock
-          for(var i=0;i<data[user].length;i++){
-            if( user=='user' ){
-              var x = data[user][i][0] + y;
-              y=y-0.0001;
-              var pt = new L.LatLng(x ,data[user][i][1])
-            }else{
-              var pt = new L.LatLng(data[user][i][0],data[user][i][1])
-            }
-            userLocs[user].push(pt)
-          }
-        }
-        Map.renderPath(userLocs[user], polyUserConfig, $scope);
-      }
-    })
+    
+    // var polyFriendsConfig = { color: 'blue', weight: 6, opacity: 0.9 };
+    // var polyUserConfig = { color: 'red', weight: 6, opacity: 0.9 };
+    // var userLocs = {}
+    // Socket.on('coordsResp', function(data){
+    //   for(var user in data){
+    //     if( !userLocs[user] ){
+    //       userLocs[user] = [];
+    //     }else{
+    //       var y = 0.0001; //mock
+    //       for(var i=0;i<data[user].length;i++){
+    //         if( user=='user' ){
+    //           var x = data[user][i][0] + y;
+    //           y=y-0.0001;
+    //           var pt = new L.LatLng(x ,data[user][i][1])
+    //         }else{
+    //           var pt = new L.LatLng(data[user][i][0],data[user][i][1])
+    //         }
+    //         userLocs[user].push(pt)
+    //       }
+    //     }
+    //     Map.renderPath(userLocs[user], polyUserConfig, $scope);
+    //   }
+    // })
   });
   

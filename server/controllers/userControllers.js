@@ -130,27 +130,24 @@ module.exports = {
     User.findOne({username: user.username})
       .exec(function(err, foundUser) {
         if (err) {
-          console.log('Failed to find user while adding trail:', err);
-          res.sendStatus(404);
+          next(new Error('Failed to find user while adding trail:', err));
         }
-        
+        console.log(trailData)
         Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
           if (err) {
-            console.log('There was an error finding or creating a trail:', err);
-            res.sendStatus(500);
+            next(new Error('There was an error finding or creating a trail:', err));
           }
           foundUser.trails.addToSet({
-            id: trail.id,
+            _id: trail._id,
             done: trailData.done
           });
           console.log(foundUser);
           foundUser.save()
             .then(function(result) {
-              res.sendStatus(202);
+              res.send(result);
             })
             .catch(function(err) {
-              console.log('There was an error saving the user with a new trail', err);
-              res.sendStatus(202);
+              next(new Error('There was an error saving the user with a new trail', err));
             });
         })
       })
@@ -162,12 +159,12 @@ module.exports = {
       })
   },
   
-  toggleTrail: function(req, res, next) {
+  updateUserTrail: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if (!token) {
       next(new Error('No token trying to put to user/trails'));
     }
-    var trailName = req.body.trailName;
+    var trailData = req.body.trail;
     var user = jwt.decode(token, 'superskrull');
     User.findOne({username: user.username})
       .exec(function(err, foundUser) {
@@ -175,48 +172,20 @@ module.exports = {
           console.log('Failed to find user while updating trail:', err);
           res.sendStatus(404);
         }
-        Trail.findOrCreate({name: trailName}, function(err, trail, created) {
+        Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
           if (err) {
-            console.log('There was an error finding or creating trail to update:', err);
+            next(new Error('There was an error finding or creating trail to update:', err));
             res.sendStatus(500);
           }
-          foundUser.update({'trails.id': trail.id}, {$set:{
-            'trails.$.done': !trails.$.done
-          }});
-          
+          foundUser.update('trails._id': trail._id, 
+              {$set: { 
+              'trails.$.name': trailData.name,
+              'trails.$.'
+            }
+          });
+          console.log(foundUser.trails)
           res.sendStatus(202);
-          // var trailIdx = foundUser.trails.reduce(function(memo, userTrail, i) {
-          //   if (trail.id === userTrail.id) {
-          //     return i;
-          //   } else {
-          //     return memo;
-          //   }
-          // }, -1);
-          // if (trailIdx === -1) {
-          //   foundUser.trails.addToSet({
-          //     id: trail.id,
-          //     done: false
-          //   })
-          //   foundUser.save()
-          //     .then(function(user) {
-          //       sendStatus(202)
-          //     })
-          //     .catch(function(err) {
-          //       console.log('There was an error updating user trail status:', err);
-          //     });
-          // } else {
-          //   foundUser.trails[trailIdx].done = !foundUser.trails[trailIdx].done;
-          //   foundUser.save()
-          //     .then(function(result) {
-          //       res.sendStatus(202);
-          //     })
-          //     .catch(function(err) {
-          //       console.error('There was an error saving user', user.username, ':', err);
-          //       res.sendStatus(500);
-          //     });
-          // }
         })
-        res.sendStatus(500);
       })
       .catch(function(err) {
         console.log('There was an error changing trail:', err);
