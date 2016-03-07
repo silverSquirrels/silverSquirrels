@@ -27,8 +27,7 @@ var userSchema = new mongoose.Schema ({
     long: Number
   }],
   trails: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Trail',
+    id: {type: mongoose.Schema.Types.ObjectId, ref: 'Trail'},
     done: Boolean,
   }],
   created_at: Date,

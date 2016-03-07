@@ -120,27 +120,36 @@ module.exports = {
     }
   },
   
-  addTrail: function(req, res, next) {
+  addTrailToUserTrails: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if (!token) {
       next(new Error('No token trying to post to user/trails'))
     }
-    var trailName = req.body.trailName;
+    var trailData = req.body.trail;
     var user = jwt.decode(token, 'superskrull');
     User.findOne({username: user.username})
       .exec(function(err, foundUser) {
         if (err) {
-          console.log('Failed to find user while adding trail:', err);
-          res.sendStatus(404);
+          next(new Error('Failed to find user while adding trail:', err));
         }
-        foundUser.trails.addToSet({trailName: trailName, done: false});
-        console.log(foundUser);
-        foundUser.save()
-          .then(function(result) {
-            res.sendStatus(202);
+        console.log(trailData)
+        Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
+          if (err) {
+            next(new Error('There was an error finding or creating a trail:', err));
+          }
+          foundUser.trails.addToSet({
+            _id: trail._id,
+            done: trailData.done
           });
-        console.log(foundUser);
-        res.sendStatus(202);
+          console.log(foundUser);
+          foundUser.save()
+            .then(function(result) {
+              res.send(result);
+            })
+            .catch(function(err) {
+              next(new Error('There was an error saving the user with a new trail', err));
+            });
+        })
       })
       .catch(function(err) {
         if (err) {
@@ -150,12 +159,12 @@ module.exports = {
       })
   },
   
-  toggleTrail: function(req, res, next) {
+  updateUserTrail: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if (!token) {
       next(new Error('No token trying to put to user/trails'));
     }
-    var trailName = req.body.trailName;
+    var trailData = req.body.trail;
     var user = jwt.decode(token, 'superskrull');
     User.findOne({username: user.username})
       .exec(function(err, foundUser) {
@@ -163,15 +172,20 @@ module.exports = {
           console.log('Failed to find user while updating trail:', err);
           res.sendStatus(404);
         }
-        foundUser.trails[trailIdx].done = !foundUser.trails[trailIdx].done;
-        foundUser.save()
-          .then(function(result) {
-            res.send(202);
-          })
-          .catch(function(err) {
-            console.error('There was an error saving user', user.username, ':', err);
+        Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
+          if (err) {
+            next(new Error('There was an error finding or creating trail to update:', err));
+            res.sendStatus(500);
+          }
+          foundUser.update('trails._id': trail._id, 
+              {$set: { 
+              'trails.$.name': trailData.name,
+              'trails.$.'
+            }
           });
-        res.sendStatus(500);
+          console.log(foundUser.trails)
+          res.sendStatus(202);
+        })
       })
       .catch(function(err) {
         console.log('There was an error changing trail:', err);

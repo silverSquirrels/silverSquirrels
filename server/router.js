@@ -1,5 +1,4 @@
 var userControllers = require('./controllers/userControllers.js');
-var trailController = require('./controllers/TrailController.js');
 var geocodeController = require('./controllers/GeocodeController.js');
 var commentControllers = require('./controllers/commentControllers.js');
 
@@ -12,8 +11,8 @@ module.exports = function (app, express) {
   app.put('/friends/add', userControllers.addFriend);
   app.get('/friends/all', userControllers.getFriends);
 
-  app.put('/user/trails', userControllers.toggleTrail);
-  app.post('/user/trails', userControllers.addTrail);
+  app.put('/user/trails', userControllers.updateUserTrail);
+  app.post('/user/trails', userControllers.addTrailToUserTrails);
 
   // Handle trailAPI requests:
   app.post('/api/trails', commentControllers.getTrails);
