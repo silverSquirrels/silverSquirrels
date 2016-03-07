@@ -90,12 +90,6 @@ angular.module('hikexpert', [
               name: 'New Trail'
             }
           };
-          
-          Socket.setSender($rootScope.userInfo.username);
-          
-          Socket.emit('new user', $rootScope.userInfo.username, function(data) {
-
-          });
         })
         .catch(function(err) {
           console.log('There was an error getting user data:', err);
