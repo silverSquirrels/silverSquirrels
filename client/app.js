@@ -80,10 +80,7 @@ angular.module('hikexpert', [
           $rootScope.userInfo = {
             username: user.username,
             location: user.location,
-            trails: user.trails.reduce(function(memo, trailObj){
-              memo[trailObj.trailName] = trailObj.done;
-              return memo;
-            }, {});,
+            trails: user.trails,
             hikerStatus: user.hikerStatus,
             path: user.path,
             currentTrail: {
