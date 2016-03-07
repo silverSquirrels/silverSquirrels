@@ -20,15 +20,23 @@ angular.module('hikexpert.home', [])
     $scope.getTrailsNearLocation = function(searchData) {
       Map.getTrailsNearLocation(searchData, $scope);
     };
+    
+    $scope.goToTrail = function(trail) {
+      $rootScope.userInfo.currentTrail = {
+        name: trail.name,
+        location: {
+          lat: trail.coordinates[0],
+          long: trail.coordinates[1]
+        }
+      };
+      $location.url('/trail');
+    };
 
 
     Socket.setSender($rootScope.userInfo.username);
     Socket.emit('new user', $rootScope.userInfo.username, function(data) {
 
     });
-    /*************
-      SOCKETS
-    **************/
 
     $scope.updateInterval = setInterval(function (){
       Map.updateUserLocation(function sync () {
@@ -80,9 +88,8 @@ angular.module('hikexpert.home', [])
       new L.LatLng(40.653067, -73.968264),
       new L.LatLng(40.653067, -73.968264),
       new L.LatLng(40.653067, -73.968264)
-    ];                                                                                                
+    ];
     // setInterval(function(){
     //   Map.renderPath(polylinePts, polyUserConfig, $scope);
-    // },3000);           
-
+    // },3000);
 });

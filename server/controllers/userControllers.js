@@ -105,10 +105,9 @@ module.exports = {
         if(foundUser) {
           res.send({
             username: foundUser.username,
-            haveDone: foundUser.haveDone,
-            wantToDo: foundUser.wantToDo,
+            location: foundUser.location,
             trails: foundUser.trails,
-            trail: foundUser.trail
+            path: foundUser.trail
           });
         } else {
           res.send(401);
@@ -230,17 +229,17 @@ module.exports = {
         results.location.lat = data.location.lat;
         results.location.long = data.location.long;
         
-        if (!results.trail.length) {
-          results.trail.push(results.location);
+        if (!results.path.length) {
+          results.path.push(results.location);
         }
         
-        var last = results.trail[results.trail.length - 1];
+        var last = results.path[results.path.length - 1];
         
         var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2) 
           + Math.pow((last.long - data.location.long), 2));
         
         if (distance > .0001) {
-          results.trail.push(results.location);
+          results.path.addToSet(results.location);
         }
         results.save()
           .catch(function errHandler (err) {

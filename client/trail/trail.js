@@ -2,7 +2,7 @@ angular.module('hikexpert.trail', [])
   .controller('TrailController', function($rootScope, $scope, Map, Socket, Home) {
     $scope.exists = true;
     $scope.saved = false;
-    Map.createMap($scope, $rootScope.userInfo.location, function(map) {
+    Map.createMap($scope, $rootScope.userInfo.currentTrail.location, function(map) {
       Map.placeUserMarker(map);
     });
     
@@ -13,10 +13,11 @@ angular.module('hikexpert.trail', [])
         Map.placeUserMarker($scope.map);
       }
       trail = trail || {
-        name: 'New Trail',
-        location: $rootScope.userInfo.location
+        name: undefined,
+        location: $rootScope.userInfo.location,
+        path: []
       };
-      $rootScope.currentTrail = trail;
+      $rootScope.userInfo.currentTrail = trail;
     };
   });
   

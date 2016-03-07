@@ -75,7 +75,7 @@ angular.module('hikexpert', [
   return attach;
 })
 
-.run(function ($rootScope, $location, Auth) {
+.run(function ($rootScope, $location, Auth, Home) {
   // here inside the run phase of angular, our services and controllers
   // have just been registered and our app is ready
   // however, we want to make sure the user is authorized
@@ -86,6 +86,25 @@ angular.module('hikexpert', [
   $rootScope.$on('$routeChangeStart', function (evt, next, current) {
     if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
       $location.path('/signin');
+    }
+    if (!$rootScope.userInfo) {
+      $rootScope.userInfo = {};
+      Home.getUser()
+        .then(function(user){
+          $rootScope.userInfo = {
+            username: user.username,
+            location: user.location,
+            trails: user.trails,
+            path: user.path,
+            currentTrail: {
+              location: user.location,
+              name: 'New Trail'
+            }
+          }
+        })
+        .catch(function(err) {
+          console.log('There was an error getting user data:', err);
+        })
     }
   });
 });
