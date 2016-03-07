@@ -3,9 +3,15 @@ angular.module('hikexpert', [
   'hikexpert.auth',
   'hikexpert.user',
   'hikexpert.chat',
+  'hikexpert.trail',
+  // 'hikexpert.trail',
   'ngRoute',
-  'hikexpert.services',
-  'leaflet-directive'
+  'home.services',
+  'trail.services',
+  'auth.services',
+  'friend.services',
+  'socket.services',
+  'map.services',
 ])
 .config(function($routeProvider, $httpProvider){
   $routeProvider
@@ -13,6 +19,11 @@ angular.module('hikexpert', [
       authenticate: true,
       templateUrl: 'homePage/homepage.html',
       controller: 'HomePageController'
+    })
+    .when('/trail', {
+      authenticate: true,
+      templateUrl: 'trail/trail.html',
+      controller: 'TrailController'
     })
     .when('/user', {
       authenticate: true,

@@ -7,18 +7,20 @@ module.exports = function (app, express) {
   app.post('/signin', userControllers.signin);
   app.post('/signup', userControllers.signup);
   app.get('/signedin', userControllers.checkAuth);
-  app.get('/getUser', userControllers.getUser);
+  app.get('/user/getUser', userControllers.getUser);
   /// trailPost function in services.js updates the trails arrays with these endpoints:
-  app.post('/hasDone', userControllers.hasDone);
-  app.post('/wantToDo', userControllers.wantToDo);
-  app.post('/moveTrails', userControllers.moveTrails);
   app.put('/friends/add', userControllers.addFriend);
   app.get('/friends/all', userControllers.getFriends);
+
+  app.put('/user/trails', userControllers.toggleTrail);
+  app.post('/user/trails', userControllers.addTrail);
 
   // Handle trailAPI requests:
   app.post('/api/trails', commentControllers.getTrails);
   // Handle geocode API requests
   app.post('/api/coords', geocodeController.getCoords);
+  app.post('/comment', commentControllers.submit);
+  app.get('/comments', commentControllers.getTrailComments);
 
   return app;
 };

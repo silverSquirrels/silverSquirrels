@@ -1,6 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
 var Q = require('q');
-var mongoose = require('mongoose');
+var mongoose = require('mongoose');;
 var SALT_WORK_FACTOR = 10;
 
 var userSchema = new mongoose.Schema ({
@@ -22,8 +22,11 @@ var userSchema = new mongoose.Schema ({
     long: Number
   },
   trail: Array,
-  haveDone: [String],
-  wantToDo: [String],
+  trails: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Trail',
+    done: Boolean,
+  }],
   created_at: Date,
   updated_at: Date,
   salt: String

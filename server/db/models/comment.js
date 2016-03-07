@@ -12,7 +12,6 @@ var commentSchema = new mongoose.Schema({
 })
 
 commentSchema.methods.getStats = function(trail, cb){
-var defer = Q.defer();
   // console.log("!!!!!!!!!!");
 
   this.model('Comment').find({trail: this.trail}, 'rating difficulty time', function(err, results){
@@ -20,15 +19,26 @@ var defer = Q.defer();
     var ratingTotal = 0;
     var difficultyTotal = 0;
     var timeTotal = 0
-
+    var ratingsCount = 0;
+    var difficultyCount = 0;
+    var timeCount = 0;
     results.forEach(function(comment, index){
+      if (comment.rating){
         ratingTotal += comment.rating;
+        ratingsCount++;
+      }
+      if (comment.difficulty){
         difficultyTotal += comment.difficulty;
-        timeTotal += comment.timeTotal;
+        difficultyCount++;
+      }
+      if (comment.time){
+        timeTotal += comment.time;
+        timeCount++;
+      }
     });
-    trail.rating = ratingTotal / results.length;
-    trail.difficulty = difficultyTotal / results.length;
-    trail.time = timeTotal / results.length;
+    trail.rating = ratingTotal / ratingsCount;
+    trail.difficulty = difficultyTotal / difficultyCount;
+    trail.time = timeTotal / timeCount;
     // output = trail;
     cb(trail);
   });

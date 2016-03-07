@@ -1,6 +1,6 @@
 <div class='container fixed-homepage'>
   <div class="page-header">
-    <h1 test>Hello {{userInfo.username}}</h1>  
+    <h1 test>Hello {{userInfo.username}}</h1>
   </div>
   <div class="row well">
     <div class="col-sm-6">
@@ -17,7 +17,7 @@
         <button class="btn btn-success" type="submit" name="submit">Find Trails</button>
       </form>
       <p class="lead">Or:</p>
-      <button class="btn btn-success" name="use-location" ng-click="getTrailsNearUser(userInfo.location)">Use my location</button> 
+      <button class="btn btn-success" name="use-location" ng-click="getTrailsNearUser(userInfo.location)">Use my location</button>
     </div>
   </div>
 
@@ -37,6 +37,10 @@
   <!-- This is where the leaflet map renders: -->
   <div id="map"></div>
   <hr>
+  <div ng-repeat='comment in comments'>
+    <p>{{comment}}</p>
+  </div>
+
   <div class="col-sm-6 well">
     <h3> Trails I Have Done: </h3>
     <div ng-repeat='trailName in userInfo.haveDone track by $index'>
@@ -51,6 +55,3 @@
    </div>
  </div>
 </div>
-
-
-

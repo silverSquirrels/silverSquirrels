@@ -1,13 +1,11 @@
 var Comment = require('../db/models/comment.js');
 var Q = require('q');
 var unirest = require('unirest');
-var Promise = require("bluebird");
-
+var url = require('url');
 
 module.exports = {
   submit: function(req, res, next){
     console.log("create");
-    var create = Q.nbind(Comment.create, Comment);
     var options = {
       username : req.body.info,
       text : req.body.text,
@@ -17,17 +15,26 @@ module.exports = {
       rating : req.body.rating
     }
 
-    create(options).then(function(result){
-      // console.log(result);
-      res.json(result);
+    Comment.create(options, function(err, result){
+      if (err){
+        console.log(err);
+      }else{
+        console.log("asdfdss");
+        res.json(result);
+      }
+
     });
 
   },
 
   getTrailComments : function(req, res, next){
+    console.log("getTrailComments");
+    var trail = req.query.trail
+    console.log(trail);
     var findComments = Q.nbind(Comment.find, Comment);
-    findComments({trail: req.body.trail}).then(function(results){
+    findComments({trail: trail}).then(function(results){
       if (results){
+        console.log(results);
         res.json(results);
       }else{
         console.log("no results found");
@@ -48,8 +55,8 @@ module.exports = {
 
   getAllStats : function(trails, cb){
     var asyncMap = function(tasks, callback){
-      var resultsArray = [];
-      var resultsCount = 0;
+    var resultsArray = [];
+    var resultsCount = 0;
 
      for (var i = 0; i < tasks.length; i++){
        (function(i){
@@ -87,7 +94,6 @@ module.exports = {
       // console.log(result);
       if(result.body.places){
         var trails = result.body.places.map(function(el){
-          console.log(el.name);
             return {
               name: el.name,
               coordinates: [el.lat, el.lon],
@@ -96,7 +102,6 @@ module.exports = {
         })
         // console.log(Comment);
         module.exports.getAllStats(trails, function(results){
-          console.log(results);
           res.send(results);
         });
 
