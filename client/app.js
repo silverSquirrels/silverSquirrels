@@ -10,7 +10,6 @@ angular.module('hikexpert', [
   'auth.services',
   'friend.services',
   'socket.services',
-  'chat.services',
   'map.services',
 ])
 .config(function($routeProvider, $httpProvider){
