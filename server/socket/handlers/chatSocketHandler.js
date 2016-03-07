@@ -7,7 +7,7 @@ module.exports = function(io) {
     socket.on('chat:connect', function(data, callback) {
       socket.username = data;
       connected[socket.username] = socket;
-      console.log("Sockets connected: " + Object.keys(connected));
+      console.log("Sockets in chat: " + Object.keys(connected));
       callback();
     });
 
@@ -19,30 +19,44 @@ module.exports = function(io) {
     });
 
     socket.on('chat:refresh', function(data, callback) {
-      var test = [
-        {
-          sender: data.sender,
-          recipient: data.recipient,
-          text: "yo what up"
-        },
-        {
-          sender: data.recipient,
-          recipient: data.sender,
-          text: "nm u?"
-        }
+      var errorMessage = {
+        messages: [{
+          sender: 'ERROR',
+          recipient: 'ERROR',
+          text: 'Whoops! There was an error in chat. Please try chat at another time.'
+        }]
+      };
+
+      var combos = [
+        { 'users': [data.sender, data.recipient] },
+        { 'users': [data.recipient, data.sender] }
       ];
 
-      //get data from db andn return thru callback
-
-      callback(test);
-
+      Chat.findOne({ $or: combos})
+      .exec(function(err, chat) {
+        if(err) {
+          callback(errorMessage);
+        } else {
+          if(chat) {
+            callback(chat);
+          } else {
+            Chat.create({ 'users': [data.sender, data.recipient] }, function(err, chat) {
+              if(err) {
+                callback(errorMessage);
+              } else {
+                callback(chat);
+              }
+            });
+          }
+        }
+      });
 
     });
 
     socket.on('disconnect', function(data){
-      console.log("Disconnected socket: " + socket.username);
+      console.log("Socket left chat: " + socket.username);
       delete connected[socket.username];
-      console.log("Sockets connected: " + Object.keys(connected));
+      console.log("Sockets in chat: " + Object.keys(connected));
     });
   });
 }

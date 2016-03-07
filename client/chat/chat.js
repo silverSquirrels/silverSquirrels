@@ -27,7 +27,7 @@ angular.module('hikexpert.chat', [])
       recipient: $scope.recipient
     };
     Socket.emit('chat:refresh', users, function(data) {
-      $scope.messages = data;
+      $scope.messages = data.messages;
       console.log(data);
     });
   };

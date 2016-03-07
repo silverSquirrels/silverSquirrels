@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 
 var chatSchema = new mongoose.Schema({
-  users: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+  // users: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User'
+  // }],
+  users: [String],
   messages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Message'

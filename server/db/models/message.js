@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 
 var messageSchema = new mongoose.Schema({
-  sender: [{
+  sender: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }],
-  recipient: [{
+  },
+  recipient: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }],
+  },
   text: String,
   created_at: {
     type: Date,
