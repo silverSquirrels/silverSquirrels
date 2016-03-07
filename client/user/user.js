@@ -1,6 +1,6 @@
 angular.module('hikexpert.user', [])
 
-.controller('UserController', function($scope, $rootScope, $window, Friend, Home){
+.controller('UserController', function($rootScope, $scope, $window, $location, Friend, Home, Socket){
   /***************************
     USER
   ****************************/
@@ -95,6 +95,11 @@ angular.module('hikexpert.user', [])
     .catch(function(err) {
       console.error(err);
     });
+  };
+
+  $scope.chat = function(index) {
+    Socket.setRecipient($scope.friends[index].username);
+    $location.path('/chat');
   };
   
   /***************************
