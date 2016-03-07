@@ -11,6 +11,7 @@ angular.module('hikexpert', [
   'friend.services',
   'socket.services',
   'map.services',
+  'luegg.directives'
 ])
 .config(function($routeProvider, $httpProvider){
   $routeProvider
