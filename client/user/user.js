@@ -1,6 +1,6 @@
 angular.module('hikexpert.user', [])
 
-.controller('UserController', function($scope, $window, $location, Friend, Home, Socket){
+.controller('UserController', function($rootScope, $scope, $window, $location, Friend, Home, Socket){
   /***************************
     USER
   ****************************/
