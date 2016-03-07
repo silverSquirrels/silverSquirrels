@@ -9,12 +9,12 @@ angular.module('hikexpert.user', [])
   $scope.getUser = function(){
     Home.getUser()
       .then(function(data) {
-        $scope.userInfo.username = data.username;
-        $scope.userInfo.trails = data.trails;
-        $scope.userInfo.trail = data.trail;
+        $rootScope.userInfo.username = data.username;
+        $rootScope.userInfo.trails = data.trails;
+        $rootScope.userInfo.trail = data.trail;
         
-        $scope.userInfo.hikes = Object.keys($scope.userInfo.trails).reduce(function(memo, trailName) {
-          if ($scope.userInfo.trails.done) {
+        $rootScope.userInfo.hikes = Object.keys($rootScope.userInfo.trails).reduce(function(memo, trailName) {
+          if ($rootScope.userInfo.trails.done) {
             ++memo.done;
             return memo;
           } 
@@ -22,10 +22,10 @@ angular.module('hikexpert.user', [])
           return memo;
         }, {done: 0, undone: 0});
         
-        var barLength = ($scope.userInfo.hikes.done / 5 * 100).toString() + '%';
-        fillBar('#hikeFive', 5, $scope.userInfo.hikes.done);
-        fillBar('#hikeTwentyFive', 25, $scope.userInfo.hikes.done);
-        fillBar('#hikeHundred', 100, $scope.userInfo.hikes.done);
+        var barLength = ($rootScope.userInfo.hikes.done / 5 * 100).toString() + '%';
+        fillBar('#hikeFive', 5, $rootScope.userInfo.hikes.done);
+        fillBar('#hikeTwentyFive', 25, $rootScope.userInfo.hikes.done);
+        fillBar('#hikeHundred', 100, $rootScope.userInfo.hikes.done);
     });
   };
   
@@ -41,7 +41,7 @@ angular.module('hikexpert.user', [])
   };
   //Checks hike count and changes hiker status based on # of hikes
   var updateStatus = function(){
-    var hikes = $scope.userInfo.hikes.done;
+    var hikes = $rootScope.userInfo.hikes.done;
     if(hikes >= 100){
       $scope.hikerStatus = 'Explorer';
     } else if(hikes >= 25){
@@ -100,8 +100,8 @@ angular.module('hikexpert.user', [])
   /***************************
     PAGE INITIALIZATION
   ***************************/
-  $scope.userInfo = {};
-  $scope.userInfo.location = {};
+  $rootScope.userInfo = {};
+  $rootScope.userInfo.location = {};
   $scope.hikerStatus = 'City-Dweller';
   $scope.getUser();
 });

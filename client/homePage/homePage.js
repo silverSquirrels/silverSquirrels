@@ -1,28 +1,5 @@
 angular.module('hikexpert.home', [])
   .controller('HomePageController', function($scope, $rootScope, Home, Socket, Map){
-    $scope.getUser = function(){
-      Home.getUser()
-        .then(function(data) {
-          $rootScope.userInfo.username = data.username;
-          $rootScope.userInfo.trails = data.trails.reduce(function(memo, trailObj){
-            memo[trailObj.trailName] = trailObj.done;
-            return memo;
-          }, {});
-          $rootScope.userInfo.trail = data.trail;
-        });
-    };
-    
-    $scope.getTrailsNearUser = function(location){
-      Map.getTrailsNearUser(location, $scope);
-    };
-
-    $scope.getTrailsNearLocation = function(searchData) {
-      Map.getTrailsNearLocation(searchData, $scope);
-    };
-
-    /*************************************
-      PAGE INITIALIZATION
-    *************************************/
     $scope.trails = {};
     $rootScope.userInfo = {};
     $rootScope.userInfo.location = {};
@@ -34,11 +11,29 @@ angular.module('hikexpert.home', [])
     $scope.markers = [];
     $scope.hikerStatus = 'City-Dweller';
     Map.updateUserLocation(function locationUpdated () {
-      Map.createMap($scope)
+      $scope.loading = false;
+      $scope.$apply();
+      Map.createMap($scope, $rootScope.userInfo.location, Map.placeUserMarker);
     });
-    $scope.getUser();
     $scope.comments;
+    
+    $scope.getTrailsNearUser = function(location){
+      Map.getTrailsNearUser(location, $scope);
+    };
 
+    $scope.getTrailsNearLocation = function(searchData) {
+      Map.getTrailsNearLocation(searchData, $scope);
+    };
+
+    Home.getUser()
+      .then(function(data) {
+        $rootScope.userInfo.username = data.username;
+        $rootScope.userInfo.trails = data.trails.reduce(function(memo, trailObj){
+          memo[trailObj.trailName] = trailObj.done;
+          return memo;
+        }, {});
+        $rootScope.userInfo.trail = data.trail;
+      });
     /*************
       SOCKETS
     **************/

@@ -66,13 +66,9 @@ angular.module('map.services', [])
       }
     }
 
-    var createMap = function($scope) {
-      $scope.loading = false;
-      // Workaround for spiffygif not working with ng-if
-      $scope.$apply();
-
+    var createMap = function($scope, location, callback) {
       var map = L.map('map')
-        .setView([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long], 9);
+        .setView([location.lat, location.long], 9);
       $scope.map = map;
 
       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw',
@@ -83,7 +79,11 @@ angular.module('map.services', [])
         accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
       })
       .addTo(map);
-
+      
+      callback(map);
+    };
+    
+    var placeUserMarker = function(map) {
       $rootScope.userInfo.marker = L.marker([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long], {icon: mapMarker, autoPan: false});
       $rootScope.userInfo.marker.addTo(map).bindPopup("Here you are")
         .openPopup();
@@ -150,6 +150,7 @@ angular.module('map.services', [])
           var seeCommentsHTML = "<a class=see-comments>See comments for this trail</a>"
           var commentFormHTML = "<form class=comment-form><span class=hidden>"+ trail.name + "</span><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
           var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>" + seeCommentsHTML;
+          // TODO: fix or refactor markers 
           // var marker;
           // if ( $rootScope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
           //   marker = L.marker(trail.coordinates, {icon: greenIcon, title: trail.name})
@@ -190,6 +191,7 @@ angular.module('map.services', [])
     
     return {
       createMap: createMap,
+      placeUserMarker: placeUserMarker,
       getTrailsNearUser: getTrailsNearUser,
       getTrailsNearLocation: getTrailsNearLocation,
       updateUserLocation: updateUserLocation,
