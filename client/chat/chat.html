@@ -1,17 +1,18 @@
 <div class="container-fluid" data-ng-init="getChat()">
 
-  <h1>{{ recipient }}</h1>
+  <h1 class="chat-title">{{ recipient }}</h1>
 
-  <div class="chat container-fluid" scroll-glue="glued">
+  <div class="chat container-fluid well" scroll-glue="glued">
     <div ng-repeat="message in messages track by $index">
       <strong><span>{{ message.sender }}: </span></strong>
       <span>{{ message.text }}</span>
     </div>
   </div>
-
-  <form id="send-message" ng-submit="sendMessage()">
-    <input id="text" class="form-control" ng-model="text" placeholer="Write a reply..." required></input>
-    <button class="btn btn-success" type="submit">Send</button>
-  </form>
+  <div >
+    <form id="send-message" class=" text-center form-inline form-group" ng-submit="sendMessage()">
+      <input id="text" class="form-control" ng-model="text" placeholer="Write a reply..." required></input>
+      <button class="btn btn-success inline" type="submit">Send</button>
+    </form>
+  </div>
 
 </div>

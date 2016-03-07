@@ -221,4 +221,10 @@ div.auth {
 .chat {
   height: 60vh;
   overflow: scroll;
+  margin-left:15vw;
+  margin-right:15vw;
+}
+
+.chat-title {
+  margin-left:15vw;
 }
