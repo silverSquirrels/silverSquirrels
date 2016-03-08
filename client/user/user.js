@@ -10,17 +10,18 @@ angular.module('hikexpert.user', [])
     Home.getUser()
     .then(function(data) {
       $rootScope.userInfo.username = data.username;
-      $rootScope.userInfo.trails = data.trails;
       $rootScope.userInfo.trail = data.trail;
 
-      $rootScope.userInfo.hikes = Object.keys($rootScope.userInfo.trails).reduce(function(memo, trailName) {
-        if ($rootScope.userInfo.trails.done) {
+      $rootScope.userInfo.hikes = $rootScope.userInfo.trails.reduce(function(memo, trail) {
+        console.log(trail);
+        if (trail.done) {
           ++memo.done;
           return memo;
         } 
-        memo.undone++;
+        ++memo.undone;
         return memo;
       }, {done: 0, undone: 0});
+      console.log($rootScope.userInfo.trails);
       var barLength = ($rootScope.userInfo.hikes.done / 5 * 100).toString() + '%';
       fillBar('#hikeFive', 5, $rootScope.userInfo.hikes.done);
       fillBar('#hikeTwentyFive', 25, $rootScope.userInfo.hikes.done);
@@ -110,7 +111,6 @@ angular.module('hikexpert.user', [])
   /***************************
     PAGE INITIALIZATION
     ***************************/
-    $rootScope.userInfo = {};
     $rootScope.userInfo.location = {};
     $scope.hikerStatus = 'City-Dweller';
     $scope.getUser();
