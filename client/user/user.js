@@ -86,7 +86,7 @@ angular.module('hikexpert.user', [])
         friend.wantToDo = 0;
         for(var i = 0; i < friend.trails.length; i++) {
           console.log(friend.trails[i]);
-          if(friend.trails.dont) {
+          if(friend.trails.done) {
             friend.haveDone++;
           } else {
             friend.wantToDo++;

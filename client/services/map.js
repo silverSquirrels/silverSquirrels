@@ -101,6 +101,18 @@ angular.module('map.services', [])
         .openPopup();
     };
     
+    var markers = {
+      greenIcon: greenIcon,
+      yellowIcon: yellowIcon
+    }
+    
+    var placeTrailMarker = function(map, trail, type) {
+      L.marker([trail.location.lat, trail.location.long], {icon: markers[type]})
+        .addTo(map)
+        .bindPopup(trail.name)
+        .openPopup();
+    };
+    
     var getTrailsNearUser = function(location, $scope){
       emptyMap($scope);
       updateUserLocation(function(position) {
@@ -211,6 +223,7 @@ angular.module('map.services', [])
       renderPath: renderPath,
       createMap: createMap,
       placeUserMarker: placeUserMarker,
+      placeTrailMarker: placeTrailMarker,
       getTrailsNearUser: getTrailsNearUser,
       getTrailsNearLocation: getTrailsNearLocation,
       updateUserLocation: updateUserLocation,
