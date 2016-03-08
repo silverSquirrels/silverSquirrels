@@ -17,7 +17,12 @@ angular.module('hikexpert.trail', [])
       || false;
     
     Map.createMap($scope, $rootScope.userInfo.currentTrail.location, function(map) {
-      Map.placeUserMarker(map);
+      if ($rootScope.userInfo.currentTrail.name === 'New Trail') {
+        Map.placeUserMarker(map);
+      } else {
+        var curr = $rootScope.userInfo.currentTrail;
+        Map.placeTrailMarker(map, curr, curr.done ? 'yellowIcon' : 'greenIcon');
+      }
     });
     
     $scope.updateInterval = setInterval(function (){
