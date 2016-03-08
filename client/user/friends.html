@@ -12,7 +12,7 @@
   <div class="container-fluid pull-left well" ng-repeat="friend in friends | filter: search">
       <h1>{{ friend.username }}</h1>
       <p>{{ friend.hikerStatus }}</p>
-      <p>Has done: {{ friend.haveDone.length }} | Wants to do: {{ friend.wantToDo.length }}</p>
+      <p>Has done: {{ friend.haveDone }} | Wants to do: {{ friend.wantToDo }}</p>
       <form class="form-inline" ng-submit="chat($index)">
         <button class="btn btn-success" type="submit">Chat</button>
       </form>

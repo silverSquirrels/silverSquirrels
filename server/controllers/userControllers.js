@@ -239,7 +239,7 @@ module.exports = {
     } else {
       var user = jwt.decode(token, 'superskrull');
       User.findOne({ username: user.username })
-      .populate('friends', 'username haveDone wantToDo')
+      .populate('friends')
       .exec(function(err, foundUser) {
         if(err){
           next(new Error('Failed to find user!'));
