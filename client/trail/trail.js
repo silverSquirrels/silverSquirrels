@@ -1,6 +1,7 @@
 angular.module('hikexpert.trail', [])
   .controller('TrailController', function($rootScope, $scope, Map, Socket, Home, Trail) {
     $scope.exists = true;
+    $scope.markers = [];
     $scope.userTrails = $rootScope.userInfo.trails.reduce(function(memo, trail) {
       var name = trail.name || trail.trailName
       if (trail.done) {
@@ -21,7 +22,7 @@ angular.module('hikexpert.trail', [])
         Map.placeUserMarker(map);
       } else {
         var curr = $rootScope.userInfo.currentTrail;
-        Map.placeTrailMarker(map, curr, curr.done ? 'yellowIcon' : 'greenIcon');
+        Map.placeTrailMarker($scope, curr, curr.done ? 'yellowIcon' : 'greenIcon');
       }
     });
     
@@ -42,7 +43,9 @@ angular.module('hikexpert.trail', [])
             $rootScope.userInfo.trails.push(trail);
             $scope.hasDone = !$scope.hasDone;
             $rootScope.userInfo.currentTrail.done = $scope.hasDone;
-            $scope.saved = true;
+            Map.emptyMap($scope);
+            var curr = $rootScope.userInfo.currentTrail;
+            Map.placeTrailMarker($scope, curr, curr.done ? 'yellowIcon' : 'greenIcon');
           })
           .catch(Trail.errorHandler);
       } else {
@@ -62,6 +65,9 @@ angular.module('hikexpert.trail', [])
               $scope.hasDone = !$rootScope.hasDone;
               $rootScope.userInfo.trails[idx] = trail;
             }
+            Map.emptyMap($scope);
+            var curr = $rootScope.userInfo.currentTrail;
+            Map.placeTrailMarker($scope, curr, curr.done ? 'yellowIcon' : 'greenIcon');
           })
       }
     };
@@ -74,6 +80,7 @@ angular.module('hikexpert.trail', [])
     $scope.createTrail = function(trail) {
       if (!trail) {
         $scope.exists = false;
+        Map.emptyMap($scope);
         $scope.map.setView([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long]);
         Map.placeUserMarker($scope.map);
       }
