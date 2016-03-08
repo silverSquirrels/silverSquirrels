@@ -103,6 +103,18 @@ module.exports = {
     findUser({username: user.username})
       .then(function(foundUser) {
         if(foundUser) {
+          // var trails = foundUser.trails.reduce(function(memo, trail) {
+          //   Trail.findOrCreate({_id: trail._id}, function(err, foundTrail, created) {
+          //     console.log(foundTrail);
+          //     trail.name = foundTrail.name;
+          //     trail.location = foundTrail.location;
+          //     console.log(trail);
+          //     memo.push(trail);
+          //   });
+          //   return memo;
+          // }, [])
+          foundUser.populate('trails');
+          console.log(foundUser.trails)
           res.send({
             username: foundUser.username,
             location: foundUser.location,
@@ -138,6 +150,7 @@ module.exports = {
             next(new Error('There was an error finding or creating a trail:', err));
           }
           foundUser.trails.addToSet({
+            name: trailData.name,
             _id: trail._id,
             done: trailData.done
           });
@@ -180,6 +193,7 @@ module.exports = {
           }
           if (created) {
             foundUser.trails.push({
+              name: trailData.name,
               _id: trail._id,
               done: trailData.done
             });
@@ -187,7 +201,7 @@ module.exports = {
           }
           if (!trailIdx) {
             for (var i = 0; i < foundUser.trails.length; i++) {
-              if (foundUser.trails[i]._id + '' === trail._id + '') {
+              if (foundUser.trails[i].name + '' === trail.name + '') {
                 trailIdx = i;
                 break;
               }
