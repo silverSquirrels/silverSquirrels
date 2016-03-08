@@ -106,11 +106,12 @@ angular.module('map.services', [])
       yellowIcon: yellowIcon
     }
     
-    var placeTrailMarker = function(map, trail, type) {
-      L.marker([trail.location.lat, trail.location.long], {icon: markers[type]})
-        .addTo(map)
+    var placeTrailMarker = function($scope, trail, type) {
+      var marker = L.marker([trail.location.lat, trail.location.long], {icon: markers[type]})
+        .addTo($scope.map)
         .bindPopup(trail.name)
         .openPopup();
+      $scope.markers.push(marker);
     };
     
     var getTrailsNearUser = function(location, $scope){
@@ -167,8 +168,16 @@ angular.module('map.services', [])
       // data is a bunch of trail objects from the API
       data.forEach(function(trail, i){
         var marker;
-        if (!!$rootScope.userInfo[trail.name]) {
-          marker = markerCases[$rootScope.userInfo.trails[trail.name]](trail, $scope);
+        var idx;
+        if ($rootScope.userInfo.trails.reduce(function(memo, userTrail, i) {
+            if (userTrail.name === trail.name) {
+              return true;
+              idx = i;
+            } else {
+              return false;
+            }
+          }, false)) {
+          marker = markerCases[$rootScope.userInfo.trails[i].done](trail, $scope);
         } else {
           marker = markerCases['notInList'](trail, $scope);
           var seeCommentsHTML = "<a class=see-comments>See comments for this trail</a>"
