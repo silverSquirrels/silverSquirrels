@@ -1,4 +1,5 @@
 var User = require('../db/models/user.js');
+var Trail = require('../db/models/trail.js');
 var Q = require('q');
 var jwt = require('jwt-simple');
 
@@ -61,6 +62,7 @@ module.exports = {
         next(error);
       });
   },
+
   checkAuth: function(req, res, next) {
     // check user authentication
     // grab token from header
@@ -85,6 +87,7 @@ module.exports = {
       });
     }
   },
+
   getUser: function(req, res, next){
     // check user authentication
     // grab token from header
@@ -100,10 +103,24 @@ module.exports = {
     findUser({username: user.username})
       .then(function(foundUser) {
         if(foundUser) {
+          // var trails = foundUser.trails.reduce(function(memo, trail) {
+          //   Trail.findOrCreate({_id: trail._id}, function(err, foundTrail, created) {
+          //     console.log(foundTrail);
+          //     trail.name = foundTrail.name;
+          //     trail.location = foundTrail.location;
+          //     console.log(trail);
+          //     memo.push(trail);
+          //   });
+          //   return memo;
+          // }, [])
+          foundUser.populate('trails');
+          console.log(foundUser.trails)
           res.send({
             username: foundUser.username,
-            haveDone: foundUser.haveDone,
-            wantToDo: foundUser.wantToDo
+            location: foundUser.location,
+            hikerStatus: foundUser.hikerStatus,
+            trails: foundUser.trails,
+            path: foundUser.trail
           });
         } else {
           res.send(401);
@@ -114,63 +131,166 @@ module.exports = {
       });
     }
   },
-  hasDone : function (req, res, next) {
-    var trailName = req.body.trailName;
+  
+  addTrailToUserTrails: function(req, res, next) {
+    var token = req.headers['x-access-token'];
+    if (!token) {
+      next(new Error('No token trying to post to user/trails'))
+    }
+    var trailData = req.body.trail;
+    var user = jwt.decode(token, 'superskrull');
+    User.findOne({username: user.username})
+      .exec(function(err, foundUser) {
+        if (err) {
+          next(new Error('Failed to find user while adding trail:', err));
+        }
+        console.log(trailData)
+        Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
+          if (err) {
+            next(new Error('There was an error finding or creating a trail:', err));
+          }
+          foundUser.trails.addToSet({
+            name: trailData.name,
+            _id: trail._id,
+            done: trailData.done
+          });
+          console.log(foundUser);
+          foundUser.save()
+            .then(function(result) {
+              res.send(result);
+            })
+            .catch(function(err) {
+              next(new Error('There was an error saving the user with a new trail', err));
+            });
+        })
+      })
+      .catch(function(err) {
+        if (err) {
+          console.log('There was an error adding', trailName, 'to user', user.username, ':', err);
+          res.sendStatus(500);
+        }
+      })
+  },
+  
+  updateUserTrail: function(req, res, next) {
+    var token = req.headers['x-access-token'];
+    if (!token) {
+      next(new Error('No token trying to put to user/trails'));
+    }
+    var trailData = req.body.trail;
+    var user = jwt.decode(token, 'superskrull');
+    User.findOne({username: user.username})
+      .exec(function(err, foundUser) {
+        if (err) {
+          console.log('Failed to find user while updating trail:', err);
+          res.sendStatus(404);
+        }
+        Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
+          if (err) {
+            next(new Error('There was an error finding or creating trail to update:', err));
+            res.sendStatus(500);
+          
+          }
+          if (created) {
+            foundUser.trails.push({
+              name: trailData.name,
+              _id: trail._id,
+              done: trailData.done
+            });
+            var trailIdx = foundUsers.trails.length - 1;
+          }
+          if (!trailIdx) {
+            for (var i = 0; i < foundUser.trails.length; i++) {
+              if (foundUser.trails[i].name + '' === trail.name + '') {
+                trailIdx = i;
+                break;
+              }
+            }
+          }
+          foundUser.trails[trailIdx].done = trailData.done;
+          
+          foundUser.save();
+          
+          res.sendStatus(202);
+        })
+      })
+      .catch(function(err) {
+        console.log('There was an error changing trail:', err);
+        res.sendStatus(500);
+      });
+  },
+
+  addFriend: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if(!token) {
       next(new Error('No token'));
     } else {
       var user = jwt.decode(token, 'superskrull');
-      User.findOne({ username : user.username}).exec(function (err, foundUser){
+      User.findOne({ username: user.username }).exec(function(err, foundUser) {
         if(err){
           next(new Error('Failed to find user!'));
         }
-        foundUser.haveDone.addToSet(trailName);
-        foundUser.save();
-        res.sendStatus(202, 'yo');
+        User.findOne({ username: req.body.newFriend }).exec(function(err, newFriend) {
+          if(err) {
+            next(new Error('addFriend failed'));
+          }
+          if(newFriend) {
+            foundUser.friends.addToSet(newFriend);
+            foundUser.save();
+            res.sendStatus(204);
+          } else {
+            res.sendStatus(404);
+          }
+        });
       });
-
     }
   },
-  wantToDo : function (req, res, next) {
-    var trailName = req.body.trailName;
+  
+  getFriends: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if(!token) {
       next(new Error('No token'));
     } else {
       var user = jwt.decode(token, 'superskrull');
-      User.findOne({ username : user.username}).exec(function (err, foundUser){
+      User.findOne({ username: user.username })
+      .populate('friends')
+      .exec(function(err, foundUser) {
         if(err){
           next(new Error('Failed to find user!'));
         }
-        // "addToSet" is a mongo thing, like push but does not allow repeats        
-        foundUser.wantToDo.addToSet(trailName);
-        foundUser.save();
-        res.sendStatus(202, 'yo');
+        res.json({
+          friends: foundUser.friends
+        });
       });
-
     }
   },
-  moveTrails : function (req, res, next) {
-    console.log('moveTrails called!!')
-    var trailName = req.body.trailName;
-    var token = req.headers['x-access-token'];
-    if(!token) {
-      next(new Error('No token'));
-    } else {
-      var user = jwt.decode(token, 'superskrull');
-      User.findOne({ username : user.username}).exec(function (err, foundUser){
-        if(err){
-          next(new Error('Failed to find user!'));
+  //Doesn't require auth because sockets are only initialized after auth
+  updateLocation: function (data) {
+    User.findOne({username: data.user})
+      .then(function(results) {
+        results.location.lat = data.location.lat;
+        results.location.long = data.location.long;
+        
+        if (!results.path.length) {
+          results.path.push(results.location);
         }
-        // "pull" removes item from mongo array       
-        foundUser.wantToDo.pull(trailName);
-        // add to set adds an item to mongo array, does not allow repeats
-        foundUser.haveDone.addToSet(trailName);
-        foundUser.save();
-        res.sendStatus(202, 'yo');
+        
+        // Trail.findOne({name: data.name})
+        var last = results.path[results.path.length - 1];
+        
+        var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2) 
+          + Math.pow((last.long - data.location.long), 2));
+        
+        if (distance > .0001) {
+          results.path.addToSet(results.location);
+        }
+        results.save()
+          .catch(function errHandler (err) {
+            console.log('There was an error saving the new location:', err);
+          });
+      })
+      .catch(function errHandler (err) {
+        console.log('There was an error querying the database:', err);
       });
-
-    }
-  },
+  }
 };

@@ -1,17 +1,23 @@
 <div class='container fixed-homepage'>
   <div class="page-header">
-    <h1 test>Hello {{userInfo.username}}</h1>  
+    <h1 test>Hello {{userInfo.username}}</h1>
   </div>
   <div class="row well">
     <div class="col-sm-6">
-      <p class="lead">See trails near you! <small>Enter a radius:</small></p>
-      <select class="form-control" name="radius" ng-model="userInfo.radius" ng-change="getCoords(userInfo)" >
-        <!-- <option selected disabled>Select a radius</option> -->
-        <option value="10">10 miles</option>
-        <option value="20">20 miles</option>
-        <option value="50">50 miles</option>
-        <option value="100">100 miles</option>
-      </select>
+      <form ng-submit="getTrailsNearLocation(searchData)">
+        <p class="lead">Select a radius:</p>
+        <select class="form-control" name="radius" ng-model="userInfo.location.radius" >
+          <option selected value="10">10 miles</option>
+          <option value="20">20 miles</option>
+          <option value="50">50 miles</option>
+          <option value="100">100 miles</option>
+        </select>
+        <p class="lead">See trails all over the world! </br><small>Enter a location:</small></p>
+        <input class="form-control" type="text" size="65%" name="search" ng-model="searchData" placeholder="Enter an address, city, or state">
+        <button class="btn btn-success" type="submit" name="submit">Find Trails</button>
+      </form>
+      <p class="lead">Or:</p>
+      <button class="btn btn-success" name="use-location" ng-click="getTrailsNearUser(userInfo.location)">Use my location</button>
     </div>
   </div>
 
@@ -31,20 +37,21 @@
   <!-- This is where the leaflet map renders: -->
   <div id="map"></div>
   <hr>
-  <div class="col-sm-6 well">
-    <h3> Trails I Have Done: </h3>
-    <div ng-repeat='trailName in userInfo.haveDone track by $index'>
-     <p>{{trailName}}</p>
-    </div>
+  <div ng-repeat='comment in comments'>
+    <p>{{comment}}</p>
   </div>
 
-   <div class="col-sm-6 well">
-     <h3> Trails I Want To Do: </h3>
-     <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-       <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails"); changeColor(this.trailName, greenIcon, "did it")'>Did it!</button></p>
-     </div>
+  <div class="col-sm-6 well">
+    <h3> Trails I Have Done: </h3>
+    <div ng-repeat='trail in userInfo.trails'>
+     <p>{{ trail.done ? trail.name : undefined }}</p>
    </div>
  </div>
 
-
-
+ <div class="col-sm-6 well">
+   <h3> Trails I Want To Do: </h3>
+   <div ng-repeat='trail in userInfo.trails'>
+     <p>{{ trail.done == false ? trail.name : undefined }} </p>
+   </div>
+ </div>
+</div>

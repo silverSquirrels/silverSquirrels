@@ -1,16 +1,14 @@
 # Project Name
 HikeXpert
 
-> Pithy project description
-
 A gamified hiking trail experience.
-
+[Check out our press release!](PRESS-RELEASE.md)
 
 ## Team
 
-  - __Product Owner__: Eric Broberg
-  - __Scrum Master__: Colton Savage
-  - __Development Team Members__: Andrew Vedady, Mike Frazier
+  - __Product Owner__: Eric Broberg, Ian Akers
+  - __Scrum Master__: Colton Savage, Alex Ko
+  - __Development Team Members__: Andrew Vedady, Mike Frazier, John Soo, JT Yim
 
 ## Table of Contents
 
@@ -18,21 +16,16 @@ A gamified hiking trail experience.
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
 1. [Team](#team)
 1. [Contributing](#contributing)
 
 ## Usage
 
-> Some usage instructions
+Head to hawks-hikexpert.herokuapp.com
 
 ## Requirements
 
 - Node 0.12.7
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
 
 ## Development
 
@@ -48,9 +41,10 @@ bower install
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/Nuthinlikeacleanbathroom/HikeXpert/issues)
 
 
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+Please use the [STYLE GUIDE](STYLE-GUIDE.md) when creating or editing code.

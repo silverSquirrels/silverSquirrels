@@ -17,6 +17,7 @@
     "materialize": "~0.97.5",
     "jquery": "~2.2.0",
     "angular-leaflet-directive": "^0.10.0",
-    "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6",
+    "angular-scroll-glue": "^2.0.6"
   }
 }

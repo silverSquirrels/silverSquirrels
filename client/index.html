@@ -8,8 +8,9 @@
     <script src="lib/angular-route/angular-route.js"></script>
     <script src="lib/leaflet/dist/leaflet-src.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="lib/angular-scroll-glue/src/scrollglue.js"></script>
     <!-- angular leaflet directive, tried using it, you may want to refactor to use so i leave it here -eric -->
-    <script src='lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js'></script>
+    <!-- <script src='lib/angular-leaflet-directive/dist/angular-leaflet-directive.min.js'></script> -->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"  media="screen,projection"/>
     <link rel="stylesheet" href="//bootswatch.com/simplex/bootstrap.min.css">
     <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
@@ -33,9 +34,10 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="/#/" class="dropdown-toggle profile-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
+              <a class="dropdown-toggle profile-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/#/user">User Profile</a></li>
+                <li><a href="/#/user">Profile</a></li>
+                <li><a href="/#/friends">Friends</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a ng-controller='AuthController' ng-click="signout()">Sign Out</a></li>
               </ul>
@@ -55,11 +57,19 @@
       <p class="footer-company-name">HikeXpert &copy; 2016</p>
     </footer>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="leaflet-awesome-markers/leaflet.awesome-markers.min.js"></script>
-    <script src="./homePage/map.js"></script>
     <script src="./homePage/homePage.js"></script>
+    <script src="./user/user.js"></script>
+    <script src="./chat/chat.js"></script>
     <script src="./auth/auth.js"></script>
-    <script src="services/services.js"></script>
+    <script src="./trail/trail.js"></script>
+    <script src="services/auth.js"></script>
+    <script src="services/friend.js"></script>
+    <script src="services/home.js"></script>
+    <script src="services/map.js"></script>
+    <script src="services/socket.js"></script>
+    <script src="services/trail.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

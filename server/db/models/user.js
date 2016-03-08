@@ -1,6 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
 var Q = require('q');
-var mongoose = require('mongoose');
+var mongoose = require('mongoose');;
 var SALT_WORK_FACTOR = 10;
 
 var userSchema = new mongoose.Schema ({
@@ -13,12 +13,27 @@ var userSchema = new mongoose.Schema ({
     type: String,
     required: true
   },
-  created_at: {type: Date},
-  updated_at: {type: Date},
-
-  salt: String,
-  haveDone: [String],
-  wantToDo: [String]
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  location: {
+    lat: Number,
+    long: Number
+  },
+  hikerStatus: {type: String, default: 'City-Dweller'},
+  path: [{
+    lat: Number,
+    long: Number
+  }],
+  trails: [{
+    name: {type: String, required: true, unique: true},
+    id: {type: mongoose.Schema.Types.ObjectId, ref: 'Trail'},
+    done: Boolean,
+  }],
+  created_at: Date,
+  updated_at: Date,
+  salt: String
 });
 
 userSchema.methods.comparePassword = function(attemptedPW) {
