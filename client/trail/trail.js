@@ -36,6 +36,7 @@ angular.module('hikexpert.trail', [])
           .then(function(result) {
             $rootScope.userInfo.trails.push(trail);
             $scope.hasDone = !$scope.hasDone;
+            $rootScope.userInfo.currentTrail.done = $scope.hasDone;
             $scope.saved = true;
           })
           .catch(Trail.errorHandler);

@@ -103,6 +103,18 @@ module.exports = {
     findUser({username: user.username})
       .then(function(foundUser) {
         if(foundUser) {
+          // var trails = foundUser.trails.reduce(function(memo, trail) {
+          //   Trail.findOrCreate({_id: trail._id}, function(err, foundTrail, created) {
+          //     console.log(foundTrail);
+          //     trail.name = foundTrail.name;
+          //     trail.location = foundTrail.location;
+          //     console.log(trail);
+          //     memo.push(trail);
+          //   });
+          //   return memo;
+          // }, [])
+          foundUser.populate('trails');
+          console.log(foundUser.trails)
           res.send({
             username: foundUser.username,
             location: foundUser.location,
@@ -138,6 +150,7 @@ module.exports = {
             next(new Error('There was an error finding or creating a trail:', err));
           }
           foundUser.trails.addToSet({
+            name: trailData.name,
             _id: trail._id,
             done: trailData.done
           });
@@ -160,50 +173,51 @@ module.exports = {
   },
   
   updateUserTrail: function(req, res, next) {
-   var token = req.headers['x-access-token'];
-   if (!token) {
-     next(new Error('No token trying to put to user/trails'));
-   }
-   var trailData = req.body.trail;
-   var user = jwt.decode(token, 'superskrull');
-   User.findOne({username: user.username})
-     .exec(function(err, foundUser) {
-       if (err) {
-         console.log('Failed to find user while updating trail:', err);
-         res.sendStatus(404);
-       }
-       Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
-         if (err) {
-           next(new Error('There was an error finding or creating trail to update:', err));
-           res.sendStatus(500);
-         
-         }
-         if (created) {
-           foundUser.trails.push({
-             _id: trail._id,
-             done: trailData.done
-           });
-           var trailIdx = foundUsers.trails.length - 1;
-         }
-         if (!trailIdx) {
-           for (var i = 0; i < foundUser.trails.length; i++) {
-             if (foundUser.trails[i]._id + '' === trail._id + '') {
-               trailIdx = i;
-               break;
-             }
-           }
-         }
-         foundUser.trails[trailIdx].done = trailData.done;
-         
-         foundUser.save();
-         
-         res.sendStatus(202);
-       })
-     })
-     .catch(function(err) {
-       console.log('There was an error changing trail:', err);
-       res.sendStatus(500);
-     });
+    var token = req.headers['x-access-token'];
+    if (!token) {
+      next(new Error('No token trying to put to user/trails'));
+    }
+    var trailData = req.body.trail;
+    var user = jwt.decode(token, 'superskrull');
+    User.findOne({username: user.username})
+      .exec(function(err, foundUser) {
+        if (err) {
+          console.log('Failed to find user while updating trail:', err);
+          res.sendStatus(404);
+        }
+        Trail.findOrCreate({name: trailData.name}, function(err, trail, created) {
+          if (err) {
+            next(new Error('There was an error finding or creating trail to update:', err));
+            res.sendStatus(500);
+          
+          }
+          if (created) {
+            foundUser.trails.push({
+              name: trailData.name,
+              _id: trail._id,
+              done: trailData.done
+            });
+            var trailIdx = foundUsers.trails.length - 1;
+          }
+          if (!trailIdx) {
+            for (var i = 0; i < foundUser.trails.length; i++) {
+              if (foundUser.trails[i].name + '' === trail.name + '') {
+                trailIdx = i;
+                break;
+              }
+            }
+          }
+          foundUser.trails[trailIdx].done = trailData.done;
+          
+          foundUser.save();
+          
+          res.sendStatus(202);
+        })
+      })
+      .catch(function(err) {
+        console.log('There was an error changing trail:', err);
+        res.sendStatus(500);
+      });
   },
 
   addFriend: function(req, res, next) {

@@ -27,6 +27,7 @@ var userSchema = new mongoose.Schema ({
     long: Number
   }],
   trails: [{
+    name: {type: String, required: true, unique: true},
     id: {type: mongoose.Schema.Types.ObjectId, ref: 'Trail'},
     done: Boolean,
   }],

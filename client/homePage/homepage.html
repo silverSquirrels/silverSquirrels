@@ -43,15 +43,15 @@
 
   <div class="col-sm-6 well">
     <h3> Trails I Have Done: </h3>
-    <div ng-repeat='trailName in userInfo.haveDone track by $index'>
-     <p>{{trailName}}</p>
+    <div ng-repeat='trail in userInfo.trails'>
+     <p>{{ trail.done ? trail.name : undefined }}</p>
    </div>
  </div>
 
  <div class="col-sm-6 well">
    <h3> Trails I Want To Do: </h3>
-   <div ng-repeat='trailName in userInfo.wantToDo track by $index'>
-     <p>{{trailName}} <button class="btn btn-success did-it-button" ng-click='moveTrail(this.trailName, "/moveTrails"); changeColor(this.trailName, greenIcon, "did it")'>Did it!</button></p>
+   <div ng-repeat='trail in userInfo.trails'>
+     <p>{{ trail.done == false ? trail.name : undefined }} </p>
    </div>
  </div>
 </div>
