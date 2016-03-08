@@ -21,7 +21,6 @@ angular.module('hikexpert.user', [])
         memo.undone++;
         return memo;
       }, {done: 0, undone: 0});
-
       var barLength = ($rootScope.userInfo.hikes.done / 5 * 100).toString() + '%';
       fillBar('#hikeFive', 5, $rootScope.userInfo.hikes.done);
       fillBar('#hikeTwentyFive', 25, $rootScope.userInfo.hikes.done);
@@ -80,17 +79,20 @@ angular.module('hikexpert.user', [])
     Friend.getFriends()
     .then(function(res) {
       $scope.friends = res.data.friends;
+
+
       $scope.friends.forEach(function(friend) {
-        if(friend.hasDone >= 100){
-          friend.hikerStatus = 'Explorer';
-        } else if(friend.hasDone >= 25){
-          friend.hikerStatus = 'Hiker';
-        } else if(friend.hasDone >= 5){
-          friend.hikerStatus = 'Wanderer';
-        } else {
-          friend.hikerStatus = 'City-Dweller';
+        friend.haveDone = 0;
+        friend.wantToDo = 0;
+        for(var i = 0; i < friend.trails.length; i++) {
+          console.log(friend.trails[i]);
+          if(friend.trails.dont) {
+            friend.haveDone++;
+          } else {
+            friend.wantToDo++;
+          }
         }
-      });
+       });
     })
     .catch(function(err) {
       console.error(err);
