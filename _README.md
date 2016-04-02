@@ -49,7 +49,9 @@ View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
 
 ## Testing
 
-```npm test -- run code through tests using Mocha```
+In root directory:
+
+```mocha -- run code through tests using Mocha```
 
 
 ## Contributing
