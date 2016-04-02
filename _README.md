@@ -1,10 +1,7 @@
 # Project Name
 HikeXpert
 
-> Pithy project description
-
 A gamified hiking trail experience.
-
 
 ## Team
 
@@ -29,19 +26,19 @@ A gamified hiking trail experience.
 ## Requirements
 
 - Node 0.12.7
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Angular 1.3.16
+- Leaflet: 0.7.7
 
 ## Development
+
+- Your TrailAPI key goes in .env file.
 
 ### Installing Dependencies
 
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
+npm install -g bower
 npm install
 bower install
 ```
@@ -49,6 +46,10 @@ bower install
 ### Roadmap
 
 View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+
+## Testing
+
+```npm test -- run code through tests using Mocha```
 
 
 ## Contributing
