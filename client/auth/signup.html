@@ -1,7 +1,7 @@
 <div id='signup' class='auth well container col-sm-4 col-md-4 col-md-offset-4 col-sm-offset-4'>
   <h2 class="form-signup-heading">Please sign up</h2>
   <div>
-    <form name="signupForm" ng-submit='signup()' class='row' novalidate>
+    <form name="signupForm" ng-submit='signup()' class='row'>
       <label for="inputUsername" class="sr-only">Username</label>
       <input type='text' id="inputUsername" class="form-control" ng-model='user.username' name="signUpUser" placeholder="Enter a username" required />
       <label for="inputPassword" class="sr-only">Password</label>
@@ -17,6 +17,9 @@
     </div>
     <div class="alert-danger" ng-if='signupForm.signUpPassword.$error.required && signupForm.$dirty' class='message'>
         <h2>Password required</h2>
+    </div>
+    <div class="alert-danger" ng-if='signupError' class='message'>
+        <h2>Please fill out both fields!</h2>
     </div>
 </div>
 
