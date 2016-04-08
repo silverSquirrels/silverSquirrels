@@ -10,7 +10,9 @@ angular.module('hikexpert.auth', [])
         $location.path('/');
       })
       .catch(function (error) {
+        console.log('scope signin error!')
         console.error(error);
+        $scope.signinError = error;
       });
   };
 
@@ -21,7 +23,9 @@ angular.module('hikexpert.auth', [])
         $location.path('/');
       })
       .catch(function (error) {
+        console.log('scope signup error!')
         console.error(error);
+        $scope.signupError = error;
       });
   };
   

@@ -19,4 +19,7 @@
   <div class="alert-danger" ng-show='signinForm.signinPassword.$error.required && signinForm.$dirty' class='message'>
     <h2>Password required</h2>
   </div>
+  <div class="alert-danger" ng-if='signinError' class='message'>
+        <h2>If you are a new user, please <a href="#/signup">sign up!</a></h2>
+  </div>
 </div>
